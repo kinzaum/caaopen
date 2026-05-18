@@ -23,6 +23,7 @@
         h1 {
             color: #333;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         #mainLayoutContainer {
@@ -144,66 +145,38 @@
         .rtl {
             direction: rtl;
         }
-
-        /* ==========================================================================
-           THE LANDSCAPE FORCE (Versão Estabilizada para Console e Telas Verticais)
-           ========================================================================== */
-        @media screen and (orientation: portrait) {
-            body {
-                justify-content: center;
-                align-items: center;
-                overflow: hidden;
-            }
-
-            .landscape-force {
-                transform: rotate(90deg);
-                transform-origin: center center;
-                width: 100vh !important;
-                height: 100vw !important;
-                position: absolute;
-                display: flex;
-                flex-direction: column;
-                padding: 20px;
-                box-sizing: border-box;
-                background: #f0f2f5;
-            }
-        }
     </style>
 </head>
 <body ontouchstart="">
 
-    <div class="landscape-force">
+    <h1 id="mainTitle">Minha Prancha AAC Customizada</h1>
 
-        <h1 id="mainTitle">Minha Prancha AAC Customizada</h1>
-
-        <div id="mainLayoutContainer">
-            <div class="form-container">
-                <div class="form-group">
-                    <label id="lblBoardTitle" for="boardTitle">1. Título da Prancha:</label>
-                    <input type="text" id="boardTitle" placeholder="ex: Família, Rotina, Comida">
-                </div>
-                
-                <div class="form-group">
-                    <label id="lblCardWord" for="cardWord">2. Palavra do Card / Legenda:</label>
-                    <input type="text" id="cardWord" placeholder="ex: Ajuda, Escovar os Dentes">
-                </div>
-
-                <div class="form-group">
-                    <label id="lblCardImage" for="cardImage">3. Escolha uma Imagem do Dispositivo:</label>
-                    <input type="file" id="cardImage" accept="image/*">
-                </div>
-
-                <div class="btn-stack">
-                    <button id="addCardBtn" onclick="createNewCard()">Adicionar à Prancha</button>
-                    <button id="editModeBtn" onclick="toggleEditMode()">Modo Edição: OFF</button>
-                    <button id="clearBoardBtn" onclick="resetWholeSystem()">Resetar Tudo</button>
-                </div>
+    <div id="mainLayoutContainer">
+        <div class="form-container">
+            <div class="form-group">
+                <label id="lblBoardTitle" for="boardTitle">1. Título da Prancha:</label>
+                <input type="text" id="boardTitle" placeholder="ex: Família, Rotina, Comida">
+            </div>
+            
+            <div class="form-group">
+                <label id="lblCardWord" for="cardWord">2. Palavra do Card / Legenda:</label>
+                <input type="text" id="cardWord" placeholder="ex: Ajuda, Escovar os Dentes">
             </div>
 
-            <div class="grid-container" id="boardGrid">
-                </div>
+            <div class="form-group">
+                <label id="lblCardImage" for="cardImage">3. Escolha uma Imagem do Dispositivo:</label>
+                <input type="file" id="cardImage" accept="image/*">
+            </div>
+
+            <div class="btn-stack">
+                <button id="addCardBtn" onclick="createNewCard()">Adicionar à Prancha</button>
+                <button id="editModeBtn" onclick="toggleEditMode()">Modo Edição: OFF</button>
+                <button id="clearBoardBtn" onclick="resetWholeSystem()">Resetar Tudo</button>
+            </div>
         </div>
 
+        <div class="grid-container" id="boardGrid">
+            </div>
     </div>
 
     <script>
@@ -211,13 +184,11 @@
         let currentLangData = {};
         let editMode = false;
 
-        // Executa ao abrir a aplicação
         document.addEventListener("DOMContentLoaded", () => {
             loadLocalization();
             setupFileUploadValidation();
         });
 
-        // Carrega o arquivo JSON externo e define o idioma
         function loadLocalization() {
             fetch('languages.json')
                 .then(response => {
@@ -227,11 +198,9 @@
                 .then(data => {
                     translations = data;
                     
-                    // Identifica o idioma do dispositivo ou assume inglês
                     let userLang = navigator.language || navigator.userLanguage;
-                    userLang = userLang.split('-')[0]; // Pega a raiz (ex: 'pt')
+                    userLang = userLang.split('-')[0];
 
-                    // Se não tiver o idioma mapeado, adota o Inglês padrão
                     if (!translations[userLang]) {
                         userLang = 'en';
                     }
@@ -242,7 +211,6 @@
                 .catch(error => {
                     console.error("Erro ao carregar o arquivo de idiomas JSON, usando fallback local:", error);
                     
-                    // Fallback estático para evitar que a aplicação fique sem textos se o JSON quebrar
                     currentLangData = {
                         mainTitle: "Minha Prancha AAC Customizada",
                         lblBoardTitle: "1. Título da Prancha:",
@@ -259,7 +227,6 @@
                 });
         }
 
-        // Traduz os textos estruturais da tela e checa orientação RTL
         function applyLocalization(lang) {
             document.getElementById('mainTitle').innerText = lang.mainTitle || "Minha Prancha AAC Customizada";
             document.getElementById('lblBoardTitle').innerText = lang.lblBoardTitle || "1. Título da Prancha:";
@@ -271,7 +238,6 @@
             document.getElementById('editModeBtn').innerText = editMode ? (lang.editModeOn || "Modo Edição: ON") : (lang.editModeOff || "Modo Edição: OFF");
             document.getElementById('clearBoardBtn').innerText = lang.clearBoardBtn || "Resetar Tudo";
 
-            // Tratamento Dinâmico para Idiomas da Direita para Esquerda (RTL)
             if (lang.isRtl) {
                 document.body.classList.add('rtl');
             } else {
@@ -279,29 +245,25 @@
             }
         }
 
-        // CONFIGURAÇÃO: Trava de Limite de tamanho de arquivo de 100Kb
         function setupFileUploadValidation() {
             const fileInput = document.getElementById('cardImage');
             
             fileInput.addEventListener('change', function() {
                 const file = this.files[0];
                 if (file) {
-                    // 100 KB em bytes (100 * 1024)
                     const maxSizeBytes = 102400; 
 
                     if (file.size > maxSizeBytes) {
-                        // Alerta dinâmico baseado no idioma ou mensagem padrão
                         const alertMsg = currentLangData.alertFileTooLarge || 
                             "A imagem selecionada é maior que o tamanho limite de 100Kb. Por favor, escolha um arquivo menor.";
                         
                         alert(alertMsg);
-                        this.value = ""; // Reseta o campo do arquivo limpando a seleção inválida
+                        this.value = ""; 
                     }
                 }
             });
         }
 
-        // Funções de controle da prancha
         function createNewCard() {
             const word = document.getElementById('cardWord').value;
             const title = document.getElementById('boardTitle').value;
