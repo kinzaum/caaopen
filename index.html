@@ -146,20 +146,23 @@
         }
 
         /* ==========================================================================
-           THE LANDSCAPE FORCE (Truque de Rotação por CSS para Rotação Vertical)
+           THE LANDSCAPE FORCE (Versão Estabilizada para Console e Telas Verticais)
            ========================================================================== */
         @media screen and (orientation: portrait) {
+            body {
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+
             .landscape-force {
                 transform: rotate(90deg);
-                transform-origin: center;
+                transform-origin: center center;
                 width: 100vh !important;
                 height: 100vw !important;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                margin-top: -50vw;
-                margin-left: -50vh;
-                overflow: hidden;
+                position: absolute;
+                display: flex;
+                flex-direction: column;
                 padding: 20px;
                 box-sizing: border-box;
                 background: #f0f2f5;
@@ -217,7 +220,10 @@
         // Carrega o arquivo JSON externo e define o idioma
         function loadLocalization() {
             fetch('languages.json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro na resposta do servidor");
+                    return response.json();
+                })
                 .then(data => {
                     translations = data;
                     
@@ -234,21 +240,36 @@
                     applyLocalization(currentLangData);
                 })
                 .catch(error => {
-                    console.error("Erro ao carregar o arquivo de idiomas JSON:", error);
+                    console.error("Erro ao carregar o arquivo de idiomas JSON, usando fallback local:", error);
+                    
+                    // Fallback estático para evitar que a aplicação fique sem textos se o JSON quebrar
+                    currentLangData = {
+                        mainTitle: "Minha Prancha AAC Customizada",
+                        lblBoardTitle: "1. Título da Prancha:",
+                        phBoardTitle: "ex: Família, Rotina, Comida",
+                        lblCardWord: "2. Palavra do Card / Legenda:",
+                        phCardWord: "ex: Ajuda, Escovar os Dentes",
+                        lblCardImage: "3. Escolha uma Imagem do Dispositivo:",
+                        addCardBtn: "Adicionar à Prancha",
+                        editModeOff: "Modo Edição: OFF",
+                        editModeOn: "Modo Edição: ON",
+                        clearBoardBtn: "Resetar Tudo"
+                    };
+                    applyLocalization(currentLangData);
                 });
         }
 
         // Traduz os textos estruturais da tela e checa orientação RTL
         function applyLocalization(lang) {
-            document.getElementById('mainTitle').innerText = lang.mainTitle;
-            document.getElementById('lblBoardTitle').innerText = lang.lblBoardTitle;
-            document.getElementById('boardTitle').placeholder = lang.phBoardTitle;
-            document.getElementById('lblCardWord').innerText = lang.lblCardWord;
-            document.getElementById('cardWord').placeholder = lang.phCardWord;
-            document.getElementById('lblCardImage').innerText = lang.lblCardImage;
-            document.getElementById('addCardBtn').innerText = lang.addCardBtn;
-            document.getElementById('editModeBtn').innerText = editMode ? lang.editModeOn : lang.editModeOff;
-            document.getElementById('clearBoardBtn').innerText = lang.clearBoardBtn;
+            document.getElementById('mainTitle').innerText = lang.mainTitle || "Minha Prancha AAC Customizada";
+            document.getElementById('lblBoardTitle').innerText = lang.lblBoardTitle || "1. Título da Prancha:";
+            document.getElementById('boardTitle').placeholder = lang.phBoardTitle || "ex: Família, Rotina, Comida";
+            document.getElementById('lblCardWord').innerText = lang.lblCardWord || "2. Palavra do Card / Legenda:";
+            document.getElementById('cardWord').placeholder = lang.phCardWord || "ex: Ajuda, Escovar os Dentes";
+            document.getElementById('lblCardImage').innerText = lang.lblCardImage || "3. Escolha uma Imagem do Dispositivo:";
+            document.getElementById('addCardBtn').innerText = lang.addCardBtn || "Adicionar à Prancha";
+            document.getElementById('editModeBtn').innerText = editMode ? (lang.editModeOn || "Modo Edição: ON") : (lang.editModeOff || "Modo Edição: OFF");
+            document.getElementById('clearBoardBtn').innerText = lang.clearBoardBtn || "Resetar Tudo";
 
             // Tratamento Dinâmico para Idiomas da Direita para Esquerda (RTL)
             if (lang.isRtl) {
@@ -280,34 +301,33 @@
             });
         }
 
-        // Stubs de controle da prancha (Substitua ou integre com o resto das suas funções existentes)
+        // Funções de controle da prancha
         function createNewCard() {
             const word = document.getElementById('cardWord').value;
             const title = document.getElementById('boardTitle').value;
             const file = document.getElementById('cardImage').files[0];
 
-            if (!title) return alert(currentLangData.alertNoTitle);
-            if (!word) return alert(currentLangData.alertNoWord);
-            if (!file) return alert(currentLangData.alertNoFile);
+            if (!title) return alert(currentLangData.alertNoTitle || "Por favor, especifique o Título da Prancha.");
+            if (!word) return alert(currentLangData.alertNoWord || "Por favor, digite a palavra do card.");
+            if (!file) return alert(currentLangData.alertNoFile || "Por favor, selecione uma imagem do seu dispositivo.");
 
-            // Sua lógica nativa de leitura com FileReader e criação do Card aqui...
             console.log("Validações aprovadas! Gerando card de 100kb...");
         }
 
         function toggleEditMode() {
             editMode = !editMode;
-            document.getElementById('editModeBtn').innerText = editMode ? currentLangData.editModeOn : currentLangData.editModeOff;
+            document.getElementById('editModeBtn').innerText = editMode ? (currentLangData.editModeOn || "Modo Edição: ON") : (currentLangData.editModeOff || "Modo Edição: OFF");
         }
 
         function resetWholeSystem() {
-            let code = prompt(currentLangData.promptReset);
+            let code = prompt(currentLangData.promptReset || "Para apagar tudo na tela e reiniciar essa página do zero digite os números de 1 a 9:");
             if (code === "123456789") {
                 document.getElementById('boardGrid').innerHTML = "";
                 document.getElementById('boardTitle').value = "";
                 document.getElementById('cardWord').value = "";
                 document.getElementById('cardImage').value = "";
             } else {
-                alert(currentLangData.alertResetError);
+                alert(currentLangData.alertResetError || "Código incorreto. A ação foi cancelada e suas pranchas estão seguras!");
             }
         }
     </script>
