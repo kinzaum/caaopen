@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AAC Custom Board</title>
+  <style>
+    :root {
+      --primary-color: #00cc44;
+      --border-color: #ccc;
+      --bg-color: #f9f9f9;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: var(--bg-color);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Painel do Criador */
+    .creator-panel {
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+
+    /* Grupo de Botões Empilhados Verticalmente */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+      display: block;
+      box-sizing: border-box;
+      margin: 0;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00aa38;
+    }
+
+    .clear-btn {
+      background-color: #ff3333 !important;
+    }
+    .clear-btn:hover {
+      background-color: #cc0000 !important;
+    }
+
+    /* Layout Principal */
+    .main-layout {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+
+    .left-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 320px;
+      flex-shrink: 0;
+    }
+
+    /* Abas Laterais */
+    .sidebar-tabs {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 25px;
+      padding: 20px 15px;
+      height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .tab-bullet {
+      font-size: 24px;
+      margin-right: 8px;
+      line-height: 1;
+      color: #333;
+    }
+
+    .tab-item {
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000;
+      transition: color 0.1s ease;
+    }
+
+    .tab-item.active {
+      color: var(--primary-color);
+    }
+
+    /* Botão de excluir prancha na barra lateral */
+    .delete-board-btn {
+      background: none;
+      border: none;
+      color: #ff3333;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 5px;
+      margin-left: auto;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    .delete-board-btn:hover {
+      color: #cc0000;
+      background: none;
+    }
+
+    /* Chassi do Tablet Principal */
+    .board-chassis {
+      flex-grow: 1;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 30px;
+      min-height: 520px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .board-header {
+      font-size: 32px;
+      font-weight: bold;
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 25px;
+    }
+
+    /* Moldura de Rolagem */
+    .scroll-frame {
+      display: flex;
+      gap: 15px;
+    }
+
+    /* Grade Fixa 4x4 */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 110px);
+      gap: 15px;
+      flex-grow: 1;
+    }
+
+    /* Slots da Grade */
+    .grid-slot {
+      border: 1px solid var(--border-color);
+      background: white;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.02);
+      position: relative;
+    }
+
+    /* Botão de Excluir Card */
+    .delete-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff3333;
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 22px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    /* Efeito de Edição Ativa */
+    .grid-slot.edit-active {
+      border: 1px dashed #ff9900;
+      animation: slight-shake 0.3s infinite alternate;
+    }
+
+    @keyframes slight-shake {
+      0% { transform: rotate(-0.5deg); }
+      100% { transform: rotate(0.5deg); }
+    }
+
+    /* Card AAC Base */
+    .aac-card {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 15px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px;
+      box-sizing: border-box;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+      border: 2px solid transparent;
+    }
+
+    .aac-card h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .aac-card img {
+      max-width: 90%;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    /* Efeito visual ao pressionar o card */
+    .aac-card:active {
+      transform: scale(0.92);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 12px rgba(0, 204, 68, 0.4);
+    }
+
+    /* Barra de Rolagem Decorativa Lateral */
+    .side-scroll-bar {
+      width: 25px;
+      background: #777;
+      border-radius: 4px;
+      align-self: stretch;
+    }
+
+    /* Suporte de alinhamento para idiomas RTL */
+    .rtl-layout {
+      direction: rtl;
+    }
+    .rtl-layout .delete-board-btn {
+      margin-left: 0;
+      margin-right: auto;
+    }
+    .rtl-layout .tab-bullet {
+      margin-right: 0;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="mainTitle">AAC Board</h1>
+
+  <div id="mainLayoutContainer" class="main-layout">
+    <div class="left-controls">
+      <div class="creator-panel">
+        <div class="form-group">
+          <label id="lblBoardTitle" for="boardTitle"></label>
+          <input type="text" id="boardTitle">
+        </div>
+        
+        <div class="form-group">
+          <label id="lblCardWord" for="cardWord"></label>
+          <input type="text" id="cardWord">
+        </div>
+
+        <div class="form-group">
+          <label id="lblCardImage" for="cardImage"></label>
+          <input type="file" id="cardImage" accept="image/*">
+        </div>
+
+        <div class="button-group">
+          <button id="addCardBtn"></button>
+          <button id="toggleEditBtn" style="background-color: #ff9900;"></button>
+          <button id="clearBoardBtn" class="clear-btn"></button>
+        </div>
+      </div>
+
+      <div id="sidebarTabs" class="sidebar-tabs"></div>
+    </div>
+
+    <div class="board-chassis">
+      <div id="boardHeader" class="board-header"></div>
+      
+      <div class="scroll-frame">
+        <div id="gridDisplay" class="grid-container"></div>
+        <div class="side-scroll-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'aac_multi_canvas_system';
+    
+    // Variável que guardará as strings do idioma ativo globalmente
+    let currentLang = {}; 
+
+    // Estado da Aplicação
+    let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+      activeBoardId: null,
+      boards: []
+    };
+
+    let isEditMode = false;
+
+    // Referências do DOM
+    const mainTitle = document.getElementById('mainTitle');
+    const mainLayoutContainer = document.getElementById('mainLayoutContainer');
+    const lblBoardTitle = document.getElementById('lblBoardTitle');
+    const boardTitleInput = document.getElementById('boardTitle');
+    const lblCardWord = document.getElementById('lblCardWord');
+    const cardWordInput = document.getElementById('cardWord');
+    const lblCardImage = document.getElementById('lblCardImage');
+    const cardImageInput = document.getElementById('cardImage');
+    const addCardBtn = document.getElementById('addCardBtn');
+    const toggleEditBtn = document.getElementById('toggleEditBtn');
+    const clearBoardBtn = document.getElementById('clearBoardBtn');
+    const sidebarTabs = document.getElementById('sidebarTabs');
+    const boardHeader = document.getElementById('boardHeader');
+    const gridDisplay = document.getElementById('gridDisplay');
+
+    // --- NOVA FUNÇÃO ASSÍNCRONA DE CARREGAMENTO DO JSON ---
+    async function loadLocalization() {
+      try {
+        const response = await fetch('languages.json');
+        const languagesData = await response.json();
+        
+        // Detecta o idioma do sistema (ex: "pt", "en", "de")
+        const userLang = (navigator.language || navigator.userLanguage || "en").substring(0, 2);
+        
+        // Atribui o idioma correspondente ou recorre ao inglês caso não exista no JSON
+        currentLang = languagesData[userLang] ? languagesData[userLang] : languagesData.en;
+        
+        // Inicializa a interface após carregar com sucesso
+        initStaticTexts();
+        renderBoard();
+      } catch (error) {
+        console.error("Erro ao carregar o arquivo de idiomas JSON:", error);
+      }
+    }
+
+    function initStaticTexts() {
+      mainTitle.textContent = currentLang.mainTitle;
+      lblBoardTitle.textContent = currentLang.lblBoardTitle;
+      boardTitleInput.placeholder = currentLang.phBoardTitle;
+      lblCardWord.textContent = currentLang.lblCardWord;
+      cardWordInput.placeholder = currentLang.phCardWord;
+      lblCardImage.textContent = currentLang.lblCardImage;
+      addCardBtn.textContent = currentLang.addCardBtn;
+      toggleEditBtn.textContent = isEditMode ? currentLang.editModeOn : currentLang.editModeOff;
+      clearBoardBtn.textContent = currentLang.clearBoardBtn;
+
+      if (currentLang.isRtl) {
+        mainLayoutContainer.classList.add('rtl-layout');
+        gridDisplay.style.direction = "rtl";
+      } else {
+        mainLayoutContainer.classList.remove('rtl-layout');
+        gridDisplay.style.direction = "ltr";
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    function speakWord(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = currentLang.langCode; 
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    toggleEditBtn.addEventListener('click', () => {
+      isEditMode = !isEditMode;
+      toggleEditBtn.textContent = isEditMode ? currentLang.editModeOn : currentLang.editModeOff;
+      toggleEditBtn.style.backgroundColor = isEditMode ? "#cc7a00" : "#ff9900";
+      renderBoard();
+    });
+
+    function deleteCard(boardId, cardId) {
+      const board = appState.boards.find(b => b.id === boardId);
+      if (!board) return;
+      
+      board.cards = board.cards.filter(c => c.id !== cardId);
+      saveState();
+      renderBoard();
+    }
+
+    function renderBoard() {
+      if (!currentLang.mainTitle) return; // Aguarda o JSON carregar antes de renderizar
+
+      sidebarTabs.innerHTML = "";
+      appState.boards.forEach(board => {
+        const tabRow = document.createElement('div');
+        tabRow.className = 'tab-row';
+
+        const bullet = document.createElement('span');
+        bullet.className = 'tab-bullet';
+        bullet.textContent = '•';
+        tabRow.appendChild(bullet);
+
+        const tab = document.createElement('span');
+        tab.className = `tab-item ${board.id === appState.activeBoardId ? 'active' : ''}`;
+        tab.textContent = board.title;
+
+        tab.addEventListener('click', () => {
+          appState.activeBoardId = board.id;
+          saveState();
+          renderBoard();
+        });
+        tabRow.appendChild(tab);
+
+        if (isEditMode) {
+          const deleteBoardBtn = document.createElement('button');
+          deleteBoardBtn.className = 'delete-board-btn';
+          deleteBoardBtn.innerHTML = '✕'; 
+          
+          deleteBoardBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            if (board.cards.length > 0) {
+              const msg = currentLang.confirmDeleteBoard
+                .replace("{title}", board.title)
+                .replace("{count}", board.cards.length);
+              if (!confirm(msg)) return;
+            }
+            appState.boards = appState.boards.filter(b => b.id !== board.id);
+            if (appState.activeBoardId === board.id) {
+              appState.activeBoardId = appState.boards.length > 0 ? appState.boards[0].id : null;
+            }
+            saveState();
+            renderBoard();
+          });
+          tabRow.appendChild(deleteBoardBtn);
+        }
+        sidebarTabs.appendChild(tabRow);
+      });
+
+      const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
+      gridDisplay.innerHTML = "";
+      boardHeader.textContent = activeBoard ? activeBoard.title : currentLang.emptyBoardState;
+
+      for (let i = 0; i < 16; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'grid-slot';
+
+        if (isEditMode && activeBoard && activeBoard.cards[i]) {
+          slot.classList.add('edit-active');
+        }
+
+        if (activeBoard && activeBoard.cards[i]) {
+          const card = activeBoard.cards[i];
+          const cardElement = document.createElement('div');
+          cardElement.className = 'aac-card';
+          cardElement.innerHTML = `<h3>${card.word}</h3><img src="${card.image}" alt="${card.word}">`;
+          
+          if (isEditMode) {
+            const deleteBtn = document.createElement('div');
+            deleteBtn.className = 'delete-badge';
+            deleteBtn.textContent = '✕';
+            deleteBtn.addEventListener('click', (e) => {
+              e.stopPropagation(); 
+              deleteCard(activeBoard.id, card.id);
+            });
+            slot.appendChild(deleteBtn);
+          } else {
+            cardElement.addEventListener('click', () => speakWord(card.word));
+          }
+          slot.appendChild(cardElement);
+        }
+        gridDisplay.appendChild(slot);
+      }
+    }
+
+    addCardBtn.addEventListener('click', () => {
+      const targetTitle = boardTitleInput.value.trim();
+      const word = cardWordInput.value.trim();
+      const file = cardImageInput.files[0];
+
+      if (!targetTitle) return alert(currentLang.alertNoTitle);
+      if (!word) return alert(currentLang.alertNoWord);
+      if (!file) return alert(currentLang.alertNoFile);
+
+      let targetBoard = appState.boards.find(b => b.title.toLowerCase() === targetTitle.toLowerCase());
+      if (!targetBoard) {
+        targetBoard = { id: 'board_' + Date.now(), title: targetTitle, cards: [] };
+        appState.boards.push(targetBoard);
+        appState.activeBoardId = targetBoard.id;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        if (targetBoard.cards.length >= 16) return alert(currentLang.alertFull);
+
+        targetBoard.cards.push({
+          id: 'card_' + Date.now(),
+          word: word,
+          image: event.target.result
+        });
+
+        saveState();
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        renderBoard();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    clearBoardBtn.addEventListener('click', () => {
+      const respostaSeguranca = prompt(currentLang.promptReset);
+      if (respostaSeguranca === "123456789") {
+        appState = { activeBoardId: null, boards: [] };
+        localStorage.removeItem(STORAGE_KEY);
+        boardTitleInput.value = "";
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        isEditMode = false;
+        initStaticTexts();
+        renderBoard();
+      } else if (respostaSeguranca !== null) {
+        alert(currentLang.alertResetError);
+      }
+    });
+
+    // Inicia o processo lendo o arquivo de traduções externo
+    loadLocalization();
+  </script>
+</body>
+</html>
