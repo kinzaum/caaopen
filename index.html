@@ -365,10 +365,17 @@
     const boardHeader = document.getElementById('boardHeader');
     const gridDisplay = document.getElementById('gridDisplay');
 
+    // Executa ao abrir a aplicação
+    document.addEventListener("DOMContentLoaded", () => {
+        loadLocalization();
+        setupFileUploadValidation();
+    });
+
     // --- NOVA FUNÇÃO ASSÍNCRONA DE CARREGAMENTO DO JSON ---
     async function loadLocalization() {
       try {
         const response = await fetch('languages.json');
+        if (!response.ok) throw new Error("Erro na resposta do servidor");
         const languagesData = await response.json();
         
         // Detecta o idioma do sistema (ex: "pt", "en", "de")
@@ -381,7 +388,32 @@
         initStaticTexts();
         renderBoard();
       } catch (error) {
-        console.error("Erro ao carregar o arquivo de idiomas JSON:", error);
+        console.error("Erro ao carregar o arquivo de idiomas JSON, usando fallback local:", error);
+        
+        // Fallback local caso o arquivo languages.json falhe
+        currentLang = {
+            mainTitle: "AAC Board",
+            lblBoardTitle: "Board Title:",
+            phBoardTitle: "e.g., Family, Routine",
+            lblCardWord: "Card Word / Label:",
+            phCardWord: "e.g., Help, Eat",
+            lblCardImage: "Choose Card Image:",
+            addCardBtn: "Add to Board",
+            editModeOff: "Edit Mode: OFF",
+            editModeOn: "Edit Mode: ON",
+            clearBoardBtn: "Reset Everything",
+            emptyBoardState: "No active board",
+            alertNoTitle: "Please enter a board title.",
+            alertNoWord: "Please enter a card word.",
+            alertNoFile: "Please select an image file.",
+            alertFull: "This board is full (max 16 cards).",
+            promptReset: "To clear everything, type 123456789:",
+            alertResetError: "Incorrect code. Action cancelled.",
+            alertFileTooLarge: "The selected image is larger than the 100Kb limit. Please choose a smaller file.",
+            langCode: "en"
+        };
+        initStaticTexts();
+        renderBoard();
       }
     }
 
@@ -405,6 +437,25 @@
       }
     }
 
+    // Validação de Tamanho de Arquivo (Limite de 100Kb)
+    function setupFileUploadValidation() {
+        cardImageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                // 100 KB em bytes (100 * 1024)
+                const maxSizeBytes = 102400; 
+
+                if (file.size > maxSizeBytes) {
+                    const alertMsg = currentLang.alertFileTooLarge || 
+                        "A imagem selecionada é maior que o tamanho limite de 100Kb. Por favor, escolha um arquivo menor.";
+                    
+                    alert(alertMsg);
+                    this.value = ""; // Reseta o campo
+                }
+            }
+        });
+    }
+
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
     }
@@ -413,7 +464,7 @@
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = currentLang.langCode; 
+        utterance.lang = currentLang.langCode || "en"; 
         window.speechSynthesis.speak(utterance);
       }
     }
@@ -466,7 +517,7 @@
           deleteBoardBtn.addEventListener('click', (e) => {
             e.stopPropagation(); 
             if (board.cards.length > 0) {
-              const msg = currentLang.confirmDeleteBoard
+              const msg = (currentLang.confirmDeleteBoard || "Delete board {title} with {count} cards?")
                 .replace("{title}", board.title)
                 .replace("{count}", board.cards.length);
               if (!confirm(msg)) return;
@@ -568,9 +619,6 @@
         alert(currentLang.alertResetError);
       }
     });
-
-    // Inicia o processo lendo o arquivo de traduções externo
-    loadLocalization();
   </script>
 </body>
 </html>
