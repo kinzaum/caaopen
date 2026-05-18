@@ -18,6 +18,7 @@
     "confirmDeleteBoard": "A prancha \"{title}\" contém {count} cards. Tem certeza que deseja apagar a prancha inteira?",
     "promptReset": "Para apagar tudo na tela e reiniciar essa página do zero digite os números de 1 a 9:",
     "alertResetError": "Código incorreto. A ação foi cancelada e suas pranchas estão seguras!",
+    "alertFileTooLarge": "A imagem selecionada é maior que o tamanho limite de 100Kb. Por favor, escolha um arquivo menor.",
     "langCode": "pt-BR",
     "isRtl": false
   },
@@ -40,6 +41,7 @@
     "confirmDeleteBoard": "The board \"{title}\" contains {count} cards. Are you sure you want to delete the whole board?",
     "promptReset": "To erase everything on the screen and restart this page from scratch type the numbers from 1 to 9:",
     "alertResetError": "Incorrect code. Action canceled and your boards are safe!",
+    "alertFileTooLarge": "The selected image is larger than the 100Kb size limit. Please choose a smaller file.",
     "langCode": "en-US",
     "isRtl": false
   },
@@ -62,6 +64,7 @@
     "confirmDeleteBoard": "¿El tablero \"{title}\" contiene {count} tarjetas. ¿Está seguro de que deseja eliminar el tablero completo?",
     "promptReset": "Para borrar todo en la pantalla y reiniciar esta página desde cero escriba los números del 1 al 9:",
     "alertResetError": "Código incorrecto. ¡Acción cancelada y sus tableros están seguros!",
+    "alertFileTooLarge": "La imagen seleccionada es mayor que el límite de 100Kb. Por favor, elija un archivo más pequeño.",
     "langCode": "es-ES",
     "isRtl": false
   },
@@ -84,6 +87,7 @@
     "confirmDeleteBoard": "Das Board \"{title}\" enthält {count} Karten. Sind Sie sicher, dass Sie das gesamte Board löschen möchten?",
     "promptReset": "Um alles auf dem Bildschirm zu löschen und von vorne zu beginnen, geben Sie die Zahlen von 1 bis 9 ein:",
     "alertResetError": "Falscher Code. Aktion abgebrochen und Ihre Boards sind sicher!",
+    "alertFileTooLarge": "Das ausgewählte Bild ist größer als das Limit von 100Kb. Bitte wählen Sie eine kleinere Datei.",
     "langCode": "de-DE",
     "isRtl": false
   },
@@ -106,6 +110,7 @@
     "confirmDeleteBoard": "Le tableau \"{title}\" contient {count} cartes. Êtes-vous sûr de vouloir supprimer tout le tableau ?",
     "promptReset": "Pour tout effacer et réinitialiser cette page, tapez os chiffres de 1 à 9:",
     "alertResetError": "Code incorrect. Action annulée et vos tableaux sont en sécurité !",
+    "alertFileTooLarge": "L'image sélectionnée dépasse la limite de 100Kb. Veuillez choisir un fichier plus léger.",
     "langCode": "fr-FR",
     "isRtl": false
   },
@@ -128,6 +133,7 @@
     "confirmDeleteBoard": "تحتوي اللوحة \"{title}\" على {count} من البطاقات. هل أنت متأكد من حذف اللوحة بالكامل؟",
     "promptReset": "لمسح كل شيء على الشاشة وإعادة تشغيل هذه الصفحة من الصفر، اكتب الأرقام من 1 إلى 9:",
     "alertResetError": "الرمز غير صحيح. تم إلغاء الإجراء ولوحاتك آمنة!",
+    "alertFileTooLarge": "الصورة المحددة أكبر من الحد الأقصى 100 كيلوبايت. يرجى اختيار ملف أصغر.",
     "langCode": "ar-SA",
     "isRtl": true
   },
@@ -150,6 +156,7 @@
     "confirmDeleteBoard": "La tabella \"{title}\" contiene {count} carte. Sei sicuro di voler eliminare l'intera tabella?",
     "promptReset": "Per cancellare tutto lo schermo e azzerare questa pagina digita i numeri da 1 a 9:",
     "alertResetError": "Codice errato. Azione annullata e le tue tabelle sono al sicuro!",
+    "alertFileTooLarge": "L'immagine selezionata supera il limite di 100Kb. Si prega di scegliere un file più piccolo.",
     "langCode": "it-IT",
     "isRtl": false
   },
@@ -172,6 +179,7 @@
     "confirmDeleteBoard": "Het board \"{title}\" bevat {count} kaarten. Weet u zeker dat u het hele board wilt verwijderen?",
     "promptReset": "Om alles op het scherm te wissen en deze pagina opnieuw op te starten, typt u de cijfers 1 tot 9:",
     "alertResetError": "Onjuiste code. Actie geannuleerd en uw boards zijn veilig!",
+    "alertFileTooLarge": "De geselecteerde afbeelding is groter dan de limiet van 100Kb. Kies een kleiner bestand.",
     "langCode": "nl-NL",
     "isRtl": false
   },
@@ -194,6 +202,7 @@
     "confirmDeleteBoard": "Tablica \"{title}\" zawiera {count} kart. Czy na pewno chcesz usunąć całą tablicę?",
     "promptReset": "Aby wyczyścić wszystko na ekranie i zresetować stronę, wpisz liczby od 1 do 9:",
     "alertResetError": "Niepoprawny kod. Akcja anulowana, Twoje tablice są bezpieczne!",
+    "alertFileTooLarge": "Wybrany obraz jest większy niż limit 100Kb. Proszę wybrać mniejszy plik.",
     "langCode": "pl-PL",
     "isRtl": false
   },
@@ -216,6 +225,7 @@
     "confirmDeleteBoard": "\"{title}\" panosu {count} kart içeriyor. Tüm panoyu silmek istediğinizden emin misiniz?",
     "promptReset": "Ekranda her şeyi silmek ve sayfayı sıfırdan başlatmak için 1'den 9'a kadar olan sayıları yazın:",
     "alertResetError": "Geçersiz kod. İşlem iptal edildi ve panolarınız güvende!",
+    "alertFileTooLarge": "Seçilen resim 100Kb sınırından büyük. Lütfen daha küçük bir dosya seçin.",
     "langCode": "tr-TR",
     "isRtl": false
   },
@@ -238,6 +248,7 @@
     "confirmDeleteBoard": "ボード「{title}」には {count} 枚のカードが含まれています。ボード全体を削除してもよろしいですか？",
     "promptReset": "画面のすべてを消去してページを初期状態に戻すには、1から9までの数字を入力してください：",
     "alertResetError": "コードが正しくありません。アクションはキャンセルされ、ボードは保護されました！",
+    "alertFileTooLarge": "選択された画像は100Kbの制限を超えています。より小さいファイルを選択してください。",
     "langCode": "ja-JP",
     "isRtl": false
   },
@@ -260,6 +271,7 @@
     "confirmDeleteBoard": "\"{title}\" 보드에는 {count}개의 카드가 포함되어 있습니다. 보드 전체를 삭제하시겠습니까?",
     "promptReset": "화면의 모든 내용을 지우고 페이지를 처음부터 다시 시작하려면 1부터 9까지의 숫자를 입력하세요:",
     "alertResetError": "코드가 올바르지 않습니다. 작업이 취소되었으며 보드가 안전하게 유지됩니다!",
+    "alertFileTooLarge": "선택한 이미지가 100Kb 용량 제한을 초과했습니다. 더 작은 파일을 선택해 주세요.",
     "langCode": "ko-KR",
     "isRtl": false
   },
@@ -282,6 +294,7 @@
     "confirmDeleteBoard": "O quadro \"{title}\" contém {count} cartões. Tem a certeza que deseja apagar o quadro inteiro?",
     "promptReset": "Para apagar tudo no ecrã e reiniciar esta página do zero digite os números de 1 a 9:",
     "alertResetError": "Código incorreto. A ação foi cancelada e os seus quadros estão seguros!",
+    "alertFileTooLarge": "A imagem selecionada é maior do que o tamanho limite de 100Kb. Por favor, escolha um ficheiro menor.",
     "langCode": "pt-PT",
     "isRtl": false
   },
@@ -304,11 +317,12 @@
     "confirmDeleteBoard": "Ogyke \"{title}\" oguereko {count} ta'anga. Reimbaretépa reitase ko ogyke?",
     "promptReset": "Embogue hag̃ua opaite mba'e oĩva apohápe, ehai papapy 1 guive 9 peve:",
     "alertResetError": "Papapy oĩ vai. Ko tembiapo ojeheja, ne ogykepa oĩ porã!",
+    "alertFileTooLarge": "Ko ta'anga tuichave 100Kb-gui. Eporavo peteĩ michĩveva, por favor.",
     "langCode": "gn-PY",
     "isRtl": false
   },
   "hi": {
-    "mainTitle": "मेरा कस्टम एएसी बोर्ड",
+    "mainTitle": "मेरा CUSTOM एएसी बोर्ड",
     "lblBoardTitle": "1. बोर्ड का शीर्षक:",
     "phBoardTitle": "उदा: परिवार, दिनचर्या, भोजन",
     "lblCardWord": "2. कार्ड का शब्द / कैप्शन:",
@@ -318,7 +332,7 @@
     "editModeOff": "संपादन मोड: बंद",
     "editModeOn": "संपादन मोड: चालू",
     "clearBoardBtn": "सब कुछ रीसेट करें",
-    "emptyBoardState": "शुरू करने के लिए एक बोर्ड बनाएं",
+    "emptyBoardState": "शुरू करने के लिए एक board बनाएं",
     "alertNoTitle": "कृपया बोर्ड का शीर्षक निर्दिष्ट करें।",
     "alertNoWord": "कृपया कार्ड का शब्द टाइप करें।",
     "alertNoFile": "कृपया अपने डिवाइस से एक छवि चुनें।",
@@ -326,6 +340,7 @@
     "confirmDeleteBoard": "\"{title}\" बोर्ड में {count} कार्ड हैं। क्या आप निश्चित रूप से पूरा बोर्ड हटाना चाहते हैं?",
     "promptReset": "स्क्रीन पर सब कुछ मिटाने और इस पेज को शुरू से शुरू करने के लिए 1 से 9 तक के अंक टाइप करें:",
     "alertResetError": "गलत कोड। कार्रवाई रद्द कर दी गई है और आपके बोर्ड सुरक्षित हैं!",
+    "alertFileTooLarge": "चुनी गई छवि 100Kb की सीमा से बड़ी है। कृपया छोटी फ़ाइल चुनें।",
     "langCode": "hi-IN",
     "isRtl": false
   },
@@ -339,15 +354,16 @@
     "addCardBtn": "বোর্ডে যোগ করুন",
     "editModeOff": "সম্পাদনা মোড: বন্ধ",
     "editModeOn": "সম্পাদনা মোড: চালু",
-    "clearBoardBtn": "সব রিসেট করুন",
+    "clearBoardBtn": "সব রিসেٹ করুন",
     "emptyBoardState": "শুরু করার জন্য একটি বোর্ড তৈরি করুন",
-    "alertNoTitle": "অনুগ্রহ করে বোর্ডের একটি শিরোনাম দিন।",
-    "alertNoWord": "অনুগ্রহ করে কার্ডের শব্দটি লিখুন।",
-    "alertNoFile": "অনুগ্রহ করে আপনার ডিভাইস থেকে একটি ছবি বেছে নিন।",
-    "alertFull": "এই বোর্ডটি পূর্ণ! গ্রिड লেআউটে সর্বোচ্চ 16টি কার্ড রাখা সম্ভব।",
+    "alertNoTitle": "अनुग्रह करके बोर्ड का एक शीर्षक दें।",
+    "alertNoWord": "अनुग्रह करके कार्डের শব্দ লিখুন।",
+    "alertNoFile": "अनुग्रह করে আপনার ডিভাইস থেকে একটি ছবি বেছে নিন।",
+    "alertFull": "এই বোর্ডটি পূর্ণ! গ্রীড লেআউটে সর্বোচ্চ 16টি কার্ড রাখা সম্ভব।",
     "confirmDeleteBoard": "\"{title}\" বোর্ডে {count}টি কার্ড রয়েছে। আপনি কি নিশ্চিত যে আপনি পুরো বোর্ডটি মুছে ফেলতে চান?",
     "promptReset": "পর্দার সবকিছু মুছে ফেলে এই পেজটি নতুন করে শুরু করতে 1 থেকে 9 পর্যন্ত সংখ্যাগুলি লিখুন:",
     "alertResetError": "ভুল কোড। অ্যাকশন বাতিল করা হয়েছে এবং আপনার বোর্ডগুলি নিরাপদ আছে!",
+    "alertFileTooLarge": "নির্বাচিত ছবিটির সাইজ 100Kb সীমার চেয়ে বড়। অনুগ্রহ করে ছোট সাইজের ফাইল বেছে নিন।",
     "langCode": "bn-IN",
     "isRtl": false
   },
@@ -370,6 +386,7 @@
     "confirmDeleteBoard": "Доска \"{title}\" содержит {count} карточек. Вы уверены, что хотите удалить доску целиком?",
     "promptReset": "Чтобы очистить всё на экране и перезапустить страницу с нуля, введите цифры от 1 до 9:",
     "alertResetError": "Неверный код. Действие отменено, ваши доски в безопасности!",
+    "alertFileTooLarge": "Выбранное изображение превышает лимит в 100 Кб. Пожалуйста, выберите файл меньшего размера.",
     "langCode": "ru-RU",
     "isRtl": false
   },
@@ -392,6 +409,7 @@
     "confirmDeleteBoard": "沟通板“{title}”包含 {count} 张卡片。确定要删除整个沟通板吗？",
     "promptReset": "如需清空屏幕上的所有内容并从头开始，请依次输入数字 1 到 9：",
     "alertResetError": "验证码错误。操作已取消，您的沟通板很安全！",
+    "alertFileTooLarge": "选择的图片超过了 100Kb 的限制。请选择较小的文件。",
     "langCode": "zh-CN",
     "isRtl": false
   },
@@ -399,12 +417,12 @@
     "mainTitle": "میرا کسٹم AAC بورڈ",
     "lblBoardTitle": "1. بورڈ کا عنوان:",
     "phBoardTitle": "مثال: خاندان، معمول، کھانا",
-    "lblCardWord": "2. کارڈ کا لفظ / کیپشن:",
+    "lblCardWord": "2.活 کارڈ کا لفظ / کیپشن:",
     "phCardWord": "مثال: مدد، دانت صاف کرنا",
     "lblCardImage": "3. ڈیوائس سے تصویر منتخب کریں:",
     "addCardBtn": "بورڈ میں شامل کریں",
-    "editModeOff": "ایڈٹ موڈ: بند",
-    "editModeOn": "ایڈٹ موڈ: آن",
+    "editModeOff": "ایڈٹ mode: بند",
+    "editModeOn": "ایڈٹ mode: آن",
     "clearBoardBtn": "سب کچھ ری سیٹ کریں",
     "emptyBoardState": "شروع کرنے کے لیے ایک بورڈ بنائیں",
     "alertNoTitle": "براہ کرم بورڈ کا عنوان درج کریں۔",
@@ -414,6 +432,7 @@
     "confirmDeleteBoard": "بورڈ \"{title}\" میں {count} کارڈز شامل ہیں۔ کیا آپ واقعی پورا بورڈ ڈیلیٹ کرنا چاہتے ہیں؟",
     "promptReset": "اسکرین پر موجود تمام مواد کو مٹانے اور صفحہ نئے سرے سے شروع کرنے کے لیے 1 سے 9 تک کے ہندسے ٹائپ کریں:",
     "alertResetError": "غلط کوڈ۔ عمل منسوخ کر دیا گیا اور آپ کے بورڈز محفوظ ہیں!",
+    "alertFileTooLarge": "منتخب کردہ تصویر 100Kb کی حد سے بڑی ہے۔ براہ کرم چھوٹی فائل منتخب کریں۔",
     "langCode": "ur-PK",
     "isRtl": true
   }
