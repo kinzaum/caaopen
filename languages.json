@@ -262,7 +262,7 @@
     "alertResetError": "코드가 올바르지 않습니다. 작업이 취소되었으며 보드가 안전하게 유지됩니다!",
     "langCode": "ko-KR",
     "isRtl": false
-  }
+  },
   "pt-PT": {
     "mainTitle": "O Meu Quadro AAC Personalizado",
     "lblBoardTitle": "1. Título do Quadro:",
