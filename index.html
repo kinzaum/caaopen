@@ -77,6 +77,11 @@
       background-color: #00aa38;
     }
 
+    button:disabled {
+      background-color: #aaa !important;
+      cursor: not-allowed;
+    }
+
     .clear-btn {
       background-color: #ff3333 !important;
     }
@@ -373,7 +378,6 @@
     // Executa ao abrir a aplicação
     document.addEventListener("DOMContentLoaded", () => {
         loadLocalization();
-        setupFileUploadValidation();
     });
 
     // --- FUNÇÃO ASSÍNCRONA DE CARREGAMENTO DO JSON COM FALLBACK ---
@@ -410,7 +414,6 @@
             alertFull: "This board is full (max 16 cards).",
             promptReset: "To clear everything, type 123456789:",
             alertResetError: "Incorrect code. Action cancelled.",
-            alertFileTooLarge: "The selected image is larger than the 100Kb limit. Please choose a smaller file.",
             langCode: "en"
         };
         initStaticTexts();
@@ -438,26 +441,56 @@
       }
     }
 
-    // Validação de Tamanho de Arquivo (Limite Estrito de 100 KB)
-    function setupFileUploadValidation() {
-        cardImageInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const maxSizeBytes = 102400; 
+    // --- FUNÇÃO AUXILIAR: COMPRIME E REDIMENSIONA A IMAGEM NO CLIENTE ---
+    function compressImage(file, maxWidth, maxHeight, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(event) {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
 
-                if (file.size > maxSizeBytes) {
-                    const alertMsg = currentLang.alertFileTooLarge || 
-                        "A imagem selecionada é maior que o tamanho limite de 100Kb. Por favor, escolha um arquivo menor.";
-                    
-                    alert(alertMsg);
-                    this.value = ""; 
-                }
+            // Mantém a proporção do aspecto reduzindo os limites máximos
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
             }
-        });
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Exporta como JPEG otimizado (Gera strings em torno de 15kb a 35kb)
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          img.onerror = error => reject(error);
+        };
+        reader.onerror = error => reject(error);
+      });
     }
 
     function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      document.body.style.cursor = 'wait'; // Alerta visual sutil para salvamentos pesados
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error("Erro crítico ao salvar no LocalStorage:", e);
+        alert("Aviso: Memória do navegador cheia! Remova cards antigos antes de continuar.");
+      }
+      document.body.style.cursor = 'default';
     }
 
     function speakWord(text) {
@@ -570,7 +603,7 @@
       }
     }
 
-    addCardBtn.addEventListener('click', () => {
+    addCardBtn.addEventListener('click', async () => {
       const targetTitle = boardTitleInput.value.trim();
       const word = cardWordInput.value.trim();
       const file = cardImageInput.files[0];
@@ -586,22 +619,31 @@
         appState.activeBoardId = targetBoard.id;
       }
 
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        if (targetBoard.cards.length >= 16) return alert(currentLang.alertFull);
+      if (targetBoard.cards.length >= 16) return alert(currentLang.alertFull);
+
+      try {
+        // Trava o botão temporariamente para evitar cliques duplos durante a compressão
+        addCardBtn.disabled = true;
+
+        // Comprime fotos pesadas da câmera para resolução ideal (max 350px) e 75% de qualidade JPEG
+        const compressedBase64 = await compressImage(file, 350, 350, 0.75);
 
         targetBoard.cards.push({
           id: 'card_' + Date.now(),
           word: word,
-          image: event.target.result
+          image: compressedBase64
         });
 
         saveState();
         cardWordInput.value = "";
         cardImageInput.value = "";
         renderBoard();
-      };
-      reader.readAsDataURL(file);
+      } catch (error) {
+        console.error("Erro no processamento da imagem:", error);
+        alert("Erro ao processar o arquivo de imagem. Tente novamente.");
+      } finally {
+        addCardBtn.disabled = false;
+      }
     });
 
     clearBoardBtn.addEventListener('click', () => {
