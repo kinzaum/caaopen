@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criador de Prancha AAC Customizada</title>
+  <style>
+    :root {
+      --primary-color: #00cc44;
+      --border-color: #ccc;
+      --bg-color: #f9f9f9;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: var(--bg-color);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Painel do Criador */
+    .creator-panel {
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00aa38;
+    }
+
+    .clear-btn {
+      background-color: #ff3333;
+    }
+    .clear-btn:hover {
+      background-color: #cc0000;
+    }
+
+    /* Layout Principal */
+    .main-layout {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+
+    .left-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 320px;
+      flex-shrink: 0;
+    }
+
+    /* Abas Laterais */
+    .sidebar-tabs {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 25px;
+      padding: 20px 15px;
+      height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .tab-bullet {
+      font-size: 24px;
+      margin-right: 8px;
+      line-height: 1;
+      color: #333;
+    }
+
+    .tab-item {
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000;
+      transition: color 0.1s ease;
+    }
+
+    .tab-item.active {
+      color: var(--primary-color);
+    }
+
+    /* Botão de excluir prancha na barra lateral */
+    .delete-board-btn {
+      background: none;
+      border: none;
+      color: #ff3333;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 5px;
+      margin-left: auto;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    .delete-board-btn:hover {
+      color: #cc0000;
+      background: none;
+    }
+
+    /* Chassi do Tablet Principal */
+    .board-chassis {
+      flex-grow: 1;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 30px;
+      min-height: 520px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .board-header {
+      font-size: 32px;
+      font-weight: bold;
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 25px;
+    }
+
+    /* Moldura de Rolagem */
+    .scroll-frame {
+      display: flex;
+      gap: 15px;
+    }
+
+    /* Grade Fixa 4x4 */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 110px);
+      gap: 15px;
+      flex-grow: 1;
+    }
+
+    /* Slots da Grade */
+    .grid-slot {
+      border: 1px solid var(--border-color);
+      background: white;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.02);
+      position: relative;
+    }
+
+    /* Botão de Excluir Card */
+    .delete-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #ff3333;
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 22px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    /* Efeito de Edição Ativa */
+    .grid-slot.edit-active {
+      border: 1px dashed #ff9900;
+      animation: slight-shake 0.3s infinite alternate;
+    }
+
+    @keyframes slight-shake {
+      0% { transform: rotate(-0.5deg); }
+      100% { transform: rotate(0.5deg); }
+    }
+
+    /* Card AAC Base */
+    .aac-card {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 15px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px;
+      box-sizing: border-box;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+      border: 2px solid transparent;
+    }
+
+    .aac-card h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .aac-card img {
+      max-width: 90%;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    /* Efeito visual ao pressionar o card */
+    .aac-card:active {
+      transform: scale(0.92);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 12px rgba(0, 204, 68, 0.4);
+    }
+
+    /* Barra de Rolagem Decorativa Lateral */
+    .side-scroll-bar {
+      width: 25px;
+      background: #777;
+      border-radius: 4px;
+      align-self: stretch;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Minha Prancha AAC Customizada</h1>
+
+  <div class="main-layout">
+    <div class="left-controls">
+      <div class="creator-panel">
+        <div class="form-group">
+          <label for="boardTitle">1. Título da Prancha:</label>
+          <input type="text" id="boardTitle" placeholder="ex: Família, Rotina, Comida">
+        </div>
+        
+        <div class="form-group">
+          <label for="cardWord">2. Palavra do Card / Legenda:</label>
+          <input type="text" id="cardWord" placeholder="ex: Ajuda, Escovar os Dentes">
+        </div>
+
+        <div class="form-group">
+          <label for="cardImage">3. Escolha uma Imagem do Dispositivo:</label>
+          <input type="file" id="cardImage" accept="image/*">
+        </div>
+
+        <div class="button-group">
+          <button id="addCardBtn">Adicionar à Prancha</button>
+          <button id="toggleEditBtn" style="background-color: #ff9900;">Modo Edição: OFF</button>
+          <button id="clearBoardBtn" class="clear-btn">Resetar Tudo</button>
+        </div>
+      </div>
+
+      <div id="sidebarTabs" class="sidebar-tabs"></div>
+    </div>
+
+    <div class="board-chassis">
+      <div id="boardHeader" class="board-header">Crie uma prancha para começar</div>
+      
+      <div class="scroll-frame">
+        <div id="gridDisplay" class="grid-container"></div>
+        <div class="side-scroll-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'aac_multi_canvas_system';
+
+    // Estado da Aplicação
+    let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+      activeBoardId: null,
+      boards: []
+    };
+
+    let isEditMode = false;
+
+    // Referências do DOM
+    const boardTitleInput = document.getElementById('boardTitle');
+    const cardWordInput = document.getElementById('cardWord');
+    const cardImageInput = document.getElementById('cardImage');
+    const addCardBtn = document.getElementById('addCardBtn');
+    const toggleEditBtn = document.getElementById('toggleEditBtn');
+    const clearBoardBtn = document.getElementById('clearBoardBtn');
+    const sidebarTabs = document.getElementById('sidebarTabs');
+    const boardHeader = document.getElementById('boardHeader');
+    const gridDisplay = document.getElementById('gridDisplay');
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    // Configuração de Voz Nativa em Português do Brasil
+    function speakWord(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'pt-BR'; 
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Alternar Estado do Modo de Edição
+    toggleEditBtn.addEventListener('click', () => {
+      isEditMode = !isEditMode;
+      toggleEditBtn.textContent = isEditMode ? "Modo Edição: ON" : "Modo Edição: OFF";
+      toggleEditBtn.style.backgroundColor = isEditMode ? "#cc7a00" : "#ff9900";
+      renderBoard();
+    });
+
+    // Remover um Card Específico
+    function deleteCard(boardId, cardId) {
+      const board = appState.boards.find(b => b.id === boardId);
+      if (!board) return;
+      
+      board.cards = board.cards.filter(c => c.id !== cardId);
+      saveState();
+      renderBoard();
+    }
+
+    // Mecanismo de Renderização da Tela com Remoção de Pranchas
+    function renderBoard() {
+      // 1. Renderizar Abas de Categorias Laterais
+      sidebarTabs.innerHTML = "";
+      appState.boards.forEach(board => {
+        const tabRow = document.createElement('div');
+        tabRow.className = 'tab-row';
+
+        const bullet = document.createElement('span');
+        bullet.className = 'tab-bullet';
+        bullet.textContent = '•';
+        tabRow.appendChild(bullet);
+
+        const tab = document.createElement('span');
+        tab.className = `tab-item ${board.id === appState.activeBoardId ? 'active' : ''}`;
+        tab.textContent = board.title;
+
+        tab.addEventListener('click', () => {
+          appState.activeBoardId = board.id;
+          saveState();
+          renderBoard();
+        });
+        tabRow.appendChild(tab);
+
+        // SE O MODO EDIÇÃO ESTIVER LIGADO: Adiciona o botão para deletar a prancha inteira
+        if (isEditMode) {
+          const deleteBoardBtn = document.createElement('button');
+          deleteBoardBtn.className = 'delete-board-btn';
+          deleteBoardBtn.innerHTML = '✕'; 
+          deleteBoardBtn.title = "Apagar esta prancha inteira";
+          
+          deleteBoardBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita ativar a aba acidentalmente ao tentar apagar
+            
+            // Alerta de segurança se a prancha tiver itens salvos
+            if (board.cards.length > 0) {
+              if (!confirm(`A prancha "${board.title}" contém ${board.cards.length} cards. Tem certeza que deseja apagar a prancha inteira?`)) {
+                return;
+              }
+            }
+            
+            // Remove a prancha selecionada do estado
+            appState.boards = appState.boards.filter(b => b.id !== board.id);
+            
+            // Reajusta o foco se a prancha apagada era a aberta no momento
+            if (appState.activeBoardId === board.id) {
+              appState.activeBoardId = appState.boards.length > 0 ? appState.boards[0].id : null;
+            }
+            
+            saveState();
+            renderBoard();
+          });
+          tabRow.appendChild(deleteBoardBtn);
+        }
+
+        sidebarTabs.appendChild(tabRow);
+      });
+
+      // 2. Buscar Dados da Prancha Ativa
+      const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
+      
+      // 3. Montar a Grade Fixa 4x4 do Tablet
+      gridDisplay.innerHTML = "";
+      boardHeader.textContent = activeBoard ? activeBoard.title : "Crie uma prancha para começar";
+
+      // Preserva explicitamente o tamanho de 16 slots na tela
+      for (let i = 0; i < 16; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'grid-slot';
+
+        if (isEditMode && activeBoard && activeBoard.cards[i]) {
+          slot.classList.add('edit-active');
+        }
+
+        if (activeBoard && activeBoard.cards[i]) {
+          const card = activeBoard.cards[i];
+          const cardElement = document.createElement('div');
+          cardElement.className = 'aac-card';
+          cardElement.innerHTML = `<h3>${card.word}</h3><img src="${card.image}" alt="${card.word}">`;
+          
+          if (isEditMode) {
+            const deleteBtn = document.createElement('div');
+            deleteBtn.className = 'delete-badge';
+            deleteBtn.textContent = '✕';
+            
+            deleteBtn.addEventListener('click', (e) => {
+              e.stopPropagation(); // Bloqueia a fala ao clicar no botão de apagar
+              deleteCard(activeBoard.id, card.id);
+            });
+            slot.appendChild(deleteBtn);
+          } else {
+            cardElement.addEventListener('click', () => speakWord(card.word));
+          }
+          
+          slot.appendChild(cardElement);
+        }
+        gridDisplay.appendChild(slot);
+      }
+    }
+
+    // Escutador de Eventos para Adicionar Novos Cards
+    addCardBtn.addEventListener('click', () => {
+      const targetTitle = boardTitleInput.value.trim();
+      const word = cardWordInput.value.trim();
+      const file = cardImageInput.files[0];
+
+      if (!targetTitle) return alert("Por favor, especifique o Título da Prancha.");
+      if (!word) return alert("Por favor, digite a palavra do card.");
+      if (!file) return alert("Por favor, selecione uma imagem do seu dispositivo.");
+
+      let targetBoard = appState.boards.find(b => b.title.toLowerCase() === targetTitle.toLowerCase());
+      if (!targetBoard) {
+        targetBoard = { id: 'board_' + Date.now(), title: targetTitle, cards: [] };
+        appState.boards.push(targetBoard);
+        appState.activeBoardId = targetBoard.id;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        if (targetBoard.cards.length >= 16) {
+          return alert("Esta prancha está cheia! O limite máximo é de 16 cards.");
+        }
+
+        targetBoard.cards.push({
+          id: 'card_' + Date.now(),
+          word: word,
+          image: event.target.result
+        });
+
+        saveState();
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        renderBoard();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Rotina de segurança estrita para resetar o banco de dados local
+    clearBoardBtn.addEventListener('click', () => {
+      const respostaSeguranca = prompt("Para apagar tudo na tela e reiniciar essa página do zero digite os números de 1 a 9:");
+
+      // Verifica se o usuário digitou a sequência numérica exata
+      if (respostaSeguranca === "123456789") {
+        appState = { activeBoardId: null, boards: [] };
+        localStorage.removeItem(STORAGE_KEY);
+        boardTitleInput.value = "";
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        isEditMode = false;
+        toggleEditBtn.textContent = "Modo Edição: OFF";
+        toggleEditBtn.style.backgroundColor = "#ff9900";
+        renderBoard();
+      } else if (respostaSeguranca !== null) {
+        // Se o usuário digitou errado (e não clicou em cancelar)
+        alert("Código incorreto. A ação foi cancelada e suas pranchas estão seguras!");
+      }
+    });
+
+    // Inicialização da Prancha ao carregar a página
+    renderBoard();
+  </script>
+</body>
+</html>
