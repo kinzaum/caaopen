@@ -17,101 +17,119 @@
       background-color: var(--bg-color);
     }
 
-    h1 {
-      text-align: center;
-      color: #333;
+    /* Cabeçalho Superior */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
     }
 
-    /* Painel do Criador */
+    .app-header h1 {
+      margin: 0;
+      color: #333;
+      font-size: 28px;
+    }
+
+    /* Botão de Controle do Painel (Engrenagem/Ajuste) */
+    .admin-toggle-btn {
+      background-color: #666;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .admin-toggle-btn.editing {
+      background-color: #ff9900;
+    }
+
+    /* Painel do Criador Retrátil (Escondido por padrão) */
     .creator-panel {
-      background: white;
-      padding: 15px;
+      display: none; /* Controlado via JS */
+      background: #fff;
+      padding: 20px;
       border-radius: 15px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border: 2px dashed #ff9900;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .creator-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: flex-end;
     }
 
     .form-group {
-      margin-bottom: 12px;
+      flex: 1;
+      min-width: 200px;
     }
 
     label {
       display: block;
       font-weight: bold;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       font-size: 14px;
     }
 
     input[type="text"], input[type="file"] {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       box-sizing: border-box;
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 14px;
     }
 
-    /* Grupo de Botões Empilhados Verticalmente */
-    .button-group {
+    .panel-actions {
       display: flex;
-      flex-direction: column;
       gap: 10px;
-      width: 100%;
+      min-width: 250px;
     }
 
-    button {
-      width: 100%;
-      display: block;
-      box-sizing: border-box;
-      margin: 0;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px 10px;
+    button.action-btn {
+      flex: 1;
+      padding: 12px;
       font-size: 14px;
       font-weight: bold;
-      border-radius: 6px;
+      color: white;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #00aa38;
-    }
+    #addCardBtn { background-color: var(--primary-color); }
+    #addCardBtn:hover { background-color: #00aa38; }
+    #clearBoardBtn { background-color: #ff3333; }
+    #clearBoardBtn:hover { background-color: #cc0000; }
 
     button:disabled {
       background-color: #aaa !important;
       cursor: not-allowed;
     }
 
-    .clear-btn {
-      background-color: #ff3333 !important;
-    }
-    .clear-btn:hover {
-      background-color: #cc0000 !important;
-    }
-
-    /* Layout Principal */
+    /* Layout Principal Expandido */
     .main-layout {
       display: flex;
       gap: 20px;
-      align-items: flex-start;
-      margin-top: 20px;
+      align-items: stretch;
+      min-height: 600px;
     }
 
-    .left-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 320px;
-      flex-shrink: 0;
-    }
-
-    /* Abas Laterais */
+    /* Abas Laterais Maiores para facilitar identificação */
     .sidebar-tabs {
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 25px;
-      padding: 20px 15px;
-      height: 300px;
+      padding: 25px 15px;
+      width: 260px;
+      flex-shrink: 0;
       overflow-y: auto;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
@@ -119,117 +137,121 @@
     .tab-row {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       width: 100%;
+      padding: 8px;
+      border-radius: 12px;
+      transition: background 0.2s ease;
+    }
+    .tab-row:hover {
+      background: #f0f0f0;
     }
 
     .tab-bullet {
-      font-size: 24px;
-      margin-right: 8px;
+      font-size: 28px;
+      margin-right: 10px;
       line-height: 1;
-      color: #333;
+      color: var(--primary-color);
     }
 
     .tab-item {
-      font-size: 22px;
+      font-size: 24px; /* Fonte aumentada para a criança ler melhor */
       font-weight: bold;
       cursor: pointer;
-      color: #000;
-      transition: color 0.1s ease;
+      color: #333;
+      flex-grow: 1;
     }
 
     .tab-item.active {
       color: var(--primary-color);
+      font-size: 26px;
     }
 
-    /* Botão de excluir prancha na barra lateral */
     .delete-board-btn {
       background: none;
       border: none;
       color: #ff3333;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
       padding: 0 5px;
-      margin-left: auto;
-      display: inline-block;
-      font-weight: bold;
     }
 
-    .delete-board-btn:hover {
-      color: #cc0000;
-      background: none;
-    }
-
-    /* Chassi do Tablet Principal */
+    /* Chassi Principal da Prancha */
     .board-chassis {
       flex-grow: 1;
       background: white;
       border: 1px solid var(--border-color);
-      border-radius: 50px;
-      padding: 30px;
-      min-height: 520px;
+      border-radius: 35px;
+      padding: 25px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Identificador Super Destaque da Prancha Atual */
     .board-header {
-      font-size: 32px;
+      font-size: 42px; /* Super destaque visual */
       font-weight: bold;
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+      background: #e6f9ed;
+      padding: 10px;
+      border-radius: 15px;
     }
 
     /* Moldura de Rolagem */
     .scroll-frame {
       display: flex;
       gap: 15px;
+      flex-grow: 1;
     }
 
-    /* Grade Fixa 4x4 */
+    /* Grade Fixa 4x4 Preenchendo o espaço */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(4, 110px);
+      grid-template-rows: repeat(4, 1fr);
       gap: 15px;
       flex-grow: 1;
+      min-height: 480px;
     }
 
     /* Slots da Grade */
     .grid-slot {
-      border: 1px solid var(--border-color);
-      background: white;
-      border-radius: 15px;
+      border: 2px dashed #e0e0e0;
+      background: #fafafa;
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 5px;
-      box-shadow: inset 0 0 4px rgba(0,0,0,0.02);
       position: relative;
     }
 
     /* Botão de Excluir Card */
     .delete-badge {
       position: absolute;
-      top: -5px;
-      right: -5px;
+      top: -8px;
+      right: -8px;
       background: #ff3333;
       color: white;
       border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      font-size: 14px;
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
       font-weight: bold;
-      line-height: 22px;
+      line-height: 28px;
       text-align: center;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       z-index: 10;
     }
 
-    /* Efeito de Edição Ativa */
     .grid-slot.edit-active {
-      border: 1px dashed #ff9900;
+      border: 2px dashed #ff9900;
+      background: #fff9e6;
       animation: slight-shake 0.3s infinite alternate;
     }
 
@@ -238,114 +260,100 @@
       100% { transform: rotate(0.5deg); }
     }
 
-    /* Card AAC Base */
+    /* Card AAC */
     .aac-card {
       width: 100%;
       height: 100%;
       background: white;
-      border-radius: 15px;
+      border-radius: 18px;
       text-align: center;
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Alinha o conteúdo começando do topo */
+      justify-content: flex-start;
       align-items: center;
-      padding: 6px;
+      padding: 8px;
       box-sizing: border-box;
-      border: 2px solid transparent;
+      border: 3px solid #eee;
       overflow: hidden;
-      
-      /* Transição suave para o efeito de clique tátil */
+      box-shadow: 0 3px 6px rgba(0,0,0,0.03);
       transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
-      
-      /* Remove o quadrado cinza de seleção nativo do iOS/iPadOS */
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Título: Ocupa estritamente o topo do card (20% da altura) */
     .aac-card h3 {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 20%;        /* Altura proporcional segura */
+      height: 20%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;    /* Tamanho máximo de início */
+      font-size: 18px;
       font-weight: bold;
       color: #000;
       white-space: nowrap;
       overflow: hidden;
     }
 
-    /* Imagem: Ocupa estritamente a base restante (75% da altura) */
     .aac-card img {
       width: 100%;
-      height: 75%;         /* Limita a altura para nunca invadir o texto */
-      object-fit: contain; /* Encaixa a imagem sem distorcer ou esticar */
-      margin-top: auto;    /* Empurra para a extremidade inferior */
+      height: 75%;
+      object-fit: contain;
+      margin-top: auto;
     }
 
-    /* Efeito visual instantâneo ao pressionar o card */
     .aac-card:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
       border-color: var(--primary-color);
-      box-shadow: 0 0 15px rgba(0, 204, 68, 0.5);
+      box-shadow: 0 0 18px rgba(0, 204, 68, 0.6);
     }
 
-    /* Barra de Rolagem Decorativa Lateral */
     .side-scroll-bar {
-      width: 25px;
-      background: #777;
-      border-radius: 4px;
+      width: 15px;
+      background: #ddd;
+      border-radius: 10px;
       align-self: stretch;
     }
 
-    /* Suporte de alinhamento para idiomas RTL */
-    .rtl-layout {
-      direction: rtl;
-    }
-    .rtl-layout .delete-board-btn {
-      margin-left: 0;
-      margin-right: auto;
-    }
-    .rtl-layout .tab-bullet {
-      margin-right: 0;
-      margin-left: 8px;
-    }
+    .rtl-layout { direction: rtl; }
+    .rtl-layout .delete-board-btn { margin-left: 0; margin-right: auto; }
+    .rtl-layout .tab-bullet { margin-right: 0; margin-left: 10px; }
   </style>
 </head>
 <body ontouchstart="">
 
-  <h1 id="mainTitle">AAC Board</h1>
+  <div class="app-header">
+    <h1 id="mainTitle">AAC Board</h1>
+    <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
+  </div>
 
-  <div id="mainLayoutContainer" class="main-layout">
-    <div class="left-controls">
-      <div class="creator-panel">
-        <div class="form-group">
-          <label id="lblBoardTitle" for="boardTitle"></label>
-          <input type="text" id="boardTitle">
-        </div>
-        
-        <div class="form-group">
-          <label id="lblCardWord" for="cardWord"></label>
-          <input type="text" id="cardWord">
-        </div>
-
-        <div class="form-group">
-          <label id="lblCardImage" for="cardImage"></label>
-          <input type="file" id="cardImage" accept="image/*">
-        </div>
-
-        <div class="button-group">
-          <button id="addCardBtn"></button>
-          <button id="toggleEditBtn" style="background-color: #ff9900;"></button>
-          <button id="clearBoardBtn" class="clear-btn"></button>
-        </div>
+  <div id="creatorPanel" class="creator-panel">
+    <div class="creator-form">
+      <div class="form-group">
+        <label id="lblBoardTitle" for="boardTitle"></label>
+        <input type="text" id="boardTitle">
+      </div>
+      
+      <div class="form-group">
+        <label id="lblCardWord" for="cardWord"></label>
+        <input type="text" id="cardWord">
       </div>
 
-      <div id="sidebarTabs" class="sidebar-tabs"></div>
+      <div class="form-group">
+        <label id="lblCardImage" for="cardImage"></label>
+        <input type="file" id="cardImage" accept="image/*">
+      </div>
+
+      <div class="panel-actions">
+        <button id="addCardBtn" class="action-btn"></button>
+        <button id="clearBoardBtn" class="action-btn"></button>
+      </div>
     </div>
+  </div>
+
+  <div id="mainLayoutContainer" class="main-layout">
+    <div id="sidebarTabs" class="sidebar-tabs"></div>
 
     <div class="board-chassis">
       <div id="boardHeader" class="board-header"></div>
@@ -359,7 +367,6 @@
 
   <script>
     const STORAGE_KEY = 'aac_multi_canvas_system';
-    
     let currentLang = {}; 
 
     let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
@@ -367,9 +374,12 @@
       boards: []
     };
 
-    let isEditMode = false;
+    let isEditMode = false; // Controla se os botões de exclusão (X) aparecem nos cards
 
+    // Elementos do DOM
     const mainTitle = document.getElementById('mainTitle');
+    const adminToggleBtn = document.getElementById('adminToggleBtn');
+    const creatorPanel = document.getElementById('creatorPanel');
     const mainLayoutContainer = document.getElementById('mainLayoutContainer');
     const lblBoardTitle = document.getElementById('lblBoardTitle');
     const boardTitleInput = document.getElementById('boardTitle');
@@ -378,7 +388,6 @@
     const lblCardImage = document.getElementById('lblCardImage');
     const cardImageInput = document.getElementById('cardImage');
     const addCardBtn = document.getElementById('addCardBtn');
-    const toggleEditBtn = document.getElementById('toggleEditBtn');
     const clearBoardBtn = document.getElementById('clearBoardBtn');
     const sidebarTabs = document.getElementById('sidebarTabs');
     const boardHeader = document.getElementById('boardHeader');
@@ -388,10 +397,25 @@
         loadLocalization();
     });
 
+    // Alternador do Painel de Configuração
+    adminToggleBtn.addEventListener('click', () => {
+      isEditMode = !isEditMode;
+      if (isEditMode) {
+        creatorPanel.style.display = "block";
+        adminToggleBtn.textContent = "✓ Done Editing";
+        adminToggleBtn.classList.add('editing');
+      } else {
+        creatorPanel.style.display = "none";
+        adminToggleBtn.textContent = "⚙️ Setup / Edit";
+        adminToggleBtn.classList.remove('editing');
+      }
+      renderBoard();
+    });
+
     async function loadLocalization() {
       try {
         const response = await fetch('languages.json');
-        if (!response.ok) throw new Error("Erro na resposta do servidor");
+        if (!response.ok) throw new Error("Erro na resposta");
         const languagesData = await response.json();
         
         const userLang = (navigator.language || navigator.userLanguage || "en").substring(0, 2);
@@ -400,19 +424,16 @@
         initStaticTexts();
         renderBoard();
       } catch (error) {
-        console.error("Erro ao carregar o arquivo de idiomas JSON, usando fallback local:", error);
-        
+        console.error("Usando fallback de idiomas local:", error);
         currentLang = {
             mainTitle: "AAC Board",
-            lblBoardTitle: "Board Title:",
+            lblBoardTitle: "1. Board Title:",
             phBoardTitle: "e.g., Family, Routine",
-            lblCardWord: "Card Word / Label:",
+            lblCardWord: "2. Card Word / Caption:",
             phCardWord: "e.g., Help, Eat",
-            lblCardImage: "Choose Card Image:",
+            lblCardImage: "3. Choose Picture from Device:",
             addCardBtn: "Add to Board",
-            editModeOff: "Edit Mode: OFF",
-            editModeOn: "Edit Mode: ON",
-            clearBoardBtn: "Reset Everything",
+            clearBoardBtn: "Reset All",
             emptyBoardState: "No active board",
             alertNoTitle: "Please enter a board title.",
             alertNoWord: "Please enter a card word.",
@@ -435,7 +456,6 @@
       cardWordInput.placeholder = currentLang.phCardWord;
       lblCardImage.textContent = currentLang.lblCardImage;
       addCardBtn.textContent = currentLang.addCardBtn;
-      toggleEditBtn.textContent = isEditMode ? currentLang.editModeOn : currentLang.editModeOff;
       clearBoardBtn.textContent = currentLang.clearBoardBtn;
 
       if (currentLang.isRtl) {
@@ -486,14 +506,12 @@
     }
 
     function saveState() {
-      document.body.style.cursor = 'wait';
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
       } catch (e) {
-        console.error("Erro crítico ao salvar no LocalStorage:", e);
-        alert("Aviso: Memória do navegador cheia! Remova cards antigos antes de continuar.");
+        console.error("Erro no LocalStorage:", e);
+        alert("Aviso: Memória do navegador cheia!");
       }
-      document.body.style.cursor = 'default';
     }
 
     function speakWord(text) {
@@ -505,32 +523,21 @@
       }
     }
 
-    // --- CÁLCULO DINÂMICO DA FONTE BASEADO NA LARGURA DISPONÍVEL ---
     function adjustFontSize() {
       const titles = document.querySelectorAll('.aac-card h3');
       titles.forEach(title => {
-        let fontSize = 16; 
+        let fontSize = 18; 
         title.style.fontSize = fontSize + 'px';
-
-        // Diminui gradativamente se o texto tentar vazar horizontalmente do card
-        while (title.scrollWidth > title.clientWidth && fontSize > 10) {
+        while (title.scrollWidth > title.clientWidth && fontSize > 11) {
           fontSize--;
           title.style.fontSize = fontSize + 'px';
         }
       });
     }
 
-    toggleEditBtn.addEventListener('click', () => {
-      isEditMode = !isEditMode;
-      toggleEditBtn.textContent = isEditMode ? currentLang.editModeOn : currentLang.editModeOff;
-      toggleEditBtn.style.backgroundColor = isEditMode ? "#cc7a00" : "#ff9900";
-      renderBoard();
-    });
-
     function deleteCard(boardId, cardId) {
       const board = appState.boards.find(b => b.id === boardId);
       if (!board) return;
-      
       board.cards = board.cards.filter(c => c.id !== cardId);
       saveState();
       renderBoard();
@@ -564,13 +571,11 @@
           const deleteBoardBtn = document.createElement('button');
           deleteBoardBtn.className = 'delete-board-btn';
           deleteBoardBtn.innerHTML = '✕'; 
-          
           deleteBoardBtn.addEventListener('click', (e) => {
             e.stopPropagation(); 
             if (board.cards.length > 0) {
-              const msg = (currentLang.confirmDeleteBoard || "Delete board {title} with {count} cards?")
-                .replace("{title}", board.title)
-                .replace("{count}", board.cards.length);
+              const msg = (currentLang.confirmDeleteBoard || "Delete board {title}?")
+                .replace("{title}", board.title);
               if (!confirm(msg)) return;
             }
             appState.boards = appState.boards.filter(b => b.id !== board.id);
@@ -619,8 +624,6 @@
         }
         gridDisplay.appendChild(slot);
       }
-
-      // Executa o ajuste de fonte imediatamente após renderizar os elementos gráficos
       adjustFontSize();
     }
 
@@ -657,8 +660,7 @@
         cardImageInput.value = "";
         renderBoard();
       } catch (error) {
-        console.error("Erro no processamento da imagem:", error);
-        alert("Erro ao processar o arquivo de imagem. Tente novamente.");
+        console.error(error);
       } finally {
         addCardBtn.disabled = false;
       }
@@ -673,6 +675,9 @@
         cardWordInput.value = "";
         cardImageInput.value = "";
         isEditMode = false;
+        creatorPanel.style.display = "none";
+        adminToggleBtn.textContent = "⚙️ Setup / Edit";
+        adminToggleBtn.classList.remove('editing');
         initStaticTexts();
         renderBoard();
       } else if (respostaSeguranca !== null) {
