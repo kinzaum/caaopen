@@ -248,12 +248,12 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start; /* Alinha o conteúdo começando do topo */
       align-items: center;
-      padding: 6px 6px;
+      padding: 6px;
       box-sizing: border-box;
       border: 2px solid transparent;
-      overflow: hidden; /* Garante que nada vaze do card */
+      overflow: hidden;
       
       /* Transição suave para o efeito de clique tátil */
       transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
@@ -262,25 +262,28 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Container do Título com Altura Rígida Fixa */
+    /* Título: Ocupa estritamente o topo do card (20% da altura) */
     .aac-card h3 {
       margin: 0;
+      padding: 0;
       width: 100%;
-      height: 20px;      /* Altura fixa estrita para o texto */
-      line-height: 20px; /* Alinha o texto centralizado na altura vertical */
-      font-size: 16px;   /* Tamanho inicial padrão */
+      height: 20%;        /* Altura proporcional segura */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;    /* Tamanho máximo de início */
       font-weight: bold;
       color: #000;
-      white-space: nowrap; /* Evita quebra de linha forçada */
-      overflow: hidden;    /* Esconde o que passar antes do JS ajustar */
+      white-space: nowrap;
+      overflow: hidden;
     }
 
-    /* Container da Imagem com Espaço Restrito Garantido */
+    /* Imagem: Ocupa estritamente a base restante (75% da altura) */
     .aac-card img {
-      max-width: 95%;
-      height: 72px;        /* Altura fixa estrita para a imagem */
-      object-fit: contain; /* Mantém a proporção sem distorcer */
-      margin-top: auto;    /* Empurra a imagem sempre para a base */
+      width: 100%;
+      height: 75%;         /* Limita a altura para nunca invadir o texto */
+      object-fit: contain; /* Encaixa a imagem sem distorcer ou esticar */
+      margin-top: auto;    /* Empurra para a extremidade inferior */
     }
 
     /* Efeito visual instantâneo ao pressionar o card */
@@ -502,14 +505,14 @@
       }
     }
 
-    // --- FUNÇÃO AUXILIAR: REDIMENSIONA O TEXTO DINAMICAMENTE PARA CABER NO CARD ---
+    // --- CÁLCULO DINÂMICO DA FONTE BASEADO NA LARGURA DISPONÍVEL ---
     function adjustFontSize() {
       const titles = document.querySelectorAll('.aac-card h3');
       titles.forEach(title => {
-        let fontSize = 16; // Tamanho máximo padrão inicial
+        let fontSize = 16; 
         title.style.fontSize = fontSize + 'px';
 
-        // Reduz o tamanho da fonte iterativamente enquanto o texto estiver transbordando a largura horizontal do card
+        // Diminui gradativamente se o texto tentar vazar horizontalmente do card
         while (title.scrollWidth > title.clientWidth && fontSize > 10) {
           fontSize--;
           title.style.fontSize = fontSize + 'px';
@@ -617,7 +620,7 @@
         gridDisplay.appendChild(slot);
       }
 
-      // Dispara o cálculo dinâmico imediatamente após injetar os elementos na tela
+      // Executa o ajuste de fonte imediatamente após renderizar os elementos gráficos
       adjustFontSize();
     }
 
