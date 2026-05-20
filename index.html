@@ -128,22 +128,121 @@
     #clearBoardBtn { background-color: #ff3333; }
     #clearBoardBtn:hover { background-color: #cc0000; }
 
-    /* Estilo dos Botões de Backup */
-    .backup-btn {
-      background-color: #4a90e2;
-    }
-    .backup-btn:hover {
-      background-color: #357abd;
-    }
+    .backup-btn { background-color: #4a90e2; }
+    .backup-btn:hover { background-color: #357abd; }
 
     button:disabled {
       background-color: #aaa !important;
       cursor: not-allowed;
     }
 
-    /* Ocultar o input de ficheiro nativo para usar botão personalizado de importação */
-    #importFile {
+    #importFile { display: none; }
+
+    /* --- ESTILIZAÇÃO DO MODAL DE TRANCA PARENTAL (SLIDER) --- */
+    .parental-modal {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .parental-box {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .parental-box h4 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .parental-box p {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Container do Slider Estilo iOS */
+    .slider-track {
+      position: relative;
+      background: #eee;
+      padding: 2px;
+      border-radius: 30px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+
+    .slider-label {
+      position: absolute;
+      font-size: 14px;
+      font-weight: bold;
+      color: #999;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* O Input Range Invisível por cima para capturar o toque/arraste */
+    .ios-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    /* O Botão de arrastar (Thumb) customizado */
+    .ios-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 55px;
+      height: 46px;
+      border-radius: 25px;
+      background: var(--primary-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: -webkit-grab;
+    }
+
+    .ios-slider::-moz-range-thumb {
+      width: 55px;
+      height: 46px;
+      border: none;
+      border-radius: 25px;
+      background: var(--primary-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      cursor: grab;
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #aaa;
+      cursor: pointer;
     }
 
     /* Layout Principal Expandido */
@@ -154,7 +253,6 @@
       min-height: 600px;
     }
 
-    /* Abas Laterais Maiores para facilitar identificação */
     .sidebar-tabs {
       background: white;
       border: 1px solid var(--border-color);
@@ -208,7 +306,6 @@
       padding: 0 5px;
     }
 
-    /* Chassi Principal da Prancha */
     .board-chassis {
       flex-grow: 1;
       background: white;
@@ -220,7 +317,6 @@
       flex-direction: column;
     }
 
-    /* Identificador Super Destaque da Prancha Atual */
     .board-header {
       font-size: 42px;
       font-weight: bold;
@@ -232,14 +328,12 @@
       border-radius: 15px;
     }
 
-    /* Moldura de Rolagem */
     .scroll-frame {
       display: flex;
       gap: 15px;
       flex-grow: 1;
     }
 
-    /* Grade Fixa 4x4 Preenchendo o espaço */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -249,7 +343,6 @@
       min-height: 480px;
     }
 
-    /* Slots da Grade */
     .grid-slot {
       border: 2px dashed #e0e0e0;
       background: #fafafa;
@@ -262,7 +355,6 @@
       position: relative;
     }
 
-    /* Botão de Excluir Card */
     .delete-badge {
       position: absolute;
       top: -8px;
@@ -292,7 +384,6 @@
       100% { transform: rotate(0.5deg); }
     }
 
-    /* Card AAC */
     .aac-card {
       width: 100%;
       height: 100%;
@@ -360,6 +451,19 @@
     <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
   </div>
 
+  <div id="parentalModal" class="parental-modal">
+    <div class="parental-box">
+      <button class="close-modal-btn" id="closeModalBtn">✕</button>
+      <h4 id="modalTitle">Controle Parental</h4>
+      <p id="modalInstruction">Arraste para a direita para confirmar que você é um adulto.</p>
+      
+      <div class="slider-track">
+        <span class="slider-label" id="sliderLabel">Slide >></span>
+        <input type="range" min="0" max="100" value="0" class="ios-slider" id="parentalSlider">
+      </div>
+    </div>
+  </div>
+
   <div id="creatorPanel" class="creator-panel">
     <div class="creator-form">
       <div class="form-group">
@@ -415,6 +519,7 @@
     };
 
     let isEditMode = false;
+    let pendingAction = null; // Armazena se o slider vai abrir o editor ou resetar tudo
 
     // Elementos do DOM
     const mainTitle = document.getElementById('mainTitle');
@@ -436,24 +541,97 @@
     const exportBtn = document.getElementById('exportBtn');
     const importFile = document.getElementById('importFile');
 
+    // Elementos do Modal do Slider
+    const parentalModal = document.getElementById('parentalModal');
+    const parentalSlider = document.getElementById('parentalSlider');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalInstruction = document.getElementById('modalInstruction');
+    const sliderLabel = document.getElementById('sliderLabel');
+
     document.addEventListener("DOMContentLoaded", () => {
         loadLocalization();
     });
 
-    // Alternador do Painel de Configuração
+    // Gatilho do Botão Principal: Em vez de alternar direto, pede o Slider se estiver fechado
     adminToggleBtn.addEventListener('click', () => {
-      isEditMode = !isEditMode;
-      if (isEditMode) {
-        creatorPanel.style.display = "block";
-        adminToggleBtn.textContent = "✓ Done Editing";
-        adminToggleBtn.classList.add('editing');
+      if (!isEditMode) {
+        openParentalGate('toggleEdit');
       } else {
+        // Fechar o editor não precisa de tranca de segurança
+        executeSecureAction('toggleEdit');
+      }
+    });
+
+    clearBoardBtn.addEventListener('click', () => {
+      openParentalGate('resetAll');
+    });
+
+    // --- LÓGICA DE CONTROLE DO SLIDER PARENTAL ---
+    function openParentalGate(actionType) {
+      pendingAction = actionType;
+      parentalSlider.value = 0;
+      
+      // Tradução dinâmica dos textos do Modal de Proteção
+      modalTitle.textContent = currentLang.modalTitle || "Parental Control";
+      modalInstruction.textContent = currentLang.modalInstruction || "Slide to the right to confirm you are an adult.";
+      sliderLabel.textContent = currentLang.sliderLabel || "Slide >>";
+      
+      parentalModal.style.display = "flex";
+    }
+
+    closeModalBtn.addEventListener('click', () => {
+      parentalModal.style.display = "none";
+      pendingAction = null;
+    });
+
+    // Monitora o movimento do slider em tempo real
+    parentalSlider.addEventListener('input', () => {
+      if (parseInt(parentalSlider.value) === 100) {
+        parentalModal.style.display = "none";
+        if (pendingAction) {
+          executeSecureAction(pendingAction);
+        }
+        pendingAction = null;
+      }
+    });
+
+    // Se soltar o dedo antes do 100, joga o slider de volta para o zero de forma suave
+    parentalSlider.addEventListener('change', () => {
+      if (parseInt(parentalSlider.value) < 100) {
+        parentalSlider.value = 0;
+      }
+    });
+
+    // Executa a ação após validação com sucesso no Slider
+    function executeSecureAction(action) {
+      if (action === 'toggleEdit') {
+        isEditMode = !isEditMode;
+        if (isEditMode) {
+          creatorPanel.style.display = "block";
+          adminToggleBtn.textContent = currentLang.doneEditing || "✓ Done Editing";
+          adminToggleBtn.classList.add('editing');
+        } else {
+          creatorPanel.style.display = "none";
+          adminToggleBtn.textContent = "⚙️ Setup / Edit";
+          adminToggleBtn.classList.remove('editing');
+        }
+        renderBoard();
+      } 
+      else if (action === 'resetAll') {
+        appState = { activeBoardId: null, boards: [] };
+        localStorage.removeItem(STORAGE_KEY);
+        boardTitleInput.value = "";
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        isEditMode = false;
         creatorPanel.style.display = "none";
         adminToggleBtn.textContent = "⚙️ Setup / Edit";
         adminToggleBtn.classList.remove('editing');
+        initStaticTexts();
+        renderBoard();
       }
-      renderBoard();
-    });
+    }
 
     async function loadLocalization() {
       try {
@@ -482,9 +660,11 @@
             alertNoWord: "Please enter a card word.",
             alertNoFile: "Please select an image file.",
             alertFull: "This board is full (max 16 cards).",
-            promptReset: "To clear everything, type 123456789:",
-            alertResetError: "Incorrect code. Action cancelled.",
-            langCode: "en"
+            langCode: "en",
+            modalTitle: "Controle Parental",
+            modalInstruction: "Arraste o botão totalmente para a direita para desbloquear.",
+            sliderLabel: "Deslize >>",
+            doneEditing: "✓ Concluir Edição"
         };
         initStaticTexts();
         renderBoard();
@@ -709,25 +889,6 @@
       }
     });
 
-    clearBoardBtn.addEventListener('click', () => {
-      const respostaSeguranca = prompt(currentLang.promptReset);
-      if (respostaSeguranca === "123456789") {
-        appState = { activeBoardId: null, boards: [] };
-        localStorage.removeItem(STORAGE_KEY);
-        boardTitleInput.value = "";
-        cardWordInput.value = "";
-        cardImageInput.value = "";
-        isEditMode = false;
-        creatorPanel.style.display = "none";
-        adminToggleBtn.textContent = "⚙️ Setup / Edit";
-        adminToggleBtn.classList.remove('editing');
-        initStaticTexts();
-        renderBoard();
-      } else if (respostaSeguranca !== null) {
-        alert(currentLang.alertResetError);
-      }
-    });
-
     // --- LÓGICA DE EXPORTAÇÃO (BACKUP) ---
     exportBtn.addEventListener('click', () => {
       if (appState.boards.length === 0) {
@@ -754,7 +915,6 @@
         try {
           const importedData = JSON.parse(event.target.result);
           
-          // Validação básica estrutural do ficheiro importado
           if (importedData && Array.isArray(importedData.boards)) {
             appState = importedData;
             saveState();
@@ -767,7 +927,7 @@
           console.error(err);
           alert("Erro ao ler o ficheiro de backup. Certifique-se de que é um ficheiro .json válido.");
         } finally {
-          importFile.value = ""; // Limpa o input para permitir re-upload se necessário
+          importFile.value = "";
         }
       };
       reader.readAsText(file);
