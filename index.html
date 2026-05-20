@@ -87,10 +87,29 @@
       font-size: 14px;
     }
 
+    /* Zona de Ações Principais e de Backup */
+    .panel-sections-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+
     .panel-actions {
       display: flex;
       gap: 10px;
-      min-width: 250px;
+      flex: 2;
+      min-width: 300px;
+    }
+
+    .backup-actions {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-width: 200px;
     }
 
     button.action-btn {
@@ -109,9 +128,22 @@
     #clearBoardBtn { background-color: #ff3333; }
     #clearBoardBtn:hover { background-color: #cc0000; }
 
+    /* Estilo dos Botões de Backup */
+    .backup-btn {
+      background-color: #4a90e2;
+    }
+    .backup-btn:hover {
+      background-color: #357abd;
+    }
+
     button:disabled {
       background-color: #aaa !important;
       cursor: not-allowed;
+    }
+
+    /* Ocultar o input de ficheiro nativo para usar botão personalizado de importação */
+    #importFile {
+      display: none;
     }
 
     /* Layout Principal Expandido */
@@ -155,7 +187,7 @@
     }
 
     .tab-item {
-      font-size: 24px; /* Fonte aumentada para a criança ler melhor */
+      font-size: 24px;
       font-weight: bold;
       cursor: pointer;
       color: #333;
@@ -190,7 +222,7 @@
 
     /* Identificador Super Destaque da Prancha Atual */
     .board-header {
-      font-size: 42px; /* Super destaque visual */
+      font-size: 42px;
       font-weight: bold;
       text-align: center;
       color: var(--primary-color);
@@ -345,9 +377,17 @@
         <input type="file" id="cardImage" accept="image/*">
       </div>
 
-      <div class="panel-actions">
-        <button id="addCardBtn" class="action-btn"></button>
-        <button id="clearBoardBtn" class="action-btn"></button>
+      <div class="panel-sections-container">
+        <div class="panel-actions">
+          <button id="addCardBtn" class="action-btn"></button>
+          <button id="clearBoardBtn" class="action-btn"></button>
+        </div>
+        
+        <div class="backup-actions">
+          <button id="exportBtn" class="action-btn backup-btn">📥 Export Backup</button>
+          <button id="importBtn" class="action-btn backup-btn" onclick="document.getElementById('importFile').click()">📤 Import Backup</button>
+          <input type="file" id="importFile" accept=".json">
+        </div>
       </div>
     </div>
   </div>
@@ -374,7 +414,7 @@
       boards: []
     };
 
-    let isEditMode = false; // Controla se os botões de exclusão (X) aparecem nos cards
+    let isEditMode = false;
 
     // Elementos do DOM
     const mainTitle = document.getElementById('mainTitle');
@@ -392,6 +432,9 @@
     const sidebarTabs = document.getElementById('sidebarTabs');
     const boardHeader = document.getElementById('boardHeader');
     const gridDisplay = document.getElementById('gridDisplay');
+    
+    const exportBtn = document.getElementById('exportBtn');
+    const importFile = document.getElementById('importFile');
 
     document.addEventListener("DOMContentLoaded", () => {
         loadLocalization();
@@ -683,6 +726,51 @@
       } else if (respostaSeguranca !== null) {
         alert(currentLang.alertResetError);
       }
+    });
+
+    // --- LÓGICA DE EXPORTAÇÃO (BACKUP) ---
+    exportBtn.addEventListener('click', () => {
+      if (appState.boards.length === 0) {
+        alert("Não há pranchas para exportar.");
+        return;
+      }
+      
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `aac_boards_backup_${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
+
+    // --- LÓGICA DE IMPORTAÇÃO (RESTAURAR) ---
+    importFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const importedData = JSON.parse(event.target.result);
+          
+          // Validação básica estrutural do ficheiro importado
+          if (importedData && Array.isArray(importedData.boards)) {
+            appState = importedData;
+            saveState();
+            renderBoard();
+            alert("Backup importado com sucesso! Todas as pranchas foram restauradas.");
+          } else {
+            alert("Erro: O ficheiro selecionado não possui um formato de backup válido.");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao ler o ficheiro de backup. Certifique-se de que é um ficheiro .json válido.");
+        } finally {
+          importFile.value = ""; // Limpa o input para permitir re-upload se necessário
+        }
+      };
+      reader.readAsText(file);
     });
   </script>
 </body>
