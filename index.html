@@ -1,100 +1,956 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AAC Custom Board</title>
-  <style>
-    /* Mantenha todo o seu CSS original aqui */
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AAC Custom Board</title>
+  <style>
+    :root {
+      --primary-color: #00cc44;
+      --border-color: #ccc;
+      --bg-color: #f9f9f9;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: var(--bg-color);
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      padding: 15px;
+    }
+
+    /* Cabeçalho Superior Fixo */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      flex-shrink: 0;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      color: #333;
+      font-size: 24px;
+    }
+
+    .admin-toggle-btn {
+      background-color: #666;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .admin-toggle-btn.editing {
+      background-color: #ff9900;
+    }
+
+    /* Painel do Criador Retrátil */
+    .creator-panel {
+      display: none;
+      background: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px dashed #ff9900;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      flex-shrink: 0;
+    }
+
+    .creator-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .panel-sections-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+      border-top: 1px solid #eee;
+      padding-top: 12px;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 8px;
+      flex: 2;
+      min-width: 280px;
+    }
+
+    .backup-actions {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    button.action-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #addCardBtn { background-color: var(--primary-color); }
+    #addCardBtn:hover { background-color: #00aa38; }
+    #clearBoardBtn { background-color: #ff3333; }
+    #clearBoardBtn:hover { background-color: #cc0000; }
+
+    .backup-btn { background-color: #4a90e2; }
+    .backup-btn:hover { background-color: #357abd; }
+
+    button:disabled {
+      background-color: #aaa !important;
+      cursor: not-allowed;
+    }
+
+    #importFile { display: none; }
+
+    /* --- MODAL DE TRANCA PARENTAL --- */
+    .parental-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .parental-box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .parental-box h4 { margin: 0 0 8px 0; font-size: 16px; color: #333; }
+    .parental-box p { margin: 0 0 15px 0; font-size: 13px; color: #666; }
+
+    .slider-track {
+      position: relative;
+      background: #eee;
+      padding: 2px;
+      border-radius: 25px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+
+    .slider-label {
+      position: absolute;
+      font-size: 13px;
+      font-weight: bold;
+      color: #999;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .ios-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .ios-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 50px;
+      height: 40px;
+      border-radius: 20px;
+      background: var(--primary-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .ios-slider::-moz-range-thumb {
+      width: 50px;
+      height: 40px;
+      border: none;
+      border-radius: 20px;
+      background: var(--primary-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    /* --- LAYOUT DINÂMICO INTELIGENTE --- */
+    .main-layout {
+      display: flex;
+      gap: 15px;
+      align-items: stretch;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    /* Painel Lateral Compacto Mantido */
+    .sidebar-tabs {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 15px 10px;
+      width: 150px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .tab-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 6px;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+    .tab-row:hover {
+      background: #f0f0f0;
+    }
+
+    .tab-bullet {
+      font-size: 20px;
+      margin-right: 6px;
+      line-height: 1;
+      color: var(--primary-color);
+    }
+
+    .tab-item {
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #333;
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tab-item.active {
+      color: var(--primary-color);
+      font-size: 17px;
+    }
+
+    .delete-board-btn {
+      background: none;
+      border: none;
+      color: #ff3333;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 3px;
+    }
+
+    /* Chassi Principal Fluido */
+    .board-chassis {
+      flex-grow: 1;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 25px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+.board-header {
+      display: none;
+    }
+
+    /* Container de Enquadramento que estica 100% no espaço livre */
+    .scroll-frame {
+      display: flex;
+      gap: 10px;
+      flex-grow: 1;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center; /* Centraliza a grade verticalmente e horizontalmente */
+    }
+
+    /* Grade Inteligente Automática */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 12px;
+      
+      /* O segredo da automação: usa a menor dimensão disponível (largura ou altura livre) 
+         para garantir que a grade se expanda ao máximo sem estourar as margens */
+      width: 100%;
+      height: 100%;
+      max-width: calc(100vh - 180px); 
+      max-height: calc(100vh - 180px);
+      aspect-ratio: 1 / 1; 
+    }
+
+    .grid-slot {
+      border: 2px dashed #e0e0e0;
+      background: #fafafa;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .delete-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: #ff3333;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 24px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .grid-slot.edit-active {
+      border: 2px dashed #ff9900;
+      background: #fff9e6;
+      animation: slight-shake 0.3s infinite alternate;
+    }
+
+    @keyframes slight-shake {
+      0 { transform: rotate(-0.5deg); }
+      100% { transform: rotate(0.5deg); }
+    }
+
+    /* Cards Proporcionais */
+    .aac-card {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 6px;
+      box-sizing: border-box;
+      border: 3px solid #eee;
+      overflow: hidden;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.03);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .aac-card h3 {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4cqi; /* Usa tamanho relativo ao container interno para responsividade textual */
+      font-min-size: 12px;
+      font-weight: bold;
+      color: #000;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .aac-card img {
+      width: 100%;
+      height: 78%;
+      object-fit: contain;
+      margin-top: auto;
+    }
+
+    .aac-card:active {
+      transform: scale(0.95);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 12px rgba(0, 204, 68, 0.5);
+    }
+
+    .side-scroll-bar { display: none; }
+
+    .rtl-layout { direction: rtl; }
+    .rtl-layout .delete-board-btn { margin-left: 0; margin-right: auto; }
+    .rtl-layout .tab-bullet { margin-right: 0; margin-left: 10px; }
+  </style>
 </head>
 <body ontouchstart="">
 
-  <div class="app-header">
-    <h1 id="mainTitle">AAC Board</h1>
-    <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
-  </div>
-  <script>
-    const STORAGE_KEY = 'aac_multi_canvas_system';
-    let currentLang = {}; 
-    let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { activeBoardId: null, boards: [] };
-    let isEditMode = false;
+  <div class="app-header">
+    <h1 id="mainTitle">AAC Board</h1>
+    <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
+  </div>
 
-    // --- BLOCO DE INICIALIZAÇÃO CORRIGIDO ---
-    document.addEventListener("DOMContentLoaded", async () => {
-        // 1. Carrega as traduções primeiro
-        await loadLocalization();
-        
-        // 2. Carrega o exemplo APENAS se não houver nada no localStorage
-        await loadSampleBoard();
-        
-        // 3. Renderiza a interface agora que os dados estão garantidos
-        renderBoard();
-        
-        // 4. Seus eventos originais (inicialize-os aqui ou mantenha onde já estão)
-        setupEventListeners(); 
-        window.addEventListener('resize', adjustFontSize);
-    });
+  <div id="parentalModal" class="parental-modal">
+    <div class="parental-box">
+      <button class="close-modal-btn" id="closeModalBtn">✕</button>
+      <h4 id="modalTitle">Controle Parental</h4>
+      <p id="modalInstruction">Arraste para a direita para confirmar que você é um adulto.</p>
+      
+      <div class="slider-track">
+        <span class="slider-label" id="sliderLabel">Slide >></span>
+        <input type="range" min="0" max="100" value="0" class="ios-slider" id="parentalSlider">
+      </div>
+    </div>
+  </div>
 
-    async function loadLocalization() {
-      try {
-        const response = await fetch('languages.json');
-        const data = await response.json();
-        const userLang = (navigator.language || "en").substring(0, 2);
-        currentLang = data[userLang] || data.en;
-        initStaticTexts();
-      } catch (e) { console.error("Erro ao carregar idiomas"); }
-    }
+  <div id="creatorPanel" class="creator-panel">
+    <div class="creator-form">
+      <div class="form-group">
+        <label id="lblBoardTitle" for="boardTitle"></label>
+        <input type="text" id="boardTitle">
+      </div>
+      
+      <div class="form-group">
+        <label id="lblCardWord" for="cardWord"></label>
+        <input type="text" id="cardWord">
+      </div>
 
-    async function loadSampleBoard() {
-      if (appState.boards.length === 0) {
-        const userLang = (navigator.language || "en").substring(0, 2);
-        try {
-          // Busca o arquivo dinâmico baseado no idioma (ex: sample_pt.json)
-          let response = await fetch(`sample_${userLang}.json`);
-          
-          if (!response.ok) {
-            console.log("Arquivo de idioma não encontrado, carregando fallback...");
-            response = await fetch('sample_en.json');
-          }
-          
-          const sampleData = await response.json();
-          appState = sampleData;
-          saveState();
-        } catch (error) {
-          console.error("Falha ao carregar o arquivo de exemplo:", error);
-        }
-      }
-    }
+      <div class="form-group">
+        <label id="lblCardImage" for="cardImage"></label>
+        <input type="file" id="cardImage" accept="image/*">
+      </div>
 
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-    }
+      <div class="panel-sections-container">
+        <div class="panel-actions">
+          <button id="addCardBtn" class="action-btn"></button>
+          <button id="clearBoardBtn" class="action-btn"></button>
+        </div>
+        
+        <div class="backup-actions">
+          <button id="exportBtn" class="action-btn backup-btn">📥 Export Backup</button>
+          <button id="importBtn" class="action-btn backup-btn" onclick="document.getElementById('importFile').click()">📤 Import Backup</button>
+          <input type="file" id="importFile" accept=".json">
+        </div>
+      </div>
+    </div>
+  </div>
 
-    // --- MANTENHA SUAS OUTRAS FUNÇÕES ORIGINAIS ABAIXO ---
-    function renderBoard() {
-      // ... sua lógica original ...
-    }
+  <div id="mainLayoutContainer" class="main-layout">
+    <div id="sidebarTabs" class="sidebar-tabs"></div>
 
-    function initStaticTexts() {
-      // ... sua lógica original ...
-    }
+    <div class="board-chassis">
+      <div id="boardHeader" class="board-header"></div>
+      
+      <div class="scroll-frame">
+        <div id="gridDisplay" class="grid-container"></div>
+      </div>
+    </div>
+  </div>
 
-    function speakWord(text) {
-      // ... sua lógica original ...
-    }
-    
-    // Certifique-se de que sua função setupEventListeners existe 
-    // ou mova seus addEventListeners para aqui.
-    function setupEventListeners() {
-       adminToggleBtn.addEventListener('click', () => {
-        isEditMode = !isEditMode;
-        creatorPanel.style.display = isEditMode ? "block" : "none";
-        renderBoard();
-      });
-      // ... todos os seus outros eventos ...
-    }
-    
-  </script>
+  <script>
+    const STORAGE_KEY = 'aac_multi_canvas_system';
+    let currentLang = {}; 
+
+    let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+      activeBoardId: null,
+      boards: []
+    };
+
+    let isEditMode = false;
+    let pendingAction = null;
+
+    const mainTitle = document.getElementById('mainTitle');
+    const adminToggleBtn = document.getElementById('adminToggleBtn');
+    const creatorPanel = document.getElementById('creatorPanel');
+    const mainLayoutContainer = document.getElementById('mainLayoutContainer');
+    const lblBoardTitle = document.getElementById('lblBoardTitle');
+    const boardTitleInput = document.getElementById('boardTitle');
+    const lblCardWord = document.getElementById('lblCardWord');
+    const cardWordInput = document.getElementById('cardWord');
+    const lblCardImage = document.getElementById('lblCardImage');
+    const cardImageInput = document.getElementById('cardImage');
+    const addCardBtn = document.getElementById('addCardBtn');
+    const clearBoardBtn = document.getElementById('clearBoardBtn');
+    const sidebarTabs = document.getElementById('sidebarTabs');
+    const boardHeader = document.getElementById('boardHeader');
+    const gridDisplay = document.getElementById('gridDisplay');
+    
+    const exportBtn = document.getElementById('exportBtn');
+    const importFile = document.getElementById('importFile');
+
+    const parentalModal = document.getElementById('parentalModal');
+    const parentalSlider = document.getElementById('parentalSlider');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalInstruction = document.getElementById('modalInstruction');
+    const sliderLabel = document.getElementById('sliderLabel');
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadLocalization();
+        // Listener para recalcular o tamanho das fontes se a janela mudar de tamanho
+        window.addEventListener('resize', adjustFontSize);
+    });
+
+    adminToggleBtn.addEventListener('click', () => {
+      if (!isEditMode) {
+        openParentalGate('toggleEdit');
+      } else {
+        executeSecureAction('toggleEdit');
+      }
+    });
+
+    clearBoardBtn.addEventListener('click', () => {
+      openParentalGate('resetAll');
+    });
+
+    function openParentalGate(actionType) {
+      pendingAction = actionType;
+      parentalSlider.value = 0;
+      
+      modalTitle.textContent = currentLang.modalTitle || "Parental Control";
+      modalInstruction.textContent = currentLang.modalInstruction || "Slide to the right to confirm you are an adult.";
+      sliderLabel.textContent = currentLang.sliderLabel || "Slide >>";
+      
+      parentalModal.style.display = "flex";
+    }
+
+    closeModalBtn.addEventListener('click', () => {
+      parentalModal.style.display = "none";
+      pendingAction = null;
+    });
+
+    parentalSlider.addEventListener('input', () => {
+      if (parseInt(parentalSlider.value) === 100) {
+        parentalModal.style.display = "none";
+        if (pendingAction) {
+          executeSecureAction(pendingAction);
+        }
+        pendingAction = null;
+      }
+    });
+
+    parentalSlider.addEventListener('change', () => {
+      if (parseInt(parentalSlider.value) < 100) {
+        parentalSlider.value = 0;
+      }
+    });
+
+function executeSecureAction(action) {
+      if (action === 'toggleEdit') {
+        isEditMode = !isEditMode;
+        if (isEditMode) {
+          creatorPanel.style.display = "block";
+          adminToggleBtn.textContent = currentLang.doneEditing || "✓ Done Editing";
+          adminToggleBtn.classList.add('editing');
+          
+          // --- ADIÇÃO: Preencher título automaticamente ---
+          const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
+          if (activeBoard) {
+            boardTitleInput.value = activeBoard.title;
+          } else {
+            boardTitleInput.value = ""; // Limpa se não houver board ativa
+          }
+          // ------------------------------------------------
+          
+        } else {
+          creatorPanel.style.display = "none";
+          adminToggleBtn.textContent = "⚙️ Setup / Edit";
+          adminToggleBtn.classList.remove('editing');
+        }
+        renderBoard();
+      } 
+      else if (action === 'resetAll') {
+        appState = { activeBoardId: null, boards: [] };
+        localStorage.removeItem(STORAGE_KEY);
+        boardTitleInput.value = "";
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        isEditMode = false;
+        creatorPanel.style.display = "none";
+        adminToggleBtn.textContent = "⚙️ Setup / Edit";
+        adminToggleBtn.classList.remove('editing');
+        initStaticTexts();
+        renderBoard();
+      }
+    }
+
+    async function loadLocalization() {
+      try {
+        const response = await fetch('languages.json');
+        if (!response.ok) throw new Error("Erro na resposta");
+        const languagesData = await response.json();
+        
+        const userLang = (navigator.language || navigator.userLanguage || "en").substring(0, 2);
+        currentLang = languagesData[userLang] ? languagesData[userLang] : languagesData.en;
+        
+        initStaticTexts();
+        renderBoard();
+      } catch (error) {
+        console.error("Usando fallback de idiomas local:", error);
+        currentLang = {
+            mainTitle: "AAC Board",
+            lblBoardTitle: "1. Board Title:",
+            phBoardTitle: "e.g., Family, Routine",
+            lblCardWord: "2. Card Word / Caption:",
+            phCardWord: "e.g., Help, Eat",
+            lblCardImage: "3. Choose Picture from Device:",
+            addCardBtn: "Add to Board",
+            clearBoardBtn: "Reset All",
+            emptyBoardState: "No active board",
+            alertNoTitle: "Please enter a board title.",
+            alertNoWord: "Please enter a card word.",
+            alertNoFile: "Please select an image file.",
+            alertFull: "This board is full (max 16 cards).",
+            langCode: "en",
+            modalTitle: "Controle Parental",
+            modalInstruction: "Arraste o botão totalmente para a direita para desbloquear.",
+            sliderLabel: "Deslize >>",
+            doneEditing: "✓ Concluir Edição"
+        };
+        initStaticTexts();
+        renderBoard();
+      }
+    }
+
+    function initStaticTexts() {
+      mainTitle.textContent = currentLang.mainTitle;
+      lblBoardTitle.textContent = currentLang.lblBoardTitle;
+      boardTitleInput.placeholder = currentLang.phBoardTitle;
+      lblCardWord.textContent = currentLang.lblCardWord;
+      cardWordInput.placeholder = currentLang.phCardWord;
+      lblCardImage.textContent = currentLang.lblCardImage;
+      addCardBtn.textContent = currentLang.addCardBtn;
+      clearBoardBtn.textContent = currentLang.clearBoardBtn;
+
+      if (currentLang.isRtl) {
+        mainLayoutContainer.classList.add('rtl-layout');
+        gridDisplay.style.direction = "rtl";
+      } else {
+        mainLayoutContainer.classList.remove('rtl-layout');
+        gridDisplay.style.direction = "ltr";
+      }
+    }
+
+    function compressImage(file, maxWidth, maxHeight, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(event) {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          img.onerror = error => reject(error);
+        };
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error("Erro no LocalStorage:", e);
+        alert("Aviso: Memória do navegador cheia!");
+      }
+    }
+
+    function speakWord(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = currentLang.langCode || "en"; 
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function adjustFontSize() {
+      const titles = document.querySelectorAll('.aac-card h3');
+      titles.forEach(title => {
+        // Redimensionamento baseado na altura dinâmica calculada do elemento pai
+        const parentHeight = title.parentElement.clientHeight;
+        let fontSize = Math.max(12, Math.floor(parentHeight * 0.14)); 
+        title.style.fontSize = fontSize + 'px';
+        
+        while (title.scrollWidth > title.clientWidth && fontSize > 10) {
+          fontSize--;
+          title.style.fontSize = fontSize + 'px';
+        }
+      });
+    }
+
+    function deleteCard(boardId, cardId) {
+      const board = appState.boards.find(b => b.id === boardId);
+      if (!board) return;
+      board.cards = board.cards.filter(c => c.id !== cardId);
+      saveState();
+      renderBoard();
+    }
+
+function renderBoard() {
+      if (!currentLang.mainTitle) return; 
+
+      sidebarTabs.innerHTML = "";
+      appState.boards.forEach(board => {
+        const tabRow = document.createElement('div');
+        tabRow.className = 'tab-row';
+
+        const bullet = document.createElement('span');
+        bullet.className = 'tab-bullet';
+        bullet.textContent = '•';
+        tabRow.appendChild(bullet);
+
+        const tab = document.createElement('span');
+        tab.className = `tab-item ${board.id === appState.activeBoardId ? 'active' : ''}`;
+        tab.textContent = board.title;
+
+        tab.addEventListener('click', () => {
+          appState.activeBoardId = board.id;
+          
+          // --- ADIÇÃO: Atualiza o título no campo se estiver em modo edição ---
+          if (isEditMode) {
+            boardTitleInput.value = board.title;
+          }
+          // --------------------------------------------------------------------
+
+          saveState();
+          renderBoard();
+        });
+        tabRow.appendChild(tab);
+
+        if (isEditMode) {
+          const deleteBoardBtn = document.createElement('button');
+          deleteBoardBtn.className = 'delete-board-btn';
+          deleteBoardBtn.innerHTML = '✕'; 
+          deleteBoardBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            if (board.cards.length > 0) {
+              const msg = (currentLang.confirmDeleteBoard || "Delete board {title}?")
+                .replace("{title}", board.title);
+              if (!confirm(msg)) return;
+            }
+            appState.boards = appState.boards.filter(b => b.id !== board.id);
+            if (appState.activeBoardId === board.id) {
+              appState.activeBoardId = appState.boards.length > 0 ? appState.boards[0].id : null;
+            }
+            saveState();
+            renderBoard();
+          });
+          tabRow.appendChild(deleteBoardBtn);
+        }
+        sidebarTabs.appendChild(tabRow);
+      });
+
+      const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
+      gridDisplay.innerHTML = "";
+      boardHeader.textContent = activeBoard ? activeBoard.title : currentLang.emptyBoardState;
+
+      for (let i = 0; i < 16; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'grid-slot';
+
+        if (isEditMode && activeBoard && activeBoard.cards[i]) {
+          slot.classList.add('edit-active');
+        }
+
+        if (activeBoard && activeBoard.cards[i]) {
+          const card = activeBoard.cards[i];
+          const cardElement = document.createElement('div');
+          cardElement.className = 'aac-card';
+          cardElement.innerHTML = `<h3>${card.word}</h3><img src="${card.image}" alt="${card.word}">`;
+          
+          if (isEditMode) {
+            const deleteBtn = document.createElement('div');
+            deleteBtn.className = 'delete-badge';
+            deleteBtn.textContent = '✕';
+            deleteBtn.addEventListener('click', (e) => {
+              e.stopPropagation(); 
+              deleteCard(activeBoard.id, card.id);
+            });
+            slot.appendChild(deleteBtn);
+          } else {
+            cardElement.addEventListener('click', () => speakWord(card.word));
+          }
+          slot.appendChild(cardElement);
+        }
+        gridDisplay.appendChild(slot);
+      }
+      
+      setTimeout(adjustFontSize, 20);
+    }
+
+    addCardBtn.addEventListener('click', async () => {
+      const targetTitle = boardTitleInput.value.trim();
+      const word = cardWordInput.value.trim();
+      const file = cardImageInput.files[0];
+
+      if (!targetTitle) return alert(currentLang.alertNoTitle);
+      if (!word) return alert(currentLang.alertNoWord);
+      if (!file) return alert(currentLang.alertNoFile);
+
+      let targetBoard = appState.boards.find(b => b.title.toLowerCase() === targetTitle.toLowerCase());
+      if (!targetBoard) {
+        targetBoard = { id: 'board_' + Date.now(), title: targetTitle, cards: [] };
+        appState.boards.push(targetBoard);
+        appState.activeBoardId = targetBoard.id;
+      }
+
+      if (targetBoard.cards.length >= 16) return alert(currentLang.alertFull);
+
+      try {
+        addCardBtn.disabled = true;
+        const compressedBase64 = await compressImage(file, 350, 350, 0.75);
+
+        targetBoard.cards.push({
+          id: 'card_' + Date.now(),
+          word: word,
+          image: compressedBase64
+        });
+
+        saveState();
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        renderBoard();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        addCardBtn.disabled = false;
+      }
+    });
+
+    exportBtn.addEventListener('click', () => {
+      if (appState.boards.length === 0) {
+        alert("Não há pranchas para exportar.");
+        return;
+      }
+      
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `aac_boards_backup_${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
+
+    importFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const importedData = JSON.parse(event.target.result);
+          
+          if (importedData && Array.isArray(importedData.boards)) {
+            appState = importedData;
+            saveState();
+            renderBoard();
+            alert("Backup importado com sucesso! Todas as pranchas foram restauradas.");
+          } else {
+            alert("Erro: O ficheiro selecionado não possui um formato de backup válido.");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao ler o ficheiro de backup. Certifique-se de que é um ficheiro .json válido.");
+        } finally {
+          importFile.value = "";
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
 </body>
 </html>
