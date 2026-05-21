@@ -334,7 +334,7 @@ gap: 10px;
 flex-grow: 1;
 overflow: hidden;
 justify-content: center;
-align-items: center; /* Centraliza a grade verticalmente e horizontalmente */
+align-items: center;
 }
 
 /* Grade Inteligente Automática */
@@ -343,9 +343,6 @@ display: grid;
 grid-template-columns: repeat(4, 1fr);
 grid-template-rows: repeat(4, 1fr);
 gap: 12px;
-
-/* O segredo da automação: usa a menor dimensão disponível (largura ou altura livre) 
-        para garantir que a grade se expanda ao máximo sem estourar as margens */
 width: 100%;
 height: 100%;
 max-width: calc(100vh - 180px); 
@@ -424,7 +421,7 @@ height: 20%;
 display: flex;
 align-items: center;
 justify-content: center;
-font-size: 4cqi; /* Usa tamanho relativo ao container interno para responsividade textual */
+font-size: 4cqi;
 font-min-size: 12px;
 font-weight: bold;
 color: #000;
@@ -556,7 +553,6 @@ const sliderLabel = document.getElementById('sliderLabel');
 
 document.addEventListener("DOMContentLoaded", () => {
 loadLocalization();
-// Listener para recalcular o tamanho das fontes se a janela mudar de tamanho
 window.addEventListener('resize', adjustFontSize);
 });
 
@@ -612,14 +608,12 @@ creatorPanel.style.display = "block";
 adminToggleBtn.textContent = currentLang.doneEditing || "✓ Done Editing";
 adminToggleBtn.classList.add('editing');
 
-// --- ADIÇÃO: Preencher título automaticamente ---
 const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
 if (activeBoard) {
 boardTitleInput.value = activeBoard.title;
 } else {
-boardTitleInput.value = ""; // Limpa se não houver board ativa
+boardTitleInput.value = ""; 
 }
-// ------------------------------------------------
 
 } else {
 creatorPanel.style.display = "none";
@@ -759,7 +753,6 @@ window.speechSynthesis.speak(utterance);
 function adjustFontSize() {
 const titles = document.querySelectorAll('.aac-card h3');
 titles.forEach(title => {
-// Redimensionamento baseado na altura dinâmica calculada do elemento pai
 const parentHeight = title.parentElement.clientHeight;
 let fontSize = Math.max(12, Math.floor(parentHeight * 0.14)); 
 title.style.fontSize = fontSize + 'px';
@@ -779,7 +772,6 @@ saveState();
 renderBoard();
 }
 
-    function renderBoard() {
 function renderBoard() {
 if (!currentLang.mainTitle) return; 
 
@@ -800,11 +792,9 @@ tab.textContent = board.title;
 tab.addEventListener('click', () => {
 appState.activeBoardId = board.id;
           
-          // --- ADIÇÃO: Atualiza o título no campo se estiver em modo edição ---
           if (isEditMode) {
             boardTitleInput.value = board.title;
           }
-          // --------------------------------------------------------------------
 
 saveState();
 renderBoard();
@@ -869,8 +859,6 @@ slot.appendChild(cardElement);
 gridDisplay.appendChild(slot);
 }
 
-      // Pequeno timeout garante que o navegador terminou de renderizar os elementos 
-      // antes de calcular as alturas reais para o tamanho de fonte perfeito.
 setTimeout(adjustFontSize, 20);
 }
 
