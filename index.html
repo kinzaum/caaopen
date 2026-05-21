@@ -779,7 +779,7 @@ function executeSecureAction(action) {
       renderBoard();
     }
 
-    function renderBoard() {
+function renderBoard() {
       if (!currentLang.mainTitle) return; 
 
       sidebarTabs.innerHTML = "";
@@ -798,6 +798,13 @@ function executeSecureAction(action) {
 
         tab.addEventListener('click', () => {
           appState.activeBoardId = board.id;
+          
+          // --- ADIÇÃO: Atualiza o título no campo se estiver em modo edição ---
+          if (isEditMode) {
+            boardTitleInput.value = board.title;
+          }
+          // --------------------------------------------------------------------
+
           saveState();
           renderBoard();
         });
@@ -861,8 +868,6 @@ function executeSecureAction(action) {
         gridDisplay.appendChild(slot);
       }
       
-      // Pequeno timeout garante que o navegador terminou de renderizar os elementos 
-      // antes de calcular as alturas reais para o tamanho de fonte perfeito.
       setTimeout(adjustFontSize, 20);
     }
 
