@@ -11,13 +11,24 @@
       --bg-color: #f9f9f9;
     }
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+    /* Fixa o corpo para ocupar a altura total da tela sem rolar a página inteira */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       background-color: var(--bg-color);
     }
 
-    /* Cabeçalho Superior */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Superior Fixo */
     .app-header {
       display: flex;
       justify-content: space-between;
@@ -25,6 +36,7 @@
       margin-bottom: 15px;
       border-bottom: 2px solid #eee;
       padding-bottom: 10px;
+      flex-shrink: 0; /* Impede o cabeçalho de espremer */
     }
 
     .app-header h1 {
@@ -33,7 +45,6 @@
       font-size: 28px;
     }
 
-    /* Botão de Controle do Painel (Engrenagem/Ajuste) */
     .admin-toggle-btn {
       background-color: #666;
       color: white;
@@ -48,15 +59,16 @@
       background-color: #ff9900;
     }
 
-    /* Painel do Criador Retrátil (Escondido por padrão) */
+    /* Painel do Criador Retrátil */
     .creator-panel {
-      display: none; /* Controlado via JS */
+      display: none;
       background: #fff;
       padding: 20px;
       border-radius: 15px;
       border: 2px dashed #ff9900;
       margin-bottom: 20px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      flex-shrink: 0; /* Mantém o tamanho fixo quando aberto */
     }
 
     .creator-form {
@@ -87,7 +99,6 @@
       font-size: 14px;
     }
 
-    /* Zona de Ações Principais e de Backup */
     .panel-sections-container {
       width: 100%;
       display: flex;
@@ -138,7 +149,7 @@
 
     #importFile { display: none; }
 
-    /* --- ESTILIZAÇÃO DO MODAL DE TRANCA PARENTAL (SLIDER) --- */
+    /* --- MODAL DE TRANCA PARENTAL --- */
     .parental-modal {
       display: none;
       position: fixed;
@@ -162,19 +173,9 @@
       position: relative;
     }
 
-    .parental-box h4 {
-      margin: 0 0 10px 0;
-      font-size: 18px;
-      color: #333;
-    }
+    .parental-box h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
+    .parental-box p { margin: 0 0 20px 0; font-size: 14px; color: #666; }
 
-    .parental-box p {
-      margin: 0 0 20px 0;
-      font-size: 14px;
-      color: #666;
-    }
-
-    /* Container do Slider Estilo iOS */
     .slider-track {
       position: relative;
       background: #eee;
@@ -197,7 +198,6 @@
       user-select: none;
     }
 
-    /* O Input Range Invisível por cima para capturar o toque/arraste */
     .ios-slider {
       -webkit-appearance: none;
       appearance: none;
@@ -212,7 +212,6 @@
       z-index: 5;
     }
 
-    /* O Botão de arrastar (Thumb) customizado */
     .ios-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -221,7 +220,6 @@
       border-radius: 25px;
       background: var(--primary-color);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      cursor: -webkit-grab;
     }
 
     .ios-slider::-moz-range-thumb {
@@ -231,7 +229,6 @@
       border-radius: 25px;
       background: var(--primary-color);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      cursor: grab;
     }
 
     .close-modal-btn {
@@ -245,14 +242,16 @@
       cursor: pointer;
     }
 
-    /* Layout Principal Expandido */
+    /* --- NOVO DESIGN DE LAYOUT INDEPENDENTE --- */
     .main-layout {
       display: flex;
       gap: 20px;
       align-items: stretch;
-      min-height: 600px;
+      flex-grow: 1; /* Faz o container ocupar todo o resto do espaço vertical da janela */
+      overflow: hidden; /* Corta transbordamentos externos */
     }
 
+    /* Aba Lateral Independente (Scroll próprio se houver muitas pranchas) */
     .sidebar-tabs {
       background: white;
       border: 1px solid var(--border-color);
@@ -260,7 +259,9 @@
       padding: 25px 15px;
       width: 260px;
       flex-shrink: 0;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto; /* Ativa a rolagem independente aqui! */
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
@@ -272,6 +273,7 @@
       padding: 8px;
       border-radius: 12px;
       transition: background 0.2s ease;
+      flex-shrink: 0; /* Impede os botões de amassar */
     }
     .tab-row:hover {
       background: #f0f0f0;
@@ -306,6 +308,7 @@
       padding: 0 5px;
     }
 
+    /* Chassi Principal da Prancha Fixo */
     .board-chassis {
       flex-grow: 1;
       background: white;
@@ -315,6 +318,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
+      overflow: hidden; /* Garante que o chassi não estique a tela */
     }
 
     .board-header {
@@ -326,21 +330,26 @@
       background: #e6f9ed;
       padding: 10px;
       border-radius: 15px;
+      flex-shrink: 0;
     }
 
+    /* Moldura de Rolagem Interna da Grade */
     .scroll-frame {
       display: flex;
       gap: 15px;
       flex-grow: 1;
+      overflow-y: auto; /* Torna a rolagem dos cards independente da barra lateral */
+      padding-right: 5px; /* Evita que a scrollbar nativa cubra os cards */
     }
 
+    /* Grade Fixa 4x4 */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(4, 1fr);
       gap: 15px;
       flex-grow: 1;
-      min-height: 480px;
+      min-height: 480px; /* Mantém a proporção mínima da matriz */
     }
 
     .grid-slot {
@@ -432,11 +441,9 @@
       box-shadow: 0 0 18px rgba(0, 204, 68, 0.6);
     }
 
+    /* Ocultamos a barra decorativa antiga, pois o scroll nativo agora cuida do fluxo */
     .side-scroll-bar {
-      width: 15px;
-      background: #ddd;
-      border-radius: 10px;
-      align-self: stretch;
+      display: none;
     }
 
     .rtl-layout { direction: rtl; }
@@ -504,7 +511,6 @@
       
       <div class="scroll-frame">
         <div id="gridDisplay" class="grid-container"></div>
-        <div class="side-scroll-bar"></div>
       </div>
     </div>
   </div>
@@ -519,9 +525,8 @@
     };
 
     let isEditMode = false;
-    let pendingAction = null; // Armazena se o slider vai abrir o editor ou resetar tudo
+    let pendingAction = null;
 
-    // Elementos do DOM
     const mainTitle = document.getElementById('mainTitle');
     const adminToggleBtn = document.getElementById('adminToggleBtn');
     const creatorPanel = document.getElementById('creatorPanel');
@@ -541,7 +546,6 @@
     const exportBtn = document.getElementById('exportBtn');
     const importFile = document.getElementById('importFile');
 
-    // Elementos do Modal do Slider
     const parentalModal = document.getElementById('parentalModal');
     const parentalSlider = document.getElementById('parentalSlider');
     const closeModalBtn = document.getElementById('closeModalBtn');
@@ -553,12 +557,10 @@
         loadLocalization();
     });
 
-    // Gatilho do Botão Principal: Em vez de alternar direto, pede o Slider se estiver fechado
     adminToggleBtn.addEventListener('click', () => {
       if (!isEditMode) {
         openParentalGate('toggleEdit');
       } else {
-        // Fechar o editor não precisa de tranca de segurança
         executeSecureAction('toggleEdit');
       }
     });
@@ -567,12 +569,10 @@
       openParentalGate('resetAll');
     });
 
-    // --- LÓGICA DE CONTROLE DO SLIDER PARENTAL ---
     function openParentalGate(actionType) {
       pendingAction = actionType;
       parentalSlider.value = 0;
       
-      // Tradução dinâmica dos textos do Modal de Proteção
       modalTitle.textContent = currentLang.modalTitle || "Parental Control";
       modalInstruction.textContent = currentLang.modalInstruction || "Slide to the right to confirm you are an adult.";
       sliderLabel.textContent = currentLang.sliderLabel || "Slide >>";
@@ -585,7 +585,6 @@
       pendingAction = null;
     });
 
-    // Monitora o movimento do slider em tempo real
     parentalSlider.addEventListener('input', () => {
       if (parseInt(parentalSlider.value) === 100) {
         parentalModal.style.display = "none";
@@ -596,14 +595,12 @@
       }
     });
 
-    // Se soltar o dedo antes do 100, joga o slider de volta para o zero de forma suave
     parentalSlider.addEventListener('change', () => {
       if (parseInt(parentalSlider.value) < 100) {
         parentalSlider.value = 0;
       }
     });
 
-    // Executa a ação após validação com sucesso no Slider
     function executeSecureAction(action) {
       if (action === 'toggleEdit') {
         isEditMode = !isEditMode;
@@ -889,7 +886,6 @@
       }
     });
 
-    // --- LÓGICA DE EXPORTAÇÃO (BACKUP) ---
     exportBtn.addEventListener('click', () => {
       if (appState.boards.length === 0) {
         alert("Não há pranchas para exportar.");
@@ -905,7 +901,6 @@
       downloadAnchor.remove();
     });
 
-    // --- LÓGICA DE IMPORTAÇÃO (RESTAURAR) ---
     importFile.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
