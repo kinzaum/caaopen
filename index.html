@@ -323,16 +323,9 @@
       overflow: hidden;
     }
 
+    /* Oculta o título verde para otimização de espaço vertical */
     .board-header {
-      font-size: 26px;
-      font-weight: bold;
-      text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 10px;
-      background: #e6f9ed;
-      padding: 6px;
-      border-radius: 10px;
-      flex-shrink: 0;
+      display: none;
     }
 
     /* Container de Enquadramento que estica 100% no espaço livre */
@@ -564,7 +557,6 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         loadLocalization();
-        // Listener para recalcular o tamanho das fontes se a janela mudar de tamanho
         window.addEventListener('resize', adjustFontSize);
     });
 
@@ -757,7 +749,6 @@
     function adjustFontSize() {
       const titles = document.querySelectorAll('.aac-card h3');
       titles.forEach(title => {
-        // Redimensionamento baseado na altura dinâmica calculada do elemento pai
         const parentHeight = title.parentElement.clientHeight;
         let fontSize = Math.max(12, Math.floor(parentHeight * 0.14)); 
         title.style.fontSize = fontSize + 'px';
@@ -859,8 +850,6 @@
         gridDisplay.appendChild(slot);
       }
       
-      // Pequeno timeout garante que o navegador terminou de renderizar os elementos 
-      // antes de calcular as alturas reais para o tamanho de fonte perfeito.
       setTimeout(adjustFontSize, 20);
     }
 
