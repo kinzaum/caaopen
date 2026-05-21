@@ -11,7 +11,6 @@
       --bg-color: #f9f9f9;
     }
 
-    /* Fixa o corpo para ocupar a altura total da tela sem rolar a página inteira */
     html, body {
       height: 100%;
       margin: 0;
@@ -25,7 +24,7 @@
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-      padding: 20px;
+      padding: 15px;
     }
 
     /* Cabeçalho Superior Fixo */
@@ -33,24 +32,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-      flex-shrink: 0; /* Impede o cabeçalho de espremer */
+      padding-bottom: 5px;
+      flex-shrink: 0;
     }
 
     .app-header h1 {
       margin: 0;
       color: #333;
-      font-size: 28px;
+      font-size: 24px;
     }
 
     .admin-toggle-btn {
       background-color: #666;
       color: white;
       border: none;
-      padding: 10px 16px;
-      font-size: 14px;
+      padding: 8px 14px;
+      font-size: 13px;
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
@@ -63,74 +62,74 @@
     .creator-panel {
       display: none;
       background: #fff;
-      padding: 20px;
-      border-radius: 15px;
+      padding: 15px;
+      border-radius: 12px;
       border: 2px dashed #ff9900;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      flex-shrink: 0; /* Mantém o tamanho fixo quando aberto */
+      flex-shrink: 0;
     }
 
     .creator-form {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 12px;
       align-items: flex-end;
     }
 
     .form-group {
       flex: 1;
-      min-width: 200px;
+      min-width: 180px;
     }
 
     label {
       display: block;
       font-weight: bold;
-      margin-bottom: 6px;
-      font-size: 14px;
+      margin-bottom: 4px;
+      font-size: 13px;
     }
 
     input[type="text"], input[type="file"] {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
       box-sizing: border-box;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 6px;
+      font-size: 13px;
     }
 
     .panel-sections-container {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 15px;
+      gap: 12px;
+      margin-top: 12px;
       border-top: 1px solid #eee;
-      padding-top: 15px;
+      padding-top: 12px;
     }
 
     .panel-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex: 2;
-      min-width: 300px;
+      min-width: 280px;
     }
 
     .backup-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex: 1;
-      min-width: 200px;
+      min-width: 180px;
     }
 
     button.action-btn {
       flex: 1;
-      padding: 12px;
-      font-size: 14px;
+      padding: 10px;
+      font-size: 13px;
       font-weight: bold;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
     }
 
@@ -165,23 +164,23 @@
 
     .parental-box {
       background: white;
-      padding: 30px;
-      border-radius: 20px;
-      width: 350px;
+      padding: 25px;
+      border-radius: 15px;
+      width: 320px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       position: relative;
     }
 
-    .parental-box h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
-    .parental-box p { margin: 0 0 20px 0; font-size: 14px; color: #666; }
+    .parental-box h4 { margin: 0 0 8px 0; font-size: 16px; color: #333; }
+    .parental-box p { margin: 0 0 15px 0; font-size: 13px; color: #666; }
 
     .slider-track {
       position: relative;
       background: #eee;
       padding: 2px;
-      border-radius: 30px;
-      height: 50px;
+      border-radius: 25px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -191,7 +190,7 @@
 
     .slider-label {
       position: absolute;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold;
       color: #999;
       pointer-events: none;
@@ -215,167 +214,173 @@
     .ios-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 55px;
-      height: 46px;
-      border-radius: 25px;
+      width: 50px;
+      height: 40px;
+      border-radius: 20px;
       background: var(--primary-color);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .ios-slider::-moz-range-thumb {
-      width: 55px;
-      height: 46px;
+      width: 50px;
+      height: 40px;
       border: none;
-      border-radius: 25px;
+      border-radius: 20px;
       background: var(--primary-color);
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .close-modal-btn {
       position: absolute;
-      top: 10px;
-      right: 15px;
+      top: 8px;
+      right: 12px;
       background: none;
       border: none;
-      font-size: 20px;
+      font-size: 18px;
       color: #aaa;
       cursor: pointer;
     }
 
-    /* --- NOVO DESIGN DE LAYOUT INDEPENDENTE --- */
+    /* --- LAYOUT COM PROPORÇÕES COMPACTAS --- */
     .main-layout {
       display: flex;
-      gap: 20px;
+      gap: 15px;
       align-items: stretch;
-      flex-grow: 1; /* Faz o container ocupar todo o resto do espaço vertical da janela */
-      overflow: hidden; /* Corta transbordamentos externos */
+      flex-grow: 1;
+      overflow: hidden;
     }
 
-    /* Aba Lateral Independente (Scroll próprio se houver muitas pranchas) */
+    /* Ocupa Menos Espaço Horizontal (Reduzido para 160px) */
     .sidebar-tabs {
       background: white;
       border: 1px solid var(--border-color);
-      border-radius: 25px;
-      padding: 25px 15px;
-      width: 260px;
+      border-radius: 18px;
+      padding: 15px 10px;
+      width: 160px; /* Compactado */
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      overflow-y: auto; /* Ativa a rolagem independente aqui! */
+      overflow-y: auto;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     .tab-row {
       display: flex;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       width: 100%;
-      padding: 8px;
-      border-radius: 12px;
+      padding: 6px;
+      border-radius: 8px;
       transition: background 0.2s ease;
-      flex-shrink: 0; /* Impede os botões de amassar */
+      flex-shrink: 0;
     }
     .tab-row:hover {
       background: #f0f0f0;
     }
 
     .tab-bullet {
-      font-size: 28px;
-      margin-right: 10px;
+      font-size: 20px; /* Menor */
+      margin-right: 6px;
       line-height: 1;
       color: var(--primary-color);
     }
 
     .tab-item {
-      font-size: 24px;
+      font-size: 16px; /* Letras menores para caber no espaço curto */
       font-weight: bold;
       cursor: pointer;
       color: #333;
       flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .tab-item.active {
       color: var(--primary-color);
-      font-size: 26px;
+      font-size: 18px;
     }
 
     .delete-board-btn {
       background: none;
       border: none;
       color: #ff3333;
-      font-size: 20px;
+      font-size: 16px;
       cursor: pointer;
-      padding: 0 5px;
+      padding: 0 3px;
     }
 
-    /* Chassi Principal da Prancha Fixo */
+    /* Chassi Principal */
     .board-chassis {
       flex-grow: 1;
       background: white;
       border: 1px solid var(--border-color);
-      border-radius: 35px;
-      padding: 25px;
+      border-radius: 25px;
+      padding: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* Garante que o chassi não estique a tela */
+      overflow: hidden;
     }
 
     .board-header {
-      font-size: 42px;
+      font-size: 28px; /* Título mais discreto */
       font-weight: bold;
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       background: #e6f9ed;
-      padding: 10px;
-      border-radius: 15px;
+      padding: 6px;
+      border-radius: 10px;
       flex-shrink: 0;
     }
 
-    /* Moldura de Rolagem Interna da Grade */
+    /* Área de Rolagem Otimizada */
     .scroll-frame {
       display: flex;
-      gap: 15px;
+      gap: 10px;
       flex-grow: 1;
-      overflow-y: auto; /* Torna a rolagem dos cards independente da barra lateral */
-      padding-right: 5px; /* Evita que a scrollbar nativa cubra os cards */
+      overflow-y: auto;
+      padding-right: 3px;
+      justify-content: center; /* Centraliza a grade compacta */
+      align-items: flex-start;
     }
 
-    /* Grade Fixa 4x4 */
+    /* Matriz Quadrada Compacta (Metade do tamanho visual anterior) */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(4, 1fr);
-      gap: 15px;
+      gap: 10px;
       flex-grow: 1;
-      min-height: 480px; /* Mantém a proporção mínima da matriz */
+      max-width: 550px; /* Limita a expansão máxima horizontal dos cards */
+      aspect-ratio: 1 / 1; /* Força os cards a manterem proporções perfeitas */
     }
 
     .grid-slot {
-      border: 2px dashed #e0e0e0;
+      border: 1px dashed #e0e0e0;
       background: #fafafa;
-      border-radius: 20px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 5px;
+      padding: 4px;
       position: relative;
     }
 
     .delete-badge {
       position: absolute;
-      top: -8px;
-      right: -8px;
+      top: -6px;
+      right: -6px;
       background: #ff3333;
       color: white;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      font-size: 16px;
+      width: 22px;
+      height: 22px;
+      font-size: 13px;
       font-weight: bold;
-      line-height: 28px;
+      line-height: 22px;
       text-align: center;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -383,7 +388,7 @@
     }
 
     .grid-slot.edit-active {
-      border: 2px dashed #ff9900;
+      border: 1px dashed #ff9900;
       background: #fff9e6;
       animation: slight-shake 0.3s infinite alternate;
     }
@@ -393,22 +398,23 @@
       100% { transform: rotate(0.5deg); }
     }
 
+    /* Cards Reduzidos Pela Metade */
     .aac-card {
       width: 100%;
       height: 100%;
       background: white;
-      border-radius: 18px;
+      border-radius: 10px;
       text-align: center;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      padding: 8px;
+      padding: 4px;
       box-sizing: border-box;
-      border: 3px solid #eee;
+      border: 2px solid #eee;
       overflow: hidden;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
       transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -417,11 +423,11 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 20%;
+      height: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 12px; /* Fonte reduzida para metade */
       font-weight: bold;
       color: #000;
       white-space: nowrap;
@@ -430,21 +436,17 @@
 
     .aac-card img {
       width: 100%;
-      height: 75%;
+      height: calc(100% - 24px);
       object-fit: contain;
-      margin-top: auto;
     }
 
     .aac-card:active {
       transform: scale(0.94);
       border-color: var(--primary-color);
-      box-shadow: 0 0 18px rgba(0, 204, 68, 0.6);
+      box-shadow: 0 0 10px rgba(0, 204, 68, 0.5);
     }
 
-    /* Ocultamos a barra decorativa antiga, pois o scroll nativo agora cuida do fluxo */
-    .side-scroll-bar {
-      display: none;
-    }
+    .side-scroll-bar { display: none; }
 
     .rtl-layout { direction: rtl; }
     .rtl-layout .delete-board-btn { margin-left: 0; margin-right: auto; }
@@ -515,7 +517,7 @@
     </div>
   </div>
 
-  <script>
+  <script {contentFetchId="uploaded:WhatsApp Image 2026-05-19 at 1.09.27 PM.jpeg-f6002e84-1f97-44d7-bd1b-64c5b7f19aca"}>
     const STORAGE_KEY = 'aac_multi_canvas_system';
     let currentLang = {}; 
 
@@ -746,9 +748,9 @@
     function adjustFontSize() {
       const titles = document.querySelectorAll('.aac-card h3');
       titles.forEach(title => {
-        let fontSize = 18; 
+        let fontSize = 12; 
         title.style.fontSize = fontSize + 'px';
-        while (title.scrollWidth > title.clientWidth && fontSize > 11) {
+        while (title.scrollWidth > title.clientWidth && fontSize > 8) {
           fontSize--;
           title.style.fontSize = fontSize + 'px';
         }
