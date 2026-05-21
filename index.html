@@ -241,7 +241,7 @@
       cursor: pointer;
     }
 
-    /* --- LAYOUT COM PROPORÇÕES COMPACTAS --- */
+    /* --- LAYOUT DINÂMICO INTELIGENTE --- */
     .main-layout {
       display: flex;
       gap: 15px;
@@ -250,13 +250,13 @@
       overflow: hidden;
     }
 
-    /* Ocupa Menos Espaço Horizontal (Reduzido para 160px) */
+    /* Painel Lateral Compacto Mantido */
     .sidebar-tabs {
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 18px;
       padding: 15px 10px;
-      width: 160px; /* Compactado */
+      width: 150px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
@@ -279,14 +279,14 @@
     }
 
     .tab-bullet {
-      font-size: 20px; /* Menor */
+      font-size: 20px;
       margin-right: 6px;
       line-height: 1;
       color: var(--primary-color);
     }
 
     .tab-item {
-      font-size: 16px; /* Letras menores para caber no espaço curto */
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
       color: #333;
@@ -298,7 +298,7 @@
 
     .tab-item.active {
       color: var(--primary-color);
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .delete-board-btn {
@@ -310,7 +310,7 @@
       padding: 0 3px;
     }
 
-    /* Chassi Principal */
+    /* Chassi Principal Fluido */
     .board-chassis {
       flex-grow: 1;
       background: white;
@@ -324,63 +324,68 @@
     }
 
     .board-header {
-      font-size: 28px; /* Título mais discreto */
+      font-size: 26px;
       font-weight: bold;
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       background: #e6f9ed;
       padding: 6px;
       border-radius: 10px;
       flex-shrink: 0;
     }
 
-    /* Área de Rolagem Otimizada */
+    /* Container de Enquadramento que estica 100% no espaço livre */
     .scroll-frame {
       display: flex;
       gap: 10px;
       flex-grow: 1;
-      overflow-y: auto;
-      padding-right: 3px;
-      justify-content: center; /* Centraliza a grade compacta */
-      align-items: flex-start;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center; /* Centraliza a grade verticalmente e horizontalmente */
     }
 
-    /* Matriz Quadrada Compacta (Metade do tamanho visual anterior) */
+    /* Grade Inteligente Automática */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(4, 1fr);
-      gap: 10px;
-      flex-grow: 1;
-      max-width: 550px; /* Limita a expansão máxima horizontal dos cards */
-      aspect-ratio: 1 / 1; /* Força os cards a manterem proporções perfeitas */
+      gap: 12px;
+      
+      /* O segredo da automação: usa a menor dimensão disponível (largura ou altura livre) 
+         para garantir que a grade se expanda ao máximo sem estourar as margens */
+      width: 100%;
+      height: 100%;
+      max-width: calc(100vh - 180px); 
+      max-height: calc(100vh - 180px);
+      aspect-ratio: 1 / 1; 
     }
 
     .grid-slot {
-      border: 1px dashed #e0e0e0;
+      border: 2px dashed #e0e0e0;
       background: #fafafa;
-      border-radius: 12px;
+      border-radius: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 6px;
       position: relative;
+      overflow: hidden;
     }
 
     .delete-badge {
       position: absolute;
-      top: -6px;
-      right: -6px;
+      top: 4px;
+      right: 4px;
       background: #ff3333;
       color: white;
       border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      font-size: 13px;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
       font-weight: bold;
-      line-height: 22px;
+      line-height: 24px;
       text-align: center;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -388,33 +393,33 @@
     }
 
     .grid-slot.edit-active {
-      border: 1px dashed #ff9900;
+      border: 2px dashed #ff9900;
       background: #fff9e6;
       animation: slight-shake 0.3s infinite alternate;
     }
 
     @keyframes slight-shake {
-      0% { transform: rotate(-0.5deg); }
+      0 { transform: rotate(-0.5deg); }
       100% { transform: rotate(0.5deg); }
     }
 
-    /* Cards Reduzidos Pela Metade */
+    /* Cards Proporcionais */
     .aac-card {
       width: 100%;
       height: 100%;
       background: white;
-      border-radius: 10px;
+      border-radius: 12px;
       text-align: center;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      padding: 4px;
+      padding: 6px;
       box-sizing: border-box;
-      border: 2px solid #eee;
+      border: 3px solid #eee;
       overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.03);
       transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -423,11 +428,12 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 22px;
+      height: 20%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px; /* Fonte reduzida para metade */
+      font-size: 4cqi; /* Usa tamanho relativo ao container interno para responsividade textual */
+      font-min-size: 12px;
       font-weight: bold;
       color: #000;
       white-space: nowrap;
@@ -436,14 +442,15 @@
 
     .aac-card img {
       width: 100%;
-      height: calc(100% - 24px);
+      height: 78%;
       object-fit: contain;
+      margin-top: auto;
     }
 
     .aac-card:active {
-      transform: scale(0.94);
+      transform: scale(0.95);
       border-color: var(--primary-color);
-      box-shadow: 0 0 10px rgba(0, 204, 68, 0.5);
+      box-shadow: 0 0 12px rgba(0, 204, 68, 0.5);
     }
 
     .side-scroll-bar { display: none; }
@@ -517,7 +524,7 @@
     </div>
   </div>
 
-  <script {contentFetchId="uploaded:WhatsApp Image 2026-05-19 at 1.09.27 PM.jpeg-f6002e84-1f97-44d7-bd1b-64c5b7f19aca"}>
+  <script>
     const STORAGE_KEY = 'aac_multi_canvas_system';
     let currentLang = {}; 
 
@@ -557,6 +564,8 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         loadLocalization();
+        // Listener para recalcular o tamanho das fontes se a janela mudar de tamanho
+        window.addEventListener('resize', adjustFontSize);
     });
 
     adminToggleBtn.addEventListener('click', () => {
@@ -748,9 +757,12 @@
     function adjustFontSize() {
       const titles = document.querySelectorAll('.aac-card h3');
       titles.forEach(title => {
-        let fontSize = 12; 
+        // Redimensionamento baseado na altura dinâmica calculada do elemento pai
+        const parentHeight = title.parentElement.clientHeight;
+        let fontSize = Math.max(12, Math.floor(parentHeight * 0.14)); 
         title.style.fontSize = fontSize + 'px';
-        while (title.scrollWidth > title.clientWidth && fontSize > 8) {
+        
+        while (title.scrollWidth > title.clientWidth && fontSize > 10) {
           fontSize--;
           title.style.fontSize = fontSize + 'px';
         }
@@ -846,7 +858,10 @@
         }
         gridDisplay.appendChild(slot);
       }
-      adjustFontSize();
+      
+      // Pequeno timeout garante que o navegador terminou de renderizar os elementos 
+      // antes de calcular as alturas reais para o tamanho de fonte perfeito.
+      setTimeout(adjustFontSize, 20);
     }
 
     addCardBtn.addEventListener('click', async () => {
