@@ -1,167 +1,147 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AAC Custom Board</title>
-<style>
-/* ... (Seu CSS permanece idêntico ao que você enviou antes) ... */
-:root { --primary-color: #00cc44; --border-color: #ccc; --bg-color: #f9f9f9; }
-html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; background-color: var(--bg-color); }
-body { font-family: Arial, sans-serif; display: flex; flex-direction: column; box-sizing: border-box; padding: 15px; }
-.app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; flex-shrink: 0; }
-.admin-toggle-btn { background-color: #666; color: white; border: none; padding: 8px 14px; font-size: 13px; font-weight: bold; border-radius: 8px; cursor: pointer; }
-.admin-toggle-btn.editing { background-color: #ff9900; }
-.creator-panel { display: none; background: #fff; padding: 15px; border-radius: 12px; border: 2px dashed #ff9900; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); flex-shrink: 0; }
-.creator-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
-.form-group { flex: 1; min-width: 180px; }
-label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; }
-input[type="text"], input[type="file"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; }
-.panel-sections-container { width: 100%; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; border-top: 1px solid #eee; padding-top: 12px; }
-.panel-actions { display: flex; gap: 8px; flex: 2; min-width: 280px; }
-.backup-actions { display: flex; gap: 8px; flex: 1; min-width: 180px; }
-button.action-btn { flex: 1; padding: 10px; font-size: 13px; font-weight: bold; color: white; border: none; border-radius: 6px; cursor: pointer; }
-#addCardBtn { background-color: var(--primary-color); }
-#addCardBtn:hover { background-color: #00aa38; }
-#clearBoardBtn { background-color: #ff3333; }
-#clearBoardBtn:hover { background-color: #cc0000; }
-.backup-btn { background-color: #4a90e2; }
-.backup-btn:hover { background-color: #357abd; }
-button:disabled { background-color: #aaa !important; cursor: not-allowed; }
-#importFile { display: none; }
-.parental-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; justify-content: center; align-items: center; }
-.parental-box { background: white; padding: 25px; border-radius: 15px; width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; }
-.slider-track { position: relative; background: #eee; padding: 2px; border-radius: 25px; height: 44px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #ddd; }
-.ios-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 100%; background: transparent; position: absolute; top: 0; left: 0; margin: 0; cursor: pointer; z-index: 5; }
-.ios-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 50px; height: 40px; border-radius: 20px; background: var(--primary-color); }
-.close-modal-btn { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 18px; color: #aaa; cursor: pointer; }
-.main-layout { display: flex; gap: 15px; align-items: stretch; flex-grow: 1; overflow: hidden; }
-.sidebar-tabs { background: white; border: 1px solid var(--border-color); border-radius: 18px; padding: 15px 10px; width: 150px; flex-shrink: 0; display: flex; flex-direction: column; overflow-y: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-.tab-row { display: flex; align-items: center; margin-bottom: 10px; width: 100%; padding: 6px; border-radius: 8px; }
-.tab-bullet { font-size: 20px; margin-right: 6px; color: var(--primary-color); }
-.tab-item { font-size: 15px; font-weight: bold; cursor: pointer; color: #333; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; }
-.tab-item.active { color: var(--primary-color); font-size: 17px; }
-.delete-board-btn { background: none; border: none; color: #ff3333; font-size: 16px; cursor: pointer; }
-.board-chassis { flex-grow: 1; background: white; border: 1px solid var(--border-color); border-radius: 25px; padding: 15px; display: flex; flex-direction: column; overflow: hidden; }
-.scroll-frame { display: flex; gap: 10px; flex-grow: 1; overflow: hidden; justify-content: center; align-items: center; }
-.grid-container { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 12px; width: 100%; height: 100%; max-width: calc(100vh - 180px); max-height: calc(100vh - 180px); aspect-ratio: 1 / 1; }
-.grid-slot { border: 2px dashed #e0e0e0; background: #fafafa; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; position: relative; }
-.delete-badge { position: absolute; top: 4px; right: 4px; background: #ff3333; color: white; border-radius: 50%; width: 24px; height: 24px; font-size: 14px; font-weight: bold; cursor: pointer; }
-.aac-card { width: 100%; height: 100%; background: white; border-radius: 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; padding: 6px; border: 3px solid #eee; transition: transform 0.1s; }
-.aac-card h3 { margin: 0; height: 20%; display: flex; align-items: center; justify-content: center; font-size: 4cqi; font-weight: bold; }
-.aac-card img { width: 100%; height: 78%; object-fit: contain; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAC Custom Board</title>
+    <style>
+        :root { --primary-color: #00cc44; --border-color: #ccc; --bg-color: #f9f9f9; }
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; background-color: var(--bg-color); }
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; box-sizing: border-box; padding: 15px; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; flex-shrink: 0; }
+        .admin-toggle-btn { background-color: #666; color: white; border: none; padding: 8px 14px; font-size: 13px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .admin-toggle-btn.editing { background-color: #ff9900; }
+        .creator-panel { display: none; background: #fff; padding: 15px; border-radius: 12px; border: 2px dashed #ff9900; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .creator-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+        .form-group { flex: 1; min-width: 180px; }
+        label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 13px; }
+        input[type="text"], input[type="file"] { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; }
+        .panel-sections-container { width: 100%; display: flex; gap: 12px; margin-top: 12px; }
+        button.action-btn { padding: 10px; font-size: 13px; font-weight: bold; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        #addCardBtn { background-color: var(--primary-color); }
+        #clearBoardBtn { background-color: #ff3333; }
+        .backup-btn { background-color: #4a90e2; }
+        .main-layout { display: flex; gap: 15px; flex-grow: 1; overflow: hidden; }
+        .sidebar-tabs { background: white; border: 1px solid var(--border-color); border-radius: 18px; padding: 15px; width: 150px; overflow-y: auto; }
+        .tab-row { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; padding: 5px; }
+        .tab-item.active { color: var(--primary-color); font-weight: bold; }
+        .board-chassis { flex-grow: 1; background: white; border: 1px solid var(--border-color); border-radius: 25px; padding: 15px; display: flex; }
+        .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; height: 100%; }
+        .grid-slot { border: 2px dashed #e0e0e0; border-radius: 15px; display: flex; justify-content: center; align-items: center; }
+        .aac-card { width: 90%; height: 90%; text-align: center; cursor: pointer; }
+        .aac-card img { width: 100%; height: 70%; object-fit: contain; }
+    </style>
 </head>
 <body>
 
 <div class="app-header">
-<h1 id="mainTitle">AAC Board</h1>
-<button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
-</div>
-
-<div id="parentalModal" class="parental-modal">
-<div class="parental-box">
-<button class="close-modal-btn" id="closeModalBtn">✕</button>
-<h4 id="modalTitle">Controle Parental</h4>
-<p id="modalInstruction">Arraste para a direita para confirmar.</p>
-<div class="slider-track">
-<span class="slider-label" id="sliderLabel">Slide >></span>
-<input type="range" min="0" max="100" value="0" class="ios-slider" id="parentalSlider">
-</div>
-</div>
+    <h1 id="mainTitle">AAC Board</h1>
+    <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
 </div>
 
 <div id="creatorPanel" class="creator-panel">
-<div class="creator-form">
-<div class="form-group"><label id="lblBoardTitle"></label><input type="text" id="boardTitle"></div>
-<div class="form-group"><label id="lblCardWord"></label><input type="text" id="cardWord"></div>
-<div class="form-group"><label id="lblCardImage"></label><input type="file" id="cardImage" accept="image/*"></div>
-<div class="panel-sections-container">
-<div class="panel-actions"><button id="addCardBtn" class="action-btn"></button><button id="clearBoardBtn" class="action-btn"></button></div>
-<div class="backup-actions"><button id="exportBtn" class="action-btn backup-btn">📥 Export</button><button id="importBtn" class="action-btn backup-btn" onclick="document.getElementById('importFile').click()">📤 Import</button><input type="file" id="importFile" accept=".json"></div>
-</div>
-</div>
+    <div class="creator-form">
+        <div class="form-group"><label>Board Title</label><input type="text" id="boardTitle"></div>
+        <div class="form-group"><label>Card Word</label><input type="text" id="cardWord"></div>
+        <div class="form-group"><label>Image</label><input type="file" id="cardImage" accept="image/*"></div>
+        <div class="panel-sections-container">
+            <button id="addCardBtn" class="action-btn">Add Card</button>
+            <button id="clearBoardBtn" class="action-btn">Clear All</button>
+        </div>
+    </div>
 </div>
 
-<div id="mainLayoutContainer" class="main-layout">
-<div id="sidebarTabs" class="sidebar-tabs"></div>
-<div class="board-chassis"><div class="scroll-frame"><div id="gridDisplay" class="grid-container"></div></div></div>
+<div class="main-layout">
+    <div id="sidebarTabs" class="sidebar-tabs"></div>
+    <div class="board-chassis">
+        <div id="gridDisplay" class="grid-container"></div>
+    </div>
 </div>
 
 <script>
-const STORAGE_KEY = 'aac_multi_canvas_system';
-let currentLang = {};
-let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { activeBoardId: null, boards: [] };
-let isEditMode = false;
-let pendingAction = null;
-
-// Referências DOM
-const mainTitle = document.getElementById('mainTitle'), adminToggleBtn = document.getElementById('adminToggleBtn'), creatorPanel = document.getElementById('creatorPanel'), boardTitleInput = document.getElementById('boardTitle'), cardWordInput = document.getElementById('cardWord'), cardImageInput = document.getElementById('cardImage'), addCardBtn = document.getElementById('addCardBtn'), clearBoardBtn = document.getElementById('clearBoardBtn'), sidebarTabs = document.getElementById('sidebarTabs'), gridDisplay = document.getElementById('gridDisplay'), exportBtn = document.getElementById('exportBtn'), importFile = document.getElementById('importFile'), parentalModal = document.getElementById('parentalModal'), parentalSlider = document.getElementById('parentalSlider'), closeModalBtn = document.getElementById('closeModalBtn');
-
-async function loadSampleBoard() {
-  try {
-    const response = await fetch('sample_en.json');
-    if (!response.ok) throw new Error("Sem exemplo");
-    appState = await response.json();
-    saveState();
-  } catch (err) { console.warn("Exemplo não encontrado."); }
-}
-
-async function loadLocalization() {
-  try {
-    const response = await fetch('languages.json');
-    const data = await response.json();
-    const userLang = (navigator.language || "en").substring(0, 2);
-    currentLang = data[userLang] || data.en;
+    const STORAGE_KEY = 'aac_multi_canvas_system';
+    let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { activeBoardId: null, boards: [] };
     
-    // Lógica de carregamento inicial
+    // Elementos
+    const addCardBtn = document.getElementById('addCardBtn');
+    const boardTitleInput = document.getElementById('boardTitle');
+    const cardWordInput = document.getElementById('cardWord');
+    const cardImageInput = document.getElementById('cardImage');
+    const adminToggleBtn = document.getElementById('adminToggleBtn');
+    const creatorPanel = document.getElementById('creatorPanel');
+
+    // Funções Core
+    function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); }
+
+    async function loadSampleBoard() {
+        try {
+            const response = await fetch('sample_pt-BR.json');
+            if (!response.ok) return;
+            appState = await response.json();
+            saveState();
+            renderBoard();
+        } catch (err) { console.warn("Exemplo não encontrado."); }
+    }
+
+    function renderBoard() {
+        const sidebar = document.getElementById('sidebarTabs');
+        sidebar.innerHTML = "";
+        appState.boards.forEach(b => {
+            const div = document.createElement('div');
+            div.className = 'tab-row';
+            div.innerHTML = `<span class="tab-item ${b.id === appState.activeBoardId ? 'active' : ''}">${b.title}</span>`;
+            div.onclick = () => { appState.activeBoardId = b.id; saveState(); renderBoard(); };
+            sidebar.appendChild(div);
+        });
+
+        const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
+        const grid = document.getElementById('gridDisplay');
+        grid.innerHTML = "";
+        for (let i = 0; i < 16; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'grid-slot';
+            if (activeBoard && activeBoard.cards[i]) {
+                const c = activeBoard.cards[i];
+                slot.innerHTML = `<div class="aac-card" onclick="speak('${c.word}')"><h3>${c.word}</h3><img src="${c.image}"></div>`;
+            }
+            grid.appendChild(slot);
+        }
+    }
+
+    function speak(text) { window.speechSynthesis.speak(new SpeechSynthesisUtterance(text)); }
+
+    // Eventos
+    adminToggleBtn.onclick = () => { 
+        creatorPanel.style.display = creatorPanel.style.display === 'block' ? 'none' : 'block'; 
+    };
+
+    addCardBtn.onclick = () => {
+        const title = boardTitleInput.value.trim();
+        const word = cardWordInput.value.trim();
+        const file = cardImageInput.files[0];
+        if (!title || !word || !file) return alert("Preencha tudo!");
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            let board = appState.boards.find(b => b.title === title);
+            if (!board) {
+                board = { id: 'b_' + Date.now(), title, cards: [] };
+                appState.boards.push(board);
+                appState.activeBoardId = board.id;
+            }
+            board.cards.push({ id: 'c_' + Date.now(), word, image: e.target.result });
+            saveState();
+            renderBoard();
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // Inicialização
     if (appState.boards.length === 0) {
-      await loadSampleBoard();
+        loadSampleBoard();
+    } else {
+        renderBoard();
     }
-    initStaticTexts();
-    renderBoard();
-  } catch (e) { renderBoard(); }
-}
-
-function initStaticTexts() {
-  mainTitle.textContent = currentLang.mainTitle;
-  document.getElementById('lblBoardTitle').textContent = currentLang.lblBoardTitle;
-  document.getElementById('lblCardWord').textContent = currentLang.lblCardWord;
-  document.getElementById('lblCardImage').textContent = currentLang.lblCardImage;
-  addCardBtn.textContent = currentLang.addCardBtn;
-  clearBoardBtn.textContent = currentLang.clearBoardBtn;
-}
-
-function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); }
-
-function renderBoard() {
-  sidebarTabs.innerHTML = "";
-  appState.boards.forEach(board => {
-    const div = document.createElement('div');
-    div.className = 'tab-row';
-    div.innerHTML = `<span class="tab-bullet">•</span><span class="tab-item ${board.id === appState.activeBoardId ? 'active' : ''}">${board.title}</span>`;
-    div.querySelector('.tab-item').onclick = () => { appState.activeBoardId = board.id; saveState(); renderBoard(); };
-    sidebarTabs.appendChild(div);
-  });
-  
-  const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
-  gridDisplay.innerHTML = "";
-  for (let i = 0; i < 16; i++) {
-    const slot = document.createElement('div');
-    slot.className = 'grid-slot';
-    if (activeBoard && activeBoard.cards[i]) {
-      const c = activeBoard.cards[i];
-      slot.innerHTML = `<div class="aac-card" onclick="speakWord('${c.word}')"><h3>${c.word}</h3><img src="${c.image}"></div>`;
-    }
-    gridDisplay.appendChild(slot);
-  }
-}
-
-function speakWord(text) { window.speechSynthesis.speak(new SpeechSynthesisUtterance(text)); }
-
-document.addEventListener("DOMContentLoaded", loadLocalization);
-adminToggleBtn.onclick = () => { isEditMode = !isEditMode; creatorPanel.style.display = isEditMode ? 'block' : 'none'; renderBoard(); };
-// ... (demais funções de suporte como compressão e imports continuam as mesmas)
 </script>
 </body>
 </html>
