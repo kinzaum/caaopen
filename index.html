@@ -522,6 +522,21 @@ activeBoardId: null,
 boards: []
 };
 
+// --- FUNÇÃO ADICIONADA ---
+async function initSystem() {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+        try {
+            const response = await fetch('sample_en.json');
+            if (response.ok) {
+                appState = await response.json();
+                saveState();
+            }
+        } catch (err) {
+            console.warn("Nenhum sample_en.json encontrado, iniciando do zero.");
+        }
+    }
+}
+
 let isEditMode = false;
 let pendingAction = null;
 
@@ -551,9 +566,11 @@ const modalTitle = document.getElementById('modalTitle');
 const modalInstruction = document.getElementById('modalInstruction');
 const sliderLabel = document.getElementById('sliderLabel');
 
-document.addEventListener("DOMContentLoaded", () => {
-loadLocalization();
-window.addEventListener('resize', adjustFontSize);
+// --- ALTERAÇÃO NO DOMContentLoaded ---
+document.addEventListener("DOMContentLoaded", async () => {
+    await initSystem();
+    loadLocalization();
+    window.addEventListener('resize', adjustFontSize);
 });
 
 adminToggleBtn.addEventListener('click', () => {
@@ -607,7 +624,6 @@ if (isEditMode) {
 creatorPanel.style.display = "block";
 adminToggleBtn.textContent = currentLang.doneEditing || "✓ Done Editing";
 adminToggleBtn.classList.add('editing');
-
 const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
 if (activeBoard) {
 boardTitleInput.value = activeBoard.title;
@@ -944,4 +960,4 @@ reader.readAsText(file);
 });
 </script>
 </body>
-</html>
+</html>          
