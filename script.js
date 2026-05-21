@@ -8,15 +8,30 @@ boards: []
 
 // --- FUNÇÃO ADICIONADA ---
 async function initSystem() {
+    // 1. Verifica se o sistema já tem dados salvos
     if (!localStorage.getItem(STORAGE_KEY)) {
+        
+        // 2. Detecta o idioma (pega os 2 primeiros caracteres: 'en', 'pt', 'es', etc.)
+        const userLang = (navigator.language || navigator.userLanguage || "en").substring(0, 2);
+        
+        // 3. Define o nome do arquivo dinamicamente (ex: sample_pt.json, sample_en.json)
+        const fileName = `sample_${userLang}.json`;
+
         try {
-            const response = await fetch('sample_en.json');
-            if (response.ok) {
+            const response = await fetch(fileName);
+            
+            // 4. Se o arquivo do idioma não existir, faz um fallback para 'en'
+            if (!response.ok) {
+                console.warn(`Arquivo ${fileName} não encontrado, tentando fallback para sample_en.json`);
+                const fallbackResponse = await fetch('sample_en.json');
+                appState = await fallbackResponse.json();
+            } else {
                 appState = await response.json();
-                saveState();
             }
+            
+            saveState();
         } catch (err) {
-            console.warn("Nenhum sample_en.json encontrado, iniciando do zero.");
+            console.error("Erro ao carregar o arquivo de exemplo:", err);
         }
     }
 }
