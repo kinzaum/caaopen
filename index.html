@@ -5,63 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AAC Custom Board</title>
   <style>
-    :root {
-      --primary-color: #00cc44;
-      --border-color: #ccc;
-      --bg-color: #f9f9f9;
-    }
-
-    html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; background-color: var(--bg-color); }
-    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; box-sizing: border-box; padding: 15px; }
-
-    .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-    .app-header h1 { margin: 0; color: #333; font-size: 24px; }
-    .admin-toggle-btn { background-color: #666; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
-    
-    .creator-panel { display: none; background: #fff; padding: 15px; border-radius: 12px; border: 2px dashed #ff9900; margin-bottom: 15px; }
-    .main-layout { display: flex; gap: 15px; flex-grow: 1; overflow: hidden; }
-    .sidebar-tabs { background: white; border: 1px solid var(--border-color); border-radius: 18px; padding: 15px 10px; width: 150px; overflow-y: auto; }
-    .board-chassis { flex-grow: 1; background: white; border: 1px solid var(--border-color); border-radius: 25px; padding: 15px; display: flex; flex-direction: column; }
-    .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 12px; width: 100%; height: 100%; max-width: 80vh; aspect-ratio: 1 / 1; margin: auto; }
-    
-    .aac-card { width: 100%; height: 100%; background: white; border: 3px solid #eee; border-radius: 12px; text-align: center; cursor: pointer; display: flex; flex-direction: column; padding: 6px; }
-    .aac-card h3 { margin: 0; font-size: 16px; flex-shrink: 0; }
-    .aac-card img { width: 100%; height: 80%; object-fit: contain; }
-    
-    .rtl-layout { direction: rtl; }
+    /* Mantenha todo o seu CSS original aqui */
   </style>
 </head>
-<body>
+<body ontouchstart="">
 
   <div class="app-header">
     <h1 id="mainTitle">AAC Board</h1>
-    <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Edit Mode</button>
+    <button id="adminToggleBtn" class="admin-toggle-btn">⚙️ Setup / Edit</button>
   </div>
-
-  <div id="creatorPanel" class="creator-panel">
-    </div>
-
-  <div id="mainLayoutContainer" class="main-layout">
-    <div id="sidebarTabs" class="sidebar-tabs"></div>
-    <div class="board-chassis">
-      <div id="gridDisplay" class="grid-container"></div>
-    </div>
-  </div>
-
   <script>
     const STORAGE_KEY = 'aac_multi_canvas_system';
     let currentLang = {}; 
     let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { activeBoardId: null, boards: [] };
+    let isEditMode = false;
 
+    // --- BLOCO DE INICIALIZAÇÃO CORRIGIDO ---
     document.addEventListener("DOMContentLoaded", async () => {
-        // 1. Carrega as traduções
+        // 1. Carrega as traduções primeiro
         await loadLocalization();
         
-        // 2. Carrega o exemplo APENAS se o app estiver vazio
+        // 2. Carrega o exemplo APENAS se não houver nada no localStorage
         await loadSampleBoard();
         
-        // 3. Renderiza a tela somente após carregar os dados
+        // 3. Renderiza a interface agora que os dados estão garantidos
         renderBoard();
+        
+        // 4. Seus eventos originais (inicialize-os aqui ou mantenha onde já estão)
+        setupEventListeners(); 
+        window.addEventListener('resize', adjustFontSize);
     });
 
     async function loadLocalization() {
@@ -70,56 +42,59 @@
         const data = await response.json();
         const userLang = (navigator.language || "en").substring(0, 2);
         currentLang = data[userLang] || data.en;
-        document.getElementById('mainTitle').textContent = currentLang.mainTitle;
+        initStaticTexts();
       } catch (e) { console.error("Erro ao carregar idiomas"); }
     }
 
     async function loadSampleBoard() {
-      // Verifica se o usuário não tem nenhuma prancha salva
       if (appState.boards.length === 0) {
         const userLang = (navigator.language || "en").substring(0, 2);
         try {
-          // Tenta carregar o arquivo específico do idioma
+          // Busca o arquivo dinâmico baseado no idioma (ex: sample_pt.json)
           let response = await fetch(`sample_${userLang}.json`);
           
           if (!response.ok) {
-            console.log("Arquivo de idioma não encontrado, usando fallback...");
+            console.log("Arquivo de idioma não encontrado, carregando fallback...");
             response = await fetch('sample_en.json');
           }
           
           const sampleData = await response.json();
           appState = sampleData;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+          saveState();
         } catch (error) {
           console.error("Falha ao carregar o arquivo de exemplo:", error);
         }
       }
     }
 
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    // --- MANTENHA SUAS OUTRAS FUNÇÕES ORIGINAIS ABAIXO ---
     function renderBoard() {
-      const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId) || appState.boards[0];
-      const gridDisplay = document.getElementById('gridDisplay');
-      gridDisplay.innerHTML = "";
-      
-      if (!activeBoard) return;
-
-      for (let i = 0; i < 16; i++) {
-        const slot = document.createElement('div');
-        slot.className = 'grid-slot';
-        if (activeBoard.cards[i]) {
-          const card = activeBoard.cards[i];
-          slot.innerHTML = `<div class="aac-card" onclick="speak('${card.word}')"><h3>${card.word}</h3><img src="${card.image}"></div>`;
-        }
-        gridDisplay.appendChild(slot);
-      }
+      // ... sua lógica original ...
     }
 
-    function speak(text) {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = currentLang.langCode || "en-US";
-      window.speechSynthesis.speak(u);
+    function initStaticTexts() {
+      // ... sua lógica original ...
     }
+
+    function speakWord(text) {
+      // ... sua lógica original ...
+    }
+    
+    // Certifique-se de que sua função setupEventListeners existe 
+    // ou mova seus addEventListeners para aqui.
+    function setupEventListeners() {
+       adminToggleBtn.addEventListener('click', () => {
+        isEditMode = !isEditMode;
+        creatorPanel.style.display = isEditMode ? "block" : "none";
+        renderBoard();
+      });
+      // ... todos os seus outros eventos ...
+    }
+    
   </script>
 </body>
 </html>
