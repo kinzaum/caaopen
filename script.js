@@ -6,6 +6,11 @@ activeBoardId: null,
 boards: []
 };
 
+function checkDeviceCompatibility() {
+    if (window.innerWidth < 375) {
+        document.getElementById('deviceWarning').style.display = 'block';
+    }
+}
 // --- FUNÇÃO ADICIONADA ---
 async function initSystem() {
     // 1. Verifica se o sistema já tem dados salvos
