@@ -280,7 +280,7 @@ button:disabled {
 }
 
 .tab-item {
-    font-size: 15px;
+    font-size: 30px;
     font-weight: bold;
     cursor: pointer;
     color: #333;
