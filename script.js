@@ -264,6 +264,13 @@ alert("Aviso: Memória do navegador cheia!");
 function speakWord(text) {
 if ('speechSynthesis' in window) {
 window.speechSynthesis.cancel();
+    
+// Xacho pra parar de falar "Capital I"
+        let textToSpeak = text;
+        if (text.trim().toUpperCase() === "I") {
+            textToSpeak = "eye"; 
+        }
+    
 const utterance = new SpeechSynthesisUtterance(text);
 utterance.lang = currentLang.langCode || "en"; 
 window.speechSynthesis.speak(utterance);
