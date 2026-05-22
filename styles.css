@@ -280,7 +280,7 @@ button:disabled {
 }
 
 .tab-item {
-    font-size: 30px;
+    font-size: 22px;
     font-weight: bold;
     cursor: pointer;
     color: #333;
@@ -292,7 +292,7 @@ button:disabled {
 
 .tab-item.active {
     color: var(--primary-color);
-    font-size: 17px;
+    font-size: 25px;
 }
 
 .delete-board-btn {
