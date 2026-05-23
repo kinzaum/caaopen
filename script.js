@@ -218,6 +218,7 @@ gridDisplay.style.direction = "rtl";
 mainLayoutContainer.classList.remove('rtl-layout');
 gridDisplay.style.direction = "ltr";
 }
+    renderPatreonLink();
 }
 
 function compressImage(file, maxWidth, maxHeight, quality) {
