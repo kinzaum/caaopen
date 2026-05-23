@@ -205,7 +205,8 @@ lblCardImage.textContent = currentLang.lblCardImage;
 addCardBtn.textContent = currentLang.addCardBtn;
 clearBoardBtn.textContent = currentLang.clearBoardBtn;
 exportBtn.textContent = currentLang.exportBtn;
-importBtn.textContent = currentLang.importBtn;    
+importBtn.textContent = currentLang.importBtn;
+adminToggleBtn.textContent = currentLang.setupBtn;    
     
 
 if (currentLang.isRtl) {
