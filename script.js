@@ -122,36 +122,41 @@ parentalSlider.value = 0;
 });
 
 function executeSecureAction(action) {
-if (action === 'toggleEdit') {
+    if (action === 'toggleEdit') {
         isEditMode = !isEditMode;
         if (isEditMode) {
             creatorPanel.style.display = "block";
-            // Use your new dynamic key for "Done Editing"
             adminToggleBtn.textContent = currentLang.doneEditing; 
             adminToggleBtn.classList.add('editing');
-            // ... (rest of the logic)
+            const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
+            if (activeBoard) {
+                boardTitleInput.value = activeBoard.title;
+            } else {
+                boardTitleInput.value = ""; 
+            }
         } else {
             creatorPanel.style.display = "none";
-            // Use your new dynamic key for "Setup"
             adminToggleBtn.textContent = currentLang.setupBtn; 
             adminToggleBtn.classList.remove('editing');
         }
         renderBoard();
+    } // This brace closes the 'if (action === 'toggleEdit')' block
+    else if (action === 'resetAll') {
+        appState = { activeBoardId: null, boards: [] };
+        localStorage.removeItem(STORAGE_KEY);
+        boardTitleInput.value = "";
+        cardWordInput.value = "";
+        cardImageInput.value = "";
+        isEditMode = false;
+        creatorPanel.style.display = "none";
+        
+        // Updated dynamic text here:
+        adminToggleBtn.textContent = currentLang.setupBtn; 
+        
+        adminToggleBtn.classList.remove('editing');
+        initStaticTexts();
+        renderBoard();
     }
-} 
-else if (action === 'resetAll') {
-appState = { activeBoardId: null, boards: [] };
-localStorage.removeItem(STORAGE_KEY);
-boardTitleInput.value = "";
-cardWordInput.value = "";
-cardImageInput.value = "";
-isEditMode = false;
-creatorPanel.style.display = "none";
-adminToggleBtn.textContent = "⚙️ Setup";
-adminToggleBtn.classList.remove('editing');
-initStaticTexts();
-renderBoard();
-}
 }
 
 async function loadLocalization() {
