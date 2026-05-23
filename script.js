@@ -204,6 +204,9 @@ cardWordInput.placeholder = currentLang.phCardWord;
 lblCardImage.textContent = currentLang.lblCardImage;
 addCardBtn.textContent = currentLang.addCardBtn;
 clearBoardBtn.textContent = currentLang.clearBoardBtn;
+exportBtn.textContent = currentLang.exportBtn;
+importBtn.textContent = currentLang.importBtn;    
+    
 
 if (currentLang.isRtl) {
 mainLayoutContainer.classList.add('rtl-layout');
