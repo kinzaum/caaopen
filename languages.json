@@ -21,6 +21,7 @@
     "alertFileTooLarge": "A imagem selecionada é maior que o tamanho limite de 100Kb. Por favor, escolha um arquivo menor.",
     "exportBtn": "📥 Salvar",
     "importBtn": "📤 Carregar",
+    "setupBtn": "Configurar",
     "doneEditing": "✓ Concluir Edição",
     "langCode": "pt-BR",
     "isRtl": false
@@ -47,6 +48,7 @@
     "alertFileTooLarge": "The selected image is larger than the 100Kb size limit. Please choose a smaller file.",
     "exportBtn": "📥 Save",
     "importBtn": "📤 Load",
+    "setupBtn": "Setup",
     "doneEditing": "✓ Done Editing",
     "langCode": "en-US",
     "isRtl": false
