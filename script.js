@@ -123,24 +123,21 @@ parentalSlider.value = 0;
 
 function executeSecureAction(action) {
 if (action === 'toggleEdit') {
-isEditMode = !isEditMode;
-if (isEditMode) {
-creatorPanel.style.display = "block";
-adminToggleBtn.textContent = currentLang.doneEditing || "✓ Done Editing";
-adminToggleBtn.classList.add('editing');
-const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
-if (activeBoard) {
-boardTitleInput.value = activeBoard.title;
-} else {
-boardTitleInput.value = ""; 
-}
-
-} else {
-creatorPanel.style.display = "none";
-adminToggleBtn.textContent = "⚙️ Setup / Edit";
-adminToggleBtn.classList.remove('editing');
-}
-renderBoard();
+        isEditMode = !isEditMode;
+        if (isEditMode) {
+            creatorPanel.style.display = "block";
+            // Use your new dynamic key for "Done Editing"
+            adminToggleBtn.textContent = currentLang.doneEditing; 
+            adminToggleBtn.classList.add('editing');
+            // ... (rest of the logic)
+        } else {
+            creatorPanel.style.display = "none";
+            // Use your new dynamic key for "Setup"
+            adminToggleBtn.textContent = currentLang.setupBtn; 
+            adminToggleBtn.classList.remove('editing');
+        }
+        renderBoard();
+    }
 } 
 else if (action === 'resetAll') {
 appState = { activeBoardId: null, boards: [] };
@@ -150,7 +147,7 @@ cardWordInput.value = "";
 cardImageInput.value = "";
 isEditMode = false;
 creatorPanel.style.display = "none";
-adminToggleBtn.textContent = "⚙️ Setup / Edit";
+adminToggleBtn.textContent = "⚙️ Setup";
 adminToggleBtn.classList.remove('editing');
 initStaticTexts();
 renderBoard();
