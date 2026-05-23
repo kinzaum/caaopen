@@ -75,6 +75,7 @@
     "alertFileTooLarge": "La imagen selecionada es mayor que el límite de 100Kb. Por favor, elija un archivo más pequeño.",
     "exportBtn": "📥 Guardar",
     "importBtn": "📤 Cargar",
+    "setupBtn": "Configurar",
     "doneEditing": "✓ Terminar Edición",
     "langCode": "es-ES",
     "isRtl": false
@@ -101,6 +102,7 @@
     "alertFileTooLarge": "Das ausgewählte Bild ist größer als das Limit von 100Kb. Bitte wählen Sie eine kleinere Datei.",
     "exportBtn": "📥 Speichern",
     "importBtn": "📤 Laden",
+    "setupBtn": "Setup",
     "doneEditing": "✓ Bearbeitung beenden",
     "langCode": "de-DE",
     "isRtl": false
@@ -127,6 +129,7 @@
     "alertFileTooLarge": "L'image sélectionnée dépasse la limite de 100Kb. Veuillez choisir un fichier plus léger.",
     "exportBtn": "📥 Enregistrer",
     "importBtn": "📤 Charger",
+    "setupBtn": "Configuration",
     "doneEditing": "✓ Terminer l'édition",
     "langCode": "fr-FR",
     "isRtl": false
@@ -153,6 +156,7 @@
     "alertFileTooLarge": "الصورة المحددة أكبر من الحد الأقصى 100 كيلوبايت. يرجى اختيار ملف أصغر.",
     "exportBtn": "📥 حفظ",
     "importBtn": "📤 تحميل",
+    "setupBtn": "إعدادات",
     "doneEditing": "✓ إنهاء التعديل",
     "langCode": "ar-SA",
     "isRtl": true
@@ -179,6 +183,7 @@
     "alertFileTooLarge": "L'immagine selezionata supera il limite di 100Kb. Si prega di scegliere un file più piccolo.",
     "exportBtn": "📥 Salva",
     "importBtn": "📤 Carica",
+    "setupBtn": "Configura",
     "doneEditing": "✓ Termina Modifica",
     "langCode": "it-IT",
     "isRtl": false
@@ -205,6 +210,7 @@
     "alertFileTooLarge": "De geselecteerde afbeelding is groter dan de limiet van 100Kb. Kies een kleiner bestand.",
     "exportBtn": "📥 Opslaan",
     "importBtn": "📤 Laden",
+    "setupBtn": "Instellingen",
     "doneEditing": "✓ Bewerken voltooien",
     "langCode": "nl-NL",
     "isRtl": false
@@ -231,6 +237,7 @@
     "alertFileTooLarge": "Wybrany obraz jest większy niż limit 100Kb. Proszę wybrać mniejszy plik.",
     "exportBtn": "📥 Zapisz",
     "importBtn": "📤 Wczytaj",
+    "setupBtn": "Konfiguracja",
     "doneEditing": "✓ Zakończ edycję",
     "langCode": "pl-PL",
     "isRtl": false
@@ -257,6 +264,7 @@
     "alertFileTooLarge": "Seçilen resim 100Kb sınırından büyük. Lütfen daha küçük bir dosya seçin.",
     "exportBtn": "📥 Kaydet",
     "importBtn": "📤 Yükle",
+    "setupBtn": "Kurulum",
     "doneEditing": "✓ Düzenlemeyi Bitir",
     "langCode": "tr-TR",
     "isRtl": false
@@ -283,6 +291,7 @@
     "alertFileTooLarge": "選択された画像は100Kbの制限を超えています。より小さいファイルを選択してください。",
     "exportBtn": "📥 保存",
     "importBtn": "📤 読み込み",
+    "setupBtn": "設定",
     "doneEditing": "✓ 編集終了",
     "langCode": "ja-JP",
     "isRtl": false
@@ -309,6 +318,7 @@
     "alertFileTooLarge": "선택한 이미지가 100Kb 용량 제한을 초과했습니다. 더 작은 파일을 선택해 주세요.",
     "exportBtn": "📥 저장",
     "importBtn": "📤 불러오기",
+    "setupBtn": "설정",
     "doneEditing": "✓ 편집 완료",
     "langCode": "ko-KR",
     "isRtl": false
@@ -335,6 +345,7 @@
     "alertFileTooLarge": "A imagem selecionada é maior do que o tamanho limite de 100Kb. Por favor, escolha um ficheiro menor.",
     "exportBtn": "📥 Guardar",
     "importBtn": "📤 Carregar",
+    "setupBtn": "Configurar",
     "doneEditing": "✓ Concluir Edição",
     "langCode": "pt-PT",
     "isRtl": false
@@ -361,6 +372,7 @@
     "alertFileTooLarge": "Ko ta'anga tuichave 100Kb-gui. Eporavo peteĩ michĩveva, por favor.",
     "exportBtn": "📥 Emongu",
     "importBtn": "📤 Emonguẽ",
+    "setupBtn": "Emoĩ",
     "doneEditing": "✓ Emohu'ã Mboheko",
     "langCode": "gn-PY",
     "isRtl": false
@@ -387,6 +399,7 @@
     "alertFileTooLarge": "चुनी गई छवि 100Kb की सीमा से बड़ी है। कृपया छोटी फ़ाइल चुनें।",
     "exportBtn": "📥 सहेजें",
     "importBtn": "📤 लोड करें",
+    "setupBtn": "सेटअप",
     "doneEditing": "✓ संपादन समाप्त",
     "langCode": "hi-IN",
     "isRtl": false
@@ -413,6 +426,7 @@
     "alertFileTooLarge": "নির্বাচিত ছবিটির সাইজ 100Kb সীমার চেয়ে বড়। অনুগ্রহ করে ছোট সাইজের ফাইল বেছে নিন।",
     "exportBtn": "📥 সংরক্ষণ",
     "importBtn": "📤 লোড",
+    "setupBtn": "সেটআপ",
     "doneEditing": "✓ সম্পাদনা শেষ করুন",
     "langCode": "bn-IN",
     "isRtl": false
@@ -439,6 +453,7 @@
     "alertFileTooLarge": "Выбранное изображение превышает лимит в 100 Кб. Пожалуйста, выберите файл меньшего размера.",
     "exportBtn": "📥 Сохранить",
     "importBtn": "📤 Загрузить",
+    "setupBtn": "Настройка",
     "doneEditing": "✓ Завершить редактирование",
     "langCode": "ru-RU",
     "isRtl": false
@@ -465,6 +480,7 @@
     "alertFileTooLarge": "选择的图片超过了 100Kb 的限制。请选择较小的文件。",
     "exportBtn": "📥 保存",
     "importBtn": "📤 加载",
+    "setupBtn": "设置",
     "doneEditing": "✓ 完成编辑",
     "langCode": "zh-CN",
     "isRtl": false
@@ -491,6 +507,7 @@
     "alertFileTooLarge": "منتخب کردہ تصویر 100Kb کی حد سے بڑی ہے۔ براہ کرم چھوٹی فائل منتخب کریں۔",
     "exportBtn": "📥 محفوظ کریں",
     "importBtn": "📤 لوڈ کریں",
+    "setupBtn": "سیٹ اپ",
     "doneEditing": "✓ ایڈیٹنگ مکمل",
     "langCode": "ur-PK",
     "isRtl": true
@@ -517,6 +534,7 @@
     "alertFileTooLarge": "Избраното изображение надвишава лимита от 100Kb. Моля, изберете по-малък файл.",
     "exportBtn": "📥 Запазване",
     "importBtn": "📤 Зареждане",
+    "setupBtn": "Настройка",
     "doneEditing": "✓ Завършване на редактирането",
     "langCode": "bg-BG",
     "isRtl": false
