@@ -273,12 +273,10 @@ function renderPatreonLink() {
     patreonDiv.style.padding = "15px 5px";
     patreonDiv.style.textAlign = "center";
     patreonDiv.style.borderTop = "1px solid #eee";
-    patreonDiv.style.cursor = "pointer";
     patreonDiv.innerHTML = `
         <img src="patreon.png" alt="Support" style="width: 80px; height: 80px; border-radius: 8px;">
         <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;">${currentLang.supportBtn || "Support my work"}</p>
     `;
-    patreonDiv.onclick = () => window.open('https://www.patreon.com/your-page', '_blank');
     sidebar.appendChild(patreonDiv);
 }
 
