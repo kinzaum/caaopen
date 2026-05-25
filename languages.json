@@ -1,6 +1,6 @@
 {
   "pt": {
-    "mainTitle": "Minha Prancha AAC Customizada .1302",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Título da Prancha:",
     "phBoardTitle": "ex: Família, Rotina, Comida",
     "lblCardWord": "2. Palavra do Card / Legenda:",
@@ -28,7 +28,7 @@
     "isRtl": false
   },
   "en": {
-    "mainTitle": "My Custom AAC Board .1509",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Board Title:",
     "phBoardTitle": "e.g., Family, Routine, Food",
     "lblCardWord": "2. Card Word / Caption:",
@@ -56,7 +56,7 @@
     "isRtl": false
   },
   "es": {
-    "mainTitle": "Mi Tablero AAC Personalizado",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Título del Tablero:",
     "phBoardTitle": "ej: Familia, Rutina, Comida",
     "lblCardWord": "2. Palabra del Tarjeta / Leyenda:",
@@ -84,7 +84,7 @@
     "isRtl": false
   },
   "de": {
-    "mainTitle": "Mein Eigenes Talker-Board (UK)",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Board-Titel:",
     "phBoardTitle": "z.B. Familie, Routine, Essen",
     "lblCardWord": "2. Kartenwort / Beschriftung:",
@@ -112,7 +112,7 @@
     "isRtl": false
   },
   "fr": {
-    "mainTitle": "Mon Tableau CAA Personnalisé",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Titre du Tableau:",
     "phBoardTitle": "ex: Famille, Routine, Nourriture",
     "lblCardWord": "2. Mot de la Carte / Légende:",
@@ -168,7 +168,7 @@
     "isRtl": true
   },
   "it": {
-    "mainTitle": "La Mia Tabella AAC Personalizzata",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Titolo della Tabella:",
     "phBoardTitle": "es: Famiglia, Routine, Cibo",
     "lblCardWord": "2. Parola della Carta / Didascalia:",
@@ -196,7 +196,7 @@
     "isRtl": false
   },
   "nl": {
-    "mainTitle": "Mijn Gecustomiseerd OC-Board",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Board Titel:",
     "phBoardTitle": "bijv: Familie, Routine, Voedsel",
     "lblCardWord": "2. Kaartwoord / Onderschrift:",
@@ -224,7 +224,7 @@
     "isRtl": false
   },
   "pl": {
-    "mainTitle": "Moja Spersonalizowana Tablica AAC",
+    "mainTitle": Caaopen.org",
     "lblBoardTitle": "1. Tytuł Tablicy:",
     "phBoardTitle": "np. Rodzina, Rutyna, Jedzenie",
     "lblCardWord": "2. Słowo na Karcie / Podpis:",
@@ -252,7 +252,7 @@
     "isRtl": false
   },
   "tr": {
-    "mainTitle": "Özel AAC İletişim Panom",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Pano Başlığı:",
     "phBoardTitle": "örn: Aile, Rutin, Yemek",
     "lblCardWord": "2. Kart Kelimesi / Altyazı:",
@@ -280,7 +280,7 @@
     "isRtl": false
   },
   "ja": {
-    "mainTitle": "マイカスタムAACボード",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. ボードのタイトル:",
     "phBoardTitle": "例：家族、ルーティン、食事",
     "lblCardWord": "2. カードの単語 / キャプション:",
@@ -308,7 +308,7 @@
     "isRtl": false
   },
   "ko": {
-    "mainTitle": "나의 맞춤형 AAC 보드",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. 보드 제목:",
     "phBoardTitle": "예: 가족, 일과, 음식",
     "lblCardWord": "2. 카드 단어 / 자막:",
@@ -336,7 +336,7 @@
     "isRtl": false
   },
   "pt-PT": {
-    "mainTitle": "O Meu Quadro AAC Personalizado",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Título do Quadro:",
     "phBoardTitle": "ex: Família, Rotina, Alimentação",
     "lblCardWord": "2. Palavra do Cartão / Legenda:",
@@ -364,7 +364,7 @@
     "isRtl": false
   },
   "gn": {
-    "mainTitle": "Che Mba'e AAC Ogyke",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Ogyke Téra:",
     "phBoardTitle": "Techapyrã: Rogaygua, Tembiapo, Tembi'u",
     "lblCardWord": "2. Ta'anga Ñe'ẽ / Tembiapo Téra:",
@@ -392,7 +392,7 @@
     "isRtl": false
   },
   "hi": {
-    "mainTitle": "मेरा CUSTOM एएसी बोर्ड",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. बोर्ड का शीर्षक:",
     "phBoardTitle": "उदा: परिवार, दिनचर्या, भोजन",
     "lblCardWord": "2. कार्ड का शब्द / कैप्शन:",
@@ -420,7 +420,7 @@
     "isRtl": false
   },
   "bn": {
-    "mainTitle": "আমার কাস্টম এএসি বোর্ড",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. বোর্ডের শিরোনাম:",
     "phBoardTitle": "যেমন: পরিবার, রুটিন, খাবার",
     "lblCardWord": "2. কার্ডের শব্দ / ক্যাপশন:",
@@ -448,7 +448,7 @@
     "isRtl": false
   },
   "ru": {
-    "mainTitle": "Моя кастомная доска AAC",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Название доски:",
     "phBoardTitle": "напр.: Семья, Рутина, Еда",
     "lblCardWord": "2. Слово карточки / Подпись:",
@@ -476,7 +476,7 @@
     "isRtl": false
   },
   "zh": {
-    "mainTitle": "我的自定义 AAC 沟通板",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. 沟通板标题:",
     "phBoardTitle": "例如：家人、日常、食物",
     "lblCardWord": "2. 卡片词语 / 标签:",
@@ -504,7 +504,7 @@
     "isRtl": false
   },
   "ur": {
-    "mainTitle": "میرا کسٹم AAC بورڈ",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. بورڈ کا عنوان:",
     "phBoardTitle": "مثال: خاندان، معمول، کھانا",
     "lblCardWord": "2. کارڈ کا لفظ / کیپشن:",
@@ -532,7 +532,7 @@
     "isRtl": true
   },
   "bg": {
-    "mainTitle": "Моето персонализирано AAC табло",
+    "mainTitle": "Caaopen.org",
     "lblBoardTitle": "1. Заглавие на таблото:",
     "phBoardTitle": "напр.: Семейство, Рутина, Храна",
     "lblCardWord": "2. Дума върху картата / Надпис:",
