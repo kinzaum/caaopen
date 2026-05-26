@@ -275,7 +275,7 @@ function renderPatreonLink() {
     patreonDiv.style.borderTop = "1px solid #eee";
     patreonDiv.innerHTML = `
         <img src="patreon.png" alt="Support" style="width: 80px; height: 80px; border-radius: 8px;">
-        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;">${currentLang.supportBtn || "Support my work"}</p>
+        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;">${currentLang.supportBtn || "Other Projects"}</p>
     `;
     sidebar.appendChild(patreonDiv);
 }
