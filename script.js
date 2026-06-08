@@ -6,6 +6,10 @@ let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
     boards: []
 };
 
+window.onerror = function(message, source, lineno, colno, error) {
+    alert("Error: " + message + " at line " + lineno);
+};
+
 function checkDeviceCompatibility() {
     if (window.innerWidth < 375) {
         document.getElementById('deviceWarning').style.display = 'block';
