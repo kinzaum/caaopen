@@ -1,14 +1,4 @@
-const STORAGE_KEY = 'aac_multi_canvas_system';
-let currentLang = {}; 
-
-let appState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-    activeBoardId: null,
-    boards: []
-};
-
-window.onerror = function(message, source, lineno, colno, error) {
-    alert("Error: " + message + " at line " + lineno);
-};
+//script.js
 
 function checkDeviceCompatibility() {
     if (window.innerWidth < 375) {
@@ -37,9 +27,6 @@ async function initSystem() {
     }
 }
 
-let isEditMode = false;
-let pendingAction = null;
-
 const mainTitle = document.getElementById('mainTitle');
 const adminToggleBtn = document.getElementById('adminToggleBtn');
 const creatorPanel = document.getElementById('creatorPanel');
@@ -63,6 +50,37 @@ const closeModalBtn = document.getElementById('closeModalBtn');
 const modalTitle = document.getElementById('modalTitle');
 const modalInstruction = document.getElementById('modalInstruction');
 const sliderLabel = document.getElementById('sliderLabel');
+
+// Swipe support
+let touchStartX = null; // Use null to signify "no active swipe"
+
+document.addEventListener('touchstart', e => {
+    // Check if the target is part of the parental modal or the slider
+    const isInsideModal = e.target.closest('.parental-box') || e.target.closest('.ios-slider');
+    
+    // Only set touchStartX if we are NOT inside a modal
+    if (!isInsideModal) {
+        touchStartX = e.changedTouches[0].screenX;
+    } else {
+        touchStartX = null; // Explicitly nullify if they touch inside a modal
+    }
+});
+
+document.addEventListener('touchend', e => {
+    // If we didn't start a swipe on the main page, do nothing
+    if (touchStartX === null) return;
+
+    let touchEndX = e.changedTouches[0].screenX;
+    
+    // Calculate distance
+    let diff = touchStartX - touchEndX;
+
+    if (diff > 50) changePage(1);  // Swipe Left
+    if (diff < -50) changePage(-1); // Swipe Right
+    
+    // Reset after processing
+    touchStartX = null;
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
     await initSystem();
@@ -126,7 +144,7 @@ function executeSecureAction(action) {
             adminToggleBtn.textContent = currentLang.setupBtn; 
             adminToggleBtn.classList.remove('editing');
         }
-        renderBoard();
+        renderBoard(); // Now calls the function from ui.js
     } else if (action === 'resetAll') {
         appState = { activeBoardId: null, boards: [] };
         localStorage.removeItem(STORAGE_KEY);
@@ -138,7 +156,7 @@ function executeSecureAction(action) {
         adminToggleBtn.textContent = currentLang.setupBtn; 
         adminToggleBtn.classList.remove('editing');
         initStaticTexts();
-        renderBoard();
+        renderBoard(); // Now calls the function from ui.js
     }
 }
 
@@ -177,6 +195,8 @@ async function loadLocalization() {
         renderBoard();
     }
 }
+
+
 
 function initStaticTexts() {
     mainTitle.textContent = currentLang.mainTitle;
@@ -267,95 +287,6 @@ function deleteCard(boardId, cardId) {
     renderBoard();
 }
 
-function renderPatreonLink() {
-    const sidebar = document.getElementById('sidebarTabs');
-    if (!sidebar || document.getElementById('patreon-box')) return;
-
-    const patreonDiv = document.createElement('div');
-    patreonDiv.id = 'patreon-box';
-    patreonDiv.style.marginTop = "auto";
-    patreonDiv.style.padding = "15px 5px";
-    patreonDiv.style.textAlign = "center";
-    patreonDiv.style.borderTop = "1px solid #eee";
-    patreonDiv.innerHTML = `
-        <img src="patreon.png" alt="Support" style="width: 80px; height: 80px; border-radius: 8px;">
-        <p style="font-size: 11px; color: #666; margin: 5px 0 0 0;">${currentLang.supportBtn || "Terms of Use"}</p>
-    `;
-    sidebar.appendChild(patreonDiv);
-}
-
-function renderBoard() {
-    if (!currentLang.mainTitle) return; 
-
-    sidebarTabs.innerHTML = "";
-    appState.boards.forEach(board => {
-        const tabRow = document.createElement('div');
-        tabRow.className = 'tab-row';
-        const bullet = document.createElement('span');
-        bullet.className = 'tab-bullet';
-        bullet.textContent = '•';
-        tabRow.appendChild(bullet);
-
-        const tab = document.createElement('span');
-        tab.className = `tab-item ${board.id === appState.activeBoardId ? 'active' : ''}`;
-        tab.textContent = board.title;
-        tab.addEventListener('click', () => {
-            appState.activeBoardId = board.id;
-            if (isEditMode) boardTitleInput.value = board.title;
-            saveState();
-            renderBoard();
-        });
-        tabRow.appendChild(tab);
-
-        if (isEditMode) {
-            const deleteBoardBtn = document.createElement('button');
-            deleteBoardBtn.className = 'delete-board-btn';
-            deleteBoardBtn.innerHTML = '✕'; 
-            deleteBoardBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                if (board.cards.length > 0 && !confirm((currentLang.confirmDeleteBoard || "Delete board?"))) return;
-                appState.boards = appState.boards.filter(b => b.id !== board.id);
-                if (appState.activeBoardId === board.id) appState.activeBoardId = appState.boards.length > 0 ? appState.boards[0].id : null;
-                saveState();
-                renderBoard();
-            });
-            tabRow.appendChild(deleteBoardBtn);
-        }
-        sidebarTabs.appendChild(tabRow);
-    });
-
-    const activeBoard = appState.boards.find(b => b.id === appState.activeBoardId);
-    gridDisplay.innerHTML = "";
-    boardHeader.textContent = activeBoard ? activeBoard.title : currentLang.emptyBoardState;
-
-    for (let i = 0; i < 16; i++) {
-        const slot = document.createElement('div');
-        slot.className = 'grid-slot';
-        if (isEditMode && activeBoard && activeBoard.cards[i]) slot.classList.add('edit-active');
-
-        if (activeBoard && activeBoard.cards[i]) {
-            const card = activeBoard.cards[i];
-            const cardElement = document.createElement('div');
-            cardElement.className = 'aac-card';
-            cardElement.innerHTML = `<h3>${card.word}</h3><img src="${card.image}" alt="${card.word}">`;
-
-            if (isEditMode) {
-                const deleteBtn = document.createElement('div');
-                deleteBtn.className = 'delete-badge';
-                deleteBtn.textContent = '✕';
-                deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteCard(activeBoard.id, card.id); });
-                slot.appendChild(deleteBtn);
-            } else {
-                cardElement.addEventListener('click', () => speakWord(card.word));
-            }
-            slot.appendChild(cardElement);
-        }
-        gridDisplay.appendChild(slot);
-    }
-    setTimeout(adjustFontSize, 20);
-    renderPatreonLink();
-}
-
 addCardBtn.addEventListener('click', async () => {
     const targetTitle = boardTitleInput.value.trim();
     const word = cardWordInput.value.trim();
@@ -368,7 +299,7 @@ addCardBtn.addEventListener('click', async () => {
         appState.boards.push(targetBoard);
         appState.activeBoardId = targetBoard.id;
     }
-    if (targetBoard.cards.length >= 16) return alert(currentLang.alertFull);
+    if (targetBoard.cards.length >= 100) return alert(currentLang.alertFull);
 
     try {
         addCardBtn.disabled = true;
@@ -380,6 +311,32 @@ addCardBtn.addEventListener('click', async () => {
     } catch (error) { console.error(error); } finally { addCardBtn.disabled = false; }
 });
 
+function changePage(direction) {
+    currentPage += direction;
+    renderGrid(); // ui.js will use this updated currentPage variable
+}
+
+function renderPatreonLink() {
+    const sidebarTabs = document.getElementById('sidebarTabs');
+    if (!sidebarTabs) return;
+
+    // Create a container for the image
+    const patreonContainer = document.createElement('div');
+    patreonContainer.className = 'patreon-container';
+    patreonContainer.style.marginTop = '20px';
+    patreonContainer.style.textAlign = 'center';
+
+    // Create the image element
+    const img = document.createElement('img');
+    img.src = 'patreon.png'; // Ensure this file is in your project folder
+    img.alt = 'Patreon';
+    img.style.width = '80%'; // Adjust the size as needed
+    img.style.maxWidth = '150px';
+
+    patreonContainer.appendChild(img);
+    sidebarTabs.appendChild(patreonContainer);
+}
+
 exportBtn.addEventListener('click', () => {
     if (appState.boards.length === 0) return;
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
@@ -390,6 +347,40 @@ exportBtn.addEventListener('click', () => {
     downloadAnchor.click();
     downloadAnchor.remove();
 });
+
+function swapCards(id1, id2) {
+    const board = appState.boards.find(b => b.id === appState.activeBoardId);
+    if (!board) return;
+
+    const index1 = board.cards.findIndex(c => c.id === id1);
+    const index2 = board.cards.findIndex(c => c.id === id2);
+
+    if (index1 > -1 && index2 > -1) {
+        [board.cards[index1], board.cards[index2]] = [board.cards[index2], board.cards[index1]];
+        
+        // ADD THIS RESET:
+        selectedSwapCardId = null; 
+        
+        saveState();
+        renderBoard();
+    }
+}
+
+function swapBoards(id1, id2) {
+    const index1 = appState.boards.findIndex(b => b.id === id1);
+    const index2 = appState.boards.findIndex(b => b.id === id2);
+
+    if (index1 > -1 && index2 > -1) {
+        [appState.boards[index1], appState.boards[index2]] = [appState.boards[index2], appState.boards[index1]];
+        
+        // ADD THIS RESET:
+        selectedSwapBoardId = null; 
+        
+        saveState();
+        renderBoard();
+    }
+}
+
 
 importFile.addEventListener('change', (e) => {
     const file = e.target.files[0];
@@ -407,4 +398,3 @@ importFile.addEventListener('change', (e) => {
     };
     reader.readAsText(file);
 });
-
