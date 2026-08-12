@@ -4,6 +4,7 @@
     --bg-color: #f9f9f9;
 }
 
+
 html, body {
     height: 100%;
     height: -webkit-fill-available; /* Essencial para iPhones */
@@ -13,6 +14,7 @@ html, body {
     background-color: var(--bg-color);
 }
 
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -20,6 +22,7 @@ body {
     box-sizing: border-box;
     padding: 15px;
 }
+
 
 /* Cabeçalho Superior Fixo */
 .app-header {
@@ -32,11 +35,13 @@ body {
     flex-shrink: 0;
 }
 
+
 .app-header h1 {
     margin: 0;
     color: #333;
     font-size: 24px;
 }
+
 
 .admin-toggle-btn {
     background-color: #666;
@@ -52,6 +57,7 @@ body {
     background-color: #ff9900;
 }
 
+
 /* Painel do Criador Retrátil */
 .creator-panel {
     display: none;
@@ -64,24 +70,43 @@ body {
     flex-shrink: 0;
 }
 
+
 .creator-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 12px;
+}
+
+.creator-form .form-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    align-items: flex-end;
+    width: 100%;
+}
+
+
+.creator-form .form-row .form-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.creator-form .form-row .action-group {
+    flex: 0 0 auto;
+    display: flex;
     align-items: flex-end;
 }
 
-.form-group {
-    flex: 1;
-    min-width: 180px;
-}
 
 label {
     display: block;
     font-weight: bold;
     margin-bottom: 4px;
     font-size: 13px;
+    white-space: nowrap;
 }
+
 
 input[type="text"], input[type="file"] {
     width: 100%;
@@ -90,35 +115,38 @@ input[type="text"], input[type="file"] {
     border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 13px;
+    height: 35px;
 }
+
 
 .panel-sections-container {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
     gap: 12px;
-    margin-top: 12px;
+    margin-top: 4px;
     border-top: 1px solid #eee;
     padding-top: 12px;
 }
 
+
 .panel-actions {
     display: flex;
     gap: 8px;
-    flex: 2;
-    min-width: 280px;
+    flex: 1;
 }
+
 
 .backup-actions {
     display: flex;
     gap: 8px;
-    flex: 1;
-    min-width: 180px;
+    flex: 2;
 }
 
+
 button.action-btn {
-    flex: 1;
-    padding: 10px;
+    width: 100%;
+    height: 35px;
+    padding: 0 10px;
     font-size: 13px;
     font-weight: bold;
     color: white;
@@ -127,20 +155,30 @@ button.action-btn {
     cursor: pointer;
 }
 
-#addCardBtn { background-color: var(--primary-color); }
+
+#addCardBtn { 
+    background-color: var(--primary-color); 
+    height: 35px;
+    padding: 0 20px;
+    white-space: nowrap;
+}
 #addCardBtn:hover { background-color: #00aa38; }
 #clearBoardBtn { background-color: #ff3333; }
 #clearBoardBtn:hover { background-color: #cc0000; }
 
+
 .backup-btn { background-color: #4a90e2; }
 .backup-btn:hover { background-color: #357abd; }
+
 
 button:disabled {
     background-color: #aaa !important;
     cursor: not-allowed;
 }
 
+
 #importFile { display: none; }
+
 
 /* --- MODAL DE TRANCA PARENTAL --- */
 .parental-modal {
@@ -156,6 +194,7 @@ button:disabled {
     align-items: center;
 }
 
+
 .parental-box {
     background: white;
     padding: 25px;
@@ -166,8 +205,10 @@ button:disabled {
     position: relative;
 }
 
+
 .parental-box h4 { margin: 0 0 8px 0; font-size: 16px; color: #333; }
 .parental-box p { margin: 0 0 15px 0; font-size: 13px; color: #666; }
+
 
 .slider-track {
     position: relative;
@@ -182,6 +223,7 @@ button:disabled {
     border: 1px solid #ddd;
 }
 
+
 .slider-label {
     position: absolute;
     font-size: 13px;
@@ -190,6 +232,7 @@ button:disabled {
     pointer-events: none;
     user-select: none;
 }
+
 
 .ios-slider {
     -webkit-appearance: none;
@@ -205,6 +248,7 @@ button:disabled {
     z-index: 5;
 }
 
+
 .ios-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -215,6 +259,7 @@ button:disabled {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+
 .ios-slider::-moz-range-thumb {
     width: 50px;
     height: 40px;
@@ -223,6 +268,7 @@ button:disabled {
     background: var(--primary-color);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
 
 .close-modal-btn {
     position: absolute;
@@ -235,6 +281,7 @@ button:disabled {
     cursor: pointer;
 }
 
+
 /* --- LAYOUT DINÂMICO INTELIGENTE --- */
 .main-layout {
     display: flex;
@@ -243,6 +290,7 @@ button:disabled {
     flex-grow: 1;
     overflow: hidden;
 }
+
 
 /* Painel Lateral Compacto Mantido */
 .sidebar-tabs {
@@ -258,6 +306,7 @@ button:disabled {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+
 .tab-row {
     display: flex;
     align-items: center;
@@ -267,10 +316,15 @@ button:disabled {
     border-radius: 8px;
     transition: background 0.2s ease;
     flex-shrink: 0;
+    cursor: pointer;
+    user-select: none;         /* Standard */
+    -webkit-user-select: none; /* Safari/iOS */
+    -webkit-tap-highlight-color: transparent; /* Removes the gray flash on tap */
 }
 .tab-row:hover {
     background: #f0f0f0;
 }
+
 
 .tab-bullet {
     font-size: 20px;
@@ -278,6 +332,7 @@ button:disabled {
     line-height: 1;
     color: var(--primary-color);
 }
+
 
 .tab-item {
     font-size: 22px;
@@ -290,10 +345,12 @@ button:disabled {
     text-overflow: ellipsis;
 }
 
+
 .tab-item.active {
     color: var(--primary-color);
     font-size: 25px;
 }
+
 
 .delete-board-btn {
     background: none;
@@ -303,6 +360,7 @@ button:disabled {
     cursor: pointer;
     padding: 0 3px;
 }
+
 
 /* Chassi Principal Fluido */
 .board-chassis {
@@ -317,9 +375,11 @@ button:disabled {
     overflow: hidden;
 }
 
+
 .board-header {
     display: none;
 }
+
 
 /* Container de Enquadramento */
 .scroll-frame {
@@ -331,6 +391,7 @@ button:disabled {
     align-items: center;
 }
 
+
 /* Grade Inteligente Automática */
 .grid-container {
     display: grid;
@@ -339,8 +400,8 @@ button:disabled {
     gap: 8px; /* Reduzido para dar mais espaço */
     width: 100%;
     height: 100%;
-    /* Removemos restrições rígidas para deixar o flexbox/grid decidir */
 }
+
 
 .grid-slot {
     border: 2px dashed #e0e0e0;
@@ -353,6 +414,7 @@ button:disabled {
     position: relative;
     overflow: hidden; /* Isso impede que o texto saia para fora */
 }
+
 
 .delete-badge {
     position: absolute;
@@ -378,10 +440,12 @@ button:disabled {
     animation: slight-shake 0.3s infinite alternate;
 }
 
+
 @keyframes slight-shake {
-    0 { transform: rotate(-0.5deg); }
+    0% { transform: rotate(-0.5deg); }
     100% { transform: rotate(0.5deg); }
 }
+
 
 /* Cards Proporcionais */
 .aac-card {
@@ -392,7 +456,13 @@ button:disabled {
     justify-content: center; /* Centraliza o conjunto todo */
     align-items: center;
     overflow: hidden;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    user-select: none;         /* Standard */
+    -webkit-user-select: none; /* Safari/iOS */
+    -webkit-tap-highlight-color: transparent; /* Removes the gray flash on tap */
+    cursor: pointer;
 }
+
 
 .aac-card h3 {
     margin: 0;
@@ -405,11 +475,13 @@ button:disabled {
     text-align: center;
 }
 
+
 .aac-card img {
     max-height: 60%; /* Deixa mais espaço para o texto */
     width: auto;
     object-fit: contain;
 }
+
 
 .aac-card:active {
     transform: scale(0.95);
@@ -417,7 +489,16 @@ button:disabled {
     box-shadow: 0 0 12px rgba(0, 204, 68, 0.5);
 }
 
+.selected-for-swap {
+    outline: 5px solid #28a745; /* Green border to show it's selected */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+    z-index: 10;
+}
+
+
 .side-scroll-bar { display: none; }
+
 
 .rtl-layout { direction: rtl; }
 .rtl-layout .delete-board-btn { margin-left: 0; margin-right: auto; }
